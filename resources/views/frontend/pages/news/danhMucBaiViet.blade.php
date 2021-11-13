@@ -1,5 +1,11 @@
-@extends('frontend.layouts.master')
+@extends('frontend.layouts.master', ['noslider' => true])
 @section('title','Danh mục bài viết')
+@section('advertisement')
+<div class="container mb-4">
+    <img src="{{asset('public/frontend/images/shop/advertisement.jpg')}}" alt="" />
+</div>
+<br>
+@endsection
 @section('defaultContent')
 <div class="features_items">
 

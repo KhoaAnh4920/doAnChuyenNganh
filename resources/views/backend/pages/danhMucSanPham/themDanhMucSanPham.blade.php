@@ -1,5 +1,5 @@
 @extends('backend.layouts.master')
-@section('title','Trang Admin')
+@section('title','Thêm danh mục sản phẩm')
 @section('content')
 <section class="wrapper">
     <div class="form-w3layouts">
@@ -9,7 +9,7 @@
             <div class="col-lg-12">
                 <section class="panel">
                     <header class="panel-heading">
-                        Thêm người dùng
+                        Thêm danh mục sản phẩm
                     </header>
                     <div class="panel-body">
                         <div class="position-center">
@@ -20,15 +20,23 @@
                                         placeholder="Enter email">
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputPassword1">Username</label>
-                                    <input type="text" class="form-control" id="exampleInputPassword1"
+                                    <label for="exampleInputPassword1">Tên danh mục</label>
+                                    <input type="password" class="form-control" id="exampleInputPassword1"
                                         placeholder="Password">
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputPassword1">Date</label>
-                                    <input type="text" class="form-control" id="exampleInputPassword1"
+                                    <label for="exampleInputPassword1">Mô tả</label>
+                                    <input type="password" class="form-control" id="exampleInputPassword1"
                                         placeholder="Password">
                                 </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Trạng thái</label>
+                                    <select class="form-control" name="statusDanhMuc">
+                                        <option>Ẩn</option>
+                                        <option>Hiện</option>
+                                    </select>
+                                </div>
+                                
                                 <button type="submit" class="btn btn-info">Submit</button>
                             </form>
                         </div>
@@ -44,4 +52,5 @@
         <!-- page end-->
     </div>
 </section>
+
 @endsection

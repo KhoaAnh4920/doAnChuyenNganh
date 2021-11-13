@@ -1,5 +1,5 @@
 @extends('backend.layouts.master')
-@section('title','Trang Admin')
+@section('title','Thêm thương hiệu')
 @section('content')
 <section class="wrapper">
     <div class="form-w3layouts">
@@ -9,26 +9,33 @@
             <div class="col-lg-12">
                 <section class="panel">
                     <header class="panel-heading">
-                        Thêm người dùng
+                        Thêm thương hiệu
                     </header>
                     <div class="panel-body">
                         <div class="position-center">
                             <form role="form">
-                                <div class="form-group">
-                                    <label for="exampleInputEmail1">ID</label>
-                                    <input type="text" class="form-control" id="exampleInputEmail1"
-                                        placeholder="Enter email">
-                                </div>
-                                <div class="form-group">
-                                    <label for="exampleInputPassword1">Username</label>
+                            <div class="form-group">
+                                    <label for="exampleInputPassword1">ID</label>
                                     <input type="text" class="form-control" id="exampleInputPassword1"
                                         placeholder="Password">
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputPassword1">Date</label>
+                                    <label for="exampleInputPassword1">Tên thương hiệu</label>
                                     <input type="text" class="form-control" id="exampleInputPassword1"
                                         placeholder="Password">
                                 </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Mô tả</label>
+                                    <textarea class="form-control" rows="4"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Trạng thái</label>
+                                    <select class="form-control" name="statusDanhMuc">
+                                        <option>Ẩn</option>
+                                        <option>Hiện</option>
+                                    </select>
+                                </div>
+
                                 <button type="submit" class="btn btn-info">Submit</button>
                             </form>
                         </div>

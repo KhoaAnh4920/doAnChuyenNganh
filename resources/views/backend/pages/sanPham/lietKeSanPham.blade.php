@@ -1,11 +1,11 @@
 @extends('backend.layouts.master')
-@section('title','Liệt kê danh mục sản phẩm')
+@section('title','Liệt kê sản phẩm')
 @section('content')
 <section class="wrapper">
     <div class="table-agile-info">
         <div class="panel panel-default">
             <div class="panel-heading">
-                Liệt kê danh mục sản phẩm
+                Liệt kê sản phẩm
             </div>
             <div class="row w3-res-tb">
                 <div class="col-sm-5 m-b-xs">
@@ -38,7 +38,12 @@
                                 </label>
                             </th>
                             <th>ID</th>
-                            <th>Tên danh mục</th>
+                            <th>Tên sản phẩm</th>
+                            <th>Hình</th>
+                            <th>Danh mục hình</th>
+                            <th>Giá</th>
+                            <th>Danh mục</th>
+                            <th>Thương hiệu</th>
                             <th>Mô tả</th>
                             <th>Trạng thái</th>
                             <th style="width:30px;"></th>
@@ -48,43 +53,39 @@
                         <tr>
                             <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label>
                             </td>
-                            <td>Formasa</td>
+                            <td>AAAAA</td>
                             <td>8c</td>
                             <td>Lorem</td>
+                            <td><a href="{{URL::to('/them-danh-muc-hinh.html')}}">Thêm danh mục hình</a></td>
+                            <td>Lorem</td>
+                            <td>Lorem</td>
+                            <td>Lorem</td>
+                            <td>Lorem</td>
                             <td>Lorem</td>
                             <td>
-                                <a href="{{URL::to('/sua-danh-muc-san-pham.html')}}" ui-toggle-class=""><i class="fa fa-pencil text-success text-active"></i><i
+                                <a href="{{URL::to('/sua-san-pham.html')}}" ui-toggle-class=""><i class="fa fa-pencil text-success text-active"></i><i
                                         class="fa fa-times text-danger text"></i></a>
                             </td>
                         </tr>
                         <tr>
                             <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label>
                             </td>
-                            <td>Avatar system</td>
-                            <td>15c</td>
+                            <td>BBBBB</td>
+                            <td>8c</td>
+                            <td>Lorem</td>
+                            <td><a href="{{URL::to('/them-danh-muc-hinh.html')}}">Thêm danh mục hình</a></td>
+                            <td>Lorem</td>
+                            <td>Lorem</td>
+                            <td>Lorem</td>
                             <td>Lorem</td>
                             <td>Lorem</td>
                             <td>
-                                <a href="{{URL::to('/sua-danh-muc-san-pham.html')}}" class="active" ui-toggle-class=""><i
+                                <a href="{{URL::to('/sua-san-pham.html')}}" class="active" ui-toggle-class=""><i
                                         class="fa fa-pencil text-success text-active"></i><i
                                         class="fa fa-times text-danger text"></i></a>
                             </td>
                         </tr>
-                        <tr>
-                            <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label>
-                            </td>
-                            <td>Throwdown</td>
-                            <td>4c</td>
-                            <td>Lorem</td>
-                            <td>Lorem</td>
-                            <td>
-                                <a href="{{URL::to('/sua-danh-muc-san-pham.html')}}" class="active" ui-toggle-class=""><i
-                                        class="fa fa-pencil text-success text-active"></i><i
-                                        class="fa fa-times text-danger text"></i></a>
-                            </td>
-                        </tr>
-
-  
+ 
                     </tbody>
                 </table>
             </div>
@@ -109,5 +110,4 @@
         </div>
     </div>
 </section>
-
 @endsection

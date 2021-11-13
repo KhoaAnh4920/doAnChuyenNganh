@@ -1,11 +1,11 @@
 @extends('backend.layouts.master')
-@section('title','Liệt kê danh mục sản phẩm')
+@section('title','Liệt kê đơn hàng')
 @section('content')
 <section class="wrapper">
     <div class="table-agile-info">
         <div class="panel panel-default">
             <div class="panel-heading">
-                Liệt kê danh mục sản phẩm
+                Liệt kê đơn hàng
             </div>
             <div class="row w3-res-tb">
                 <div class="col-sm-5 m-b-xs">
@@ -37,9 +37,9 @@
                                     <input type="checkbox"><i></i>
                                 </label>
                             </th>
-                            <th>ID</th>
-                            <th>Tên danh mục</th>
-                            <th>Mô tả</th>
+                            <th>ID đơn hàng</th>
+                            <th>ID khách hàng</th>
+                            <th>Ngày đặt hàng</th>
                             <th>Trạng thái</th>
                             <th style="width:30px;"></th>
                         </tr>
@@ -48,12 +48,25 @@
                         <tr>
                             <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label>
                             </td>
-                            <td>Formasa</td>
-                            <td>8c</td>
-                            <td>Lorem</td>
+                            <td>Idrawfast prototype</td>
+                            <td><span class="text-ellipsis">{item.PrHelpText1}</span></td>
+                            <td><span class="text-ellipsis">{item.PrHelpText1}</span></td>
                             <td>Lorem</td>
                             <td>
-                                <a href="{{URL::to('/sua-danh-muc-san-pham.html')}}" ui-toggle-class=""><i class="fa fa-pencil text-success text-active"></i><i
+                                <a href="{{URL::to('/chi-tiet-don-hang.html')}}" class="active" ui-toggle-class=""><i
+                                        class="fa fa-eye text-success text-active"></i><i
+                                        class="fa fa-times text-danger text"></i></a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label>
+                            </td>
+                            <td>Formasa</td>
+                            <td>8c</td>
+                            <td>Jul 22, 2013</td>
+                            <td>Lorem</td>
+                            <td>
+                                <a href="{{URL::to('/chi-tiet-don-hang.html')}}" ui-toggle-class=""><i class="fa fa-eye text-success text-active"></i><i
                                         class="fa fa-times text-danger text"></i></a>
                             </td>
                         </tr>
@@ -62,29 +75,16 @@
                             </td>
                             <td>Avatar system</td>
                             <td>15c</td>
-                            <td>Lorem</td>
-                            <td>Lorem</td>
-                            <td>
-                                <a href="{{URL::to('/sua-danh-muc-san-pham.html')}}" class="active" ui-toggle-class=""><i
-                                        class="fa fa-pencil text-success text-active"></i><i
-                                        class="fa fa-times text-danger text"></i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label>
-                            </td>
-                            <td>Throwdown</td>
-                            <td>4c</td>
-                            <td>Lorem</td>
+                            <td>Jul 15, 2013</td>
                             <td>Lorem</td>
                             <td>
-                                <a href="{{URL::to('/sua-danh-muc-san-pham.html')}}" class="active" ui-toggle-class=""><i
-                                        class="fa fa-pencil text-success text-active"></i><i
+                                <a href="" class="active" ui-toggle-class=""><i
+                                        class="fa fa-eye text-success text-active"></i><i
                                         class="fa fa-times text-danger text"></i></a>
                             </td>
                         </tr>
 
-  
+
                     </tbody>
                 </table>
             </div>

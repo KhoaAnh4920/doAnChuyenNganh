@@ -1,5 +1,5 @@
 @extends('backend.layouts.master')
-@section('title','Trang Admin')
+@section('title','Sửa thông tin user')
 @section('content')
 <section class="wrapper">
     <div class="form-w3layouts">
@@ -9,14 +9,14 @@
             <div class="col-lg-12">
                 <section class="panel">
                     <header class="panel-heading">
-                        Thêm người dùng
+                        Sửa thông tin người dùng
                     </header>
                     <div class="panel-body">
                         <div class="position-center">
                             <form role="form">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">ID</label>
-                                    <input type="text" class="form-control" id="exampleInputEmail1"
+                                    <input type="email" class="form-control" id="exampleInputEmail1"
                                         placeholder="Enter email">
                                 </div>
                                 <div class="form-group">

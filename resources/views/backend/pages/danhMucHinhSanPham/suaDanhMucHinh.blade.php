@@ -1,5 +1,5 @@
 @extends('backend.layouts.master')
-@section('title','Trang Admin')
+@section('title','Sửa danh mục hình')
 @section('content')
 <section class="wrapper">
     <div class="form-w3layouts">
@@ -9,26 +9,34 @@
             <div class="col-lg-12">
                 <section class="panel">
                     <header class="panel-heading">
-                        Thêm người dùng
+                        Sửa danh mục hình
                     </header>
                     <div class="panel-body">
                         <div class="position-center">
                             <form role="form">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">ID</label>
+                                    <label for="exampleInputEmail1">ID hình</label>
                                     <input type="text" class="form-control" id="exampleInputEmail1"
                                         placeholder="Enter email">
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputPassword1">Username</label>
-                                    <input type="text" class="form-control" id="exampleInputPassword1"
+                                    <label for="exampleInputPassword1">ID sản phẩm</label>
+                                    <input type="password" class="form-control" id="exampleInputPassword1"
                                         placeholder="Password">
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputPassword1">Date</label>
-                                    <input type="text" class="form-control" id="exampleInputPassword1"
-                                        placeholder="Password">
+                                    <label for="exampleInputPassword1">Hình ảnh (tối đa 4 ảnh)</label>
+                                    <input type="file" class="form-control" id="exampleInputPassword1"
+                                        >
+                                </div>                             
+                                <div class="form-group">
+                                    <label for="exampleInputPassword1">Trạng thái</label>
+                                    <select class="form-control" name="statusDanhMuc">
+                                        <option>Ẩn</option>
+                                        <option>Hiện</option>
+                                    </select>
                                 </div>
+                                
                                 <button type="submit" class="btn btn-info">Submit</button>
                             </form>
                         </div>

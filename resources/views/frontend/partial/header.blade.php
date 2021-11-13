@@ -35,38 +35,14 @@
                     <div class="logo pull-left">
                         <a href="{{URL::to('/')}}"><img src="{{asset('public/frontend/images/home/logo.png')}}" alt="" /></a>
                     </div>
-                    <div class="btn-group pull-right">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
-                                USA
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Canada</a></li>
-                                <li><a href="#">UK</a></li>
-                            </ul>
-                        </div>
-
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
-                                DOLLAR
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a href="#">Canadian Dollar</a></li>
-                                <li><a href="#">Pound</a></li>
-                            </ul>
-                        </div>
-                    </div>
+                    
                 </div>
                 <div class="col-sm-8">
                     <div class="shop-menu pull-right">
                         <ul class="nav navbar-nav">
-                            <li><a href="#"><i class="fa fa-user"></i> Account</a></li>
-                            <li><a href="#"><i class="fa fa-star"></i> Wishlist</a></li>
-                            <li><a href="{{URL::to('/checkout.html')}}"><i class="fa fa-crosshairs"></i> Checkout</a></li>
-                            <li><a href="{{URL::to('/cart.html')}}"><i class="fa fa-shopping-cart"></i> Cart</a></li>
-                            <li><a href="{{URL::to('/login.html')}}"><i class="fa fa-lock"></i> Login</a></li>
+                            <li><a href="{{URL::to('/checkout.html')}}"><i class="fa fa-crosshairs"></i>Thanh toán</a></li>
+                            <li><a href="{{URL::to('/cart.html')}}"><i class="fa fa-shopping-cart"></i> Giỏ hàng</a></li>
+                            <li><a href="{{URL::to('/login.html')}}"><i class="fa fa-lock"></i> Đăng nhập</a></li>
                         </ul>
                     </div>
                 </div>
@@ -91,14 +67,12 @@
                     </div>
                     <div class="mainmenu pull-left">
                         <ul class="nav navbar-nav collapse navbar-collapse">
-                            <li><a href="{{URL::to('/')}}" class="active">Home</a></li>
-                            <li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a>
+                            <li><a href="{{URL::to('/')}}" class="active">Trang chủ</a></li>
+                            <li class="dropdown"><a href="#">Sản phẩm<i class="fa fa-angle-down"></i></a>
                                 <ul role="menu" class="sub-menu">
-                                    <li><a href="{{URL::to('/product.html')}}">Sản phẩm</a></li>
-                                    <li><a href="{{URL::to('/product-details.html')}}">Product Details</a></li>
-                                    <li><a href="#">Checkout</a></li>
-                                    <li><a href="{{URL::to('/cart.html')}}">Cart</a></li>
-                                    <li><a href="{{URL::to('/login.html')}}">Login</a></li>
+                                    <li><a href="{{URL::to('/product.html')}}">Sản phẩm 1</a></li>
+                                    <li><a href="{{URL::to('/product.html')}}">Sản phẩm 2</a></li>
+                                    <li><a href="{{URL::to('/product.html')}}">Sản phẩm 3</a></li>
                                 </ul>
                             </li>
                             <li><a href="{{URL::to('/danh-muc-bai-viet.html')}}">Trang tin tức</a></li>

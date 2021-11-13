@@ -1,5 +1,5 @@
 @extends('backend.layouts.master')
-@section('title','Trang Admin')
+@section('title','Sửa thông tin khách hàng')
 @section('content')
 <section class="wrapper">
     <div class="form-w3layouts">
@@ -9,23 +9,23 @@
             <div class="col-lg-12">
                 <section class="panel">
                     <header class="panel-heading">
-                        Thêm người dùng
+                        Sửa thông tin khách hàng
                     </header>
                     <div class="panel-body">
                         <div class="position-center">
                             <form role="form">
                                 <div class="form-group">
-                                    <label for="exampleInputEmail1">ID</label>
-                                    <input type="text" class="form-control" id="exampleInputEmail1"
+                                    <label for="exampleInputEmail1">ID khách hàng</label>
+                                    <input type="email" class="form-control" id="exampleInputEmail1"
                                         placeholder="Enter email">
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputPassword1">Username</label>
+                                    <label for="exampleInputPassword1">Tên khách hàng</label>
                                     <input type="text" class="form-control" id="exampleInputPassword1"
                                         placeholder="Password">
                                 </div>
                                 <div class="form-group">
-                                    <label for="exampleInputPassword1">Date</label>
+                                    <label for="exampleInputPassword1">Địa chỉ</label>
                                     <input type="text" class="form-control" id="exampleInputPassword1"
                                         placeholder="Password">
                                 </div>

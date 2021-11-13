@@ -1,11 +1,11 @@
 @extends('backend.layouts.master')
-@section('title','Liệt kê danh mục sản phẩm')
+@section('title','Liệt kê danh mục hình')
 @section('content')
 <section class="wrapper">
     <div class="table-agile-info">
         <div class="panel panel-default">
             <div class="panel-heading">
-                Liệt kê danh mục sản phẩm
+                Liệt kê danh mục hình
             </div>
             <div class="row w3-res-tb">
                 <div class="col-sm-5 m-b-xs">
@@ -37,10 +37,10 @@
                                     <input type="checkbox"><i></i>
                                 </label>
                             </th>
-                            <th>ID</th>
-                            <th>Tên danh mục</th>
-                            <th>Mô tả</th>
-                            <th>Trạng thái</th>
+                            <th>ID hình</th>
+                            <th>ID sản phẩm</th>
+                            <th>Hình ảnh</th>
+                            <th>Hiển thị</th>
                             <th style="width:30px;"></th>
                         </tr>
                     </thead>
@@ -48,43 +48,29 @@
                         <tr>
                             <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label>
                             </td>
-                            <td>Formasa</td>
+                            <td>AAAAA</td>
                             <td>8c</td>
                             <td>Lorem</td>
                             <td>Lorem</td>
                             <td>
-                                <a href="{{URL::to('/sua-danh-muc-san-pham.html')}}" ui-toggle-class=""><i class="fa fa-pencil text-success text-active"></i><i
+                                <a href="{{URL::to('/sua-danh-muc-hinh.html')}}" ui-toggle-class=""><i class="fa fa-pencil text-success text-active"></i><i
                                         class="fa fa-times text-danger text"></i></a>
                             </td>
                         </tr>
                         <tr>
                             <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label>
                             </td>
-                            <td>Avatar system</td>
-                            <td>15c</td>
+                            <td>BBBBB</td>
+                            <td>8c</td>
                             <td>Lorem</td>
                             <td>Lorem</td>
                             <td>
-                                <a href="{{URL::to('/sua-danh-muc-san-pham.html')}}" class="active" ui-toggle-class=""><i
+                                <a href="{{URL::to('/sua-danh-muc-hinh.html')}}" class="active" ui-toggle-class=""><i
                                         class="fa fa-pencil text-success text-active"></i><i
                                         class="fa fa-times text-danger text"></i></a>
                             </td>
                         </tr>
-                        <tr>
-                            <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label>
-                            </td>
-                            <td>Throwdown</td>
-                            <td>4c</td>
-                            <td>Lorem</td>
-                            <td>Lorem</td>
-                            <td>
-                                <a href="{{URL::to('/sua-danh-muc-san-pham.html')}}" class="active" ui-toggle-class=""><i
-                                        class="fa fa-pencil text-success text-active"></i><i
-                                        class="fa fa-times text-danger text"></i></a>
-                            </td>
-                        </tr>
-
-  
+ 
                     </tbody>
                 </table>
             </div>
@@ -109,5 +95,4 @@
         </div>
     </div>
 </section>
-
 @endsection

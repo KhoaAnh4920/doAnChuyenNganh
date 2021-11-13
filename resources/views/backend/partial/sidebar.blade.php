@@ -19,7 +19,7 @@
                         <span>Danh mục sản phẩm</span>
                     </a>
                     <ul class="sub">
-                        <li><a class="active" href="#">Thêm danh mục sản phẩm</a></li>
+                        <li><a class="active" href="{{URL::to('/them-danh-muc-san-pham.html')}}">Thêm danh mục sản phẩm</a></li>
                         <li><a href="{{URL::to('/liet-ke-danh-muc-san-pham.html')}}">Liệt kê danh mục sản phẩm</a></li>
                     </ul>
                 </li>
@@ -29,8 +29,8 @@
                         <span>Thương hiệu</span>
                     </a>
                     <ul class="sub">
-                        <li><a class="active" href="#">Thêm thương hiệu</a></li>
-                        <li><a href="#">Liệt kê thương hiệu</a></li>
+                        <li><a class="active" href="{{URL::to('/them-thuong-hieu.html')}}">Thêm thương hiệu</a></li>
+                        <li><a href="{{URL::to('/liet-ke-thuong-hieu.html')}}">Liệt kê thương hiệu</a></li>
                     </ul>
                 </li>
                 <li class="sub-menu">
@@ -39,12 +39,12 @@
                         <span>Sản phẩm</span>
                     </a>
                     <ul class="sub">
-                        <li><a class="active" href="#">Thêm sản phẩm</a></li>
-                        <li><a href="#">Liệt kê sản phẩm</a></li>
+                        <li><a class="active" href="{{URL::to('/them-san-pham.html')}}">Thêm sản phẩm</a></li>
+                        <li><a href="{{URL::to('/liet-ke-san-pham.html')}}">Liệt kê sản phẩm</a></li>
                     </ul>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="{{URL::to('/liet-ke-don-hang.html')}}">
                         <i class="fa fa-th"></i>
                         <span>Quản lý đơn hàng</span>
                     </a>
@@ -55,8 +55,8 @@
                         <span>Quản lý danh mục bài viết</span>
                     </a>
                     <ul class="sub">
-                        <li><a href="#">Thêm danh mục bài viết</a></li>
-                        <li><a href="#">Liệt kê danh mục bài viết</a></li>
+                        <li><a href="{{URL::to('/them-danh-muc-bai-viet.html')}}">Thêm danh mục bài viết</a></li>
+                        <li><a href="{{URL::to('/liet-ke-danh-muc-bai-viet.html')}}">Liệt kê danh mục bài viết</a></li>
                     </ul>
                 </li>
                 <li class="sub-menu">
@@ -65,8 +65,18 @@
                         <span>Bài viết</span>
                     </a>
                     <ul class="sub">
-                        <li><a href="#">Thêm bài viết</a></li>
-                        <li><a href="#">Liệt kê bài viết</a></li>
+                        <li><a href="{{URL::to('/them-bai-viet.html')}}">Thêm bài viết</a></li>
+                        <li><a href="{{URL::to('/tat-ca-bai-viet.html')}}">Liệt kê bài viết</a></li>
+                    </ul>
+                </li>
+                <li class="sub-menu">
+                    <a href="#">
+                        <i class="fa fa-tasks"></i>
+                        <span>Danh mục hình ảnh</span>
+                    </a>
+                    <ul class="sub">
+                        <li><a href="{{URL::to('/them-danh-muc-hinh.html')}}">Thêm danh mục hình ảnh</a></li>
+                        <li><a href="{{URL::to('/liet-ke-danh-muc-hinh.html')}}">Liệt kê danh mục hình</a></li>
                     </ul>
                 </li>
 
