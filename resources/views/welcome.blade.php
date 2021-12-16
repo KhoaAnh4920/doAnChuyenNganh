@@ -94,7 +94,11 @@
             </div>
 
             <h3>Xung đột 2</h3>
+<<<<<<< HEAD
             <h3>Xung đột 4</h3>
+=======
+            <h4>Xung đột 3</h4>
+>>>>>>> 93bc5e1999319e0f647f57390b59b74aa09ebbeb
         </div>
     </body>
 </html>
