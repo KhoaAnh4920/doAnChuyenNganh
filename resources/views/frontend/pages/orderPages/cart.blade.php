@@ -1,5 +1,35 @@
 @extends('frontend.layouts.master',['noDefaultSection' => true],['noslider' => true])
 @section('title','Giỏ hàng')
+@section('styles')
+<style>
+.cart_name_pro a{
+    font-size: 20px;
+    text-decoration: none;
+    color: #000;
+}
+.cart_name_pro a:hover{
+
+    color: #AA0000;
+}
+h4.title {
+	color: #f95a32;
+	margin-bottom: 0.5em;
+	font-size: 1.6em;
+	line-height: 1.2em;
+	background: #F7F7F7;
+	padding: 1em;
+}
+p.noItemCart {
+	color: #777;
+	font-size: 1.2em;
+	line-height: 1.8em;
+}
+p.noItemCart a {
+	text-decoration: underline;
+	color: #f95a32;
+}
+</style>
+@endsection
 @section('content')
 <section id="cart_items">
     <div class="container">
@@ -11,7 +41,7 @@
             </ol>
         </div>
         <!--End breadcrumbs-->
-        <div class="table-responsive cart_info">
+        <!-- <div class="table-responsive cart_info">
             <table class="table table-condensed">
                 <thead>
                     <tr class="cart_menu">
@@ -105,12 +135,99 @@
                     </tr>
                 </tbody>
             </table>
+        </div> -->
+
+        <div class="row">
+        <div class="col-sm-12 col-md-10 col-md-offset-1">
+        @if(Cart::count() == 0)
+
+        <div class="container">
+          <div class="check-out">
+          <h4 class="title">Giỏ hàng chưa có sản phẩm</h4>
+          <p class="noItemCart">Bạn chưa có sản phẩm nào trong giỏ hàng.<br>Click<a href="{{URL::to('/trang-chu.html')}}"> vào đây</a> để mua sắm</p>
+          </div>
+
         </div>
+        @else
+        <form action="{{URL::to('/update-cart')}}" method='post'>
+        {!! csrf_field() !!}
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Sản phẩm</th>
+                        <th>Số lượng</th>
+                        <th class="text-center">Giá</th>
+                        <th class="text-center">Tổng</th>
+
+                        <th> </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                        @foreach($contentCart as $key => $cart_pro)
+                        <tr>
+                            <td class="col-sm-8 col-md-8">
+                            <div class="media">
+                                <a class="thumbnail pull-left" href="#"> <img class="media-object" src="{{asset('public/upload/products/')}}/{{$cart_pro->options->image}}" style="height: 100px;"> </a>
+                                <div class="media-body">
+                                    <h4 class="media-heading cart_name_pro"><a href="#">{{$cart_pro->name}}</a></h4>
+                                    <h5 class="media-heading"> Danh mục: <a href="#">{{$cart_pro->options->category}}</a></h5>
+                                    <h5 class="media-heading"> Thương hiệu: <a href="#">{{$cart_pro->options->brand}}</a></h5>                            
+                                </div>
+                            </div></td>
+                            <td class="cart_quantity col-sm-1 col-md-1">
+                                <input type="number" name="quanlity[{{$cart_pro->rowId}}]" class="form-control quantity" min="1" max="100" value="{{$cart_pro->qty}}">
+                            </td>
+                            <td class="col-sm-1 col-md-1 text-center price"><strong>@php echo number_format($cart_pro->price) @endphp đ</strong></td>
+                            <td class="col-sm-1 col-md-1 text-center total_price"><strong>
+                            @php
+                                $sum = $cart_pro->price * $cart_pro->qty;
+                                echo $sum;
+                            @endphp
+                            đ
+                            </strong></td>
+                            <td class="col-sm-1 col-md-1">
+                            <button type="button" onclick="location.href='{{URL::to('/delete-item-cart/'.$cart_pro->rowId)}}'" class="btn btn-danger">
+                                <span class="fa fa-times"></span> Xóa
+                            </button></td>
+                        </tr>
+                        @endforeach
+                
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td><h4>Tổng cộng</h4></td>
+                        <td class="text-right"><h4>{{Cart::subtotal()}} đ</h4></td>
+                    </tr>
+                    <tr>
+                        <td> <button type="button" onclick="location.href='{{URL::to('/delete-item-cart')}}'" class="btn btn-danger">
+                            <span class="fa fa-times"></span> Xóa tất cả
+                        </button> </td>
+                        <td>  </td>
+                        <td>  </td>
+                        <td>
+                        <button type="submit" class="btn btn-default">
+                            <span class="fa fa-shopping-cart"></span> Cập nhật
+                        </button></td>
+                        <td>
+                        <button type="button" class="btn btn-success" onclick="location.href='{{URL::to('/order.html')}}'">
+                            Thanh toán <span class="fa fa-angle-right"></span>
+                        </button></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </form>
+        @endif
+        </div>
+    </div>
     </div>
 </section>
 <!--/#cart_items-->
 
-<section id="do_action">
+<!-- <section id="do_action">
     <div class="container">
         <div class="heading">
             <h3>What would you like to do next?</h3>
@@ -186,7 +303,7 @@
             </div>
         </div>
     </div>
-</section>
+</section> -->
 <!--/#do_action-->
 
 @endsection

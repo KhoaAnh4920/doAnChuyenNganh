@@ -1,100 +1,127 @@
 @extends('backend.layouts.master')
 @section('title','Liệt kê thương hiệu')
+@section('styles')
+<style>
+.btnClose {
+    margin-right: 20px;
+}
+
+hr {
+    margin-top: 0px;
+}
+
+.btnDeleteUser {
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.btnDeleteUser:hover {
+    color: #fafafa;
+}
+
+@media (max-width: 526px) {
+    .card {
+        width: unset
+    }
+}
+</style>
+@endsection
 @section('content')
-<section class="wrapper">
-    <div class="table-agile-info">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                Liệt kê thương hiệu
+<div class="container-fluid" id="container-wrapper">
+    <div class="col-lg-12">
+        <div class="card mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Danh sách thương hiệu</h6>
             </div>
-            <div class="row w3-res-tb">
-                <div class="col-sm-5 m-b-xs">
-                    <select class="input-sm form-control w-sm inline v-middle">
-                        <option value="0">Bulk action</option>
-                        <option value="1">Delete selected</option>
-                        <option value="2">Bulk edit</option>
-                        <option value="3">Export</option>
-                    </select>
-                    <button class="btn btn-sm btn-default">Apply</button>
-                </div>
-                <div class="col-sm-4">
-                </div>
-                <div class="col-sm-3">
-                    <div class="input-group">
-                        <input type="text" class="input-sm form-control" placeholder="Search">
-                        <span class="input-group-btn">
-                            <button class="btn btn-sm btn-default" type="button">Go!</button>
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div class="table-responsive">
-                <table class="table table-striped b-t b-light">
-                    <thead>
+            <div class="table-responsive p-3">
+                <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+                    <thead class="thead-light">
                         <tr>
-                            <th style="width:20px;">
-                                <label class="i-checks m-b-none">
-                                    <input type="checkbox"><i></i>
-                                </label>
-                            </th>
                             <th>ID</th>
                             <th>Tên thương hiêu</th>
+                            <th>Slug</th>
                             <th>Mô tả</th>
                             <th>Trạng thái</th>
-                            <th style="width:30px;"></th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach($all_brands as $key =>$brand)
                         <tr>
-                            <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label>
+                            <td>{{$brand->maThuongHieu}}</td>
+                            <td>{{$brand->tenThuongHieu}}</td>
+                            <td>{{$brand->slug}}</td>
+                            <td>{{$brand->moTaThuongHieu}}</td>
+                            <td><span class="badge badge-success">
+                                @if($brand->trangThai)
+                                @php echo "Hiển thị"; @endphp
+                                @else
+                                @php echo "Ẩn"; @endphp
+                                @endif
+                                </span>
                             </td>
-                            <td>Formasa</td>
-                            <td>8c</td>
-                            <td>Lorem</td>
-                            <td>Lorem</td>
+
+
                             <td>
-                                <a href="{{URL::to('/sua-thuong-hieu.html')}}" ui-toggle-class=""><i class="fa fa-check text-success text-active"></i><i
-                                        class="fa fa-times text-danger text"></i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label>
-                            </td>
-                            <td>Formasa</td>
-                            <td>8c</td>
-                            <td>Lorem</td>
-                            <td>Lorem</td>
-                            <td>
-                                <a href="{{URL::to('/sua-thuong-hieu.html')}}" class="active" ui-toggle-class=""><i
-                                        class="fa fa-check text-success text-active"></i><i
-                                        class="fa fa-times text-danger text"></i></a>
+                                <a href="{{URL::to('/sua-thuong-hieu.html/'.$brand->maThuongHieu)}}"
+                                    class="btn btn-info" role="button"><i class="fa fa-edit text-active"
+                                        style="color:#ffffff"></i> Edit</a>
+                                <a href="#my-modal_{{$brand->maThuongHieu}}" data-toggle="modal" class="btn btn-danger"
+                                    role="button"><i class="fa fa-trash text" style="color:#ffffff"></i>
+                                    Delete</a>
+
+                                <div id="my-modal_{{$brand->maThuongHieu}}" class="modal fade" tabindex="-1"
+                                    role="dialog" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content border-0">
+                                            <div class="modal-body p-0">
+                                                <div class="card border-0 p-sm-3 p-2 justify-content-center">
+                                                    <div class="card-header pb-0 bg-white border-0 ">
+
+                                                        <div class="row">
+                                                            <div class="col ml-auto"><button type="button"
+                                                                    class="close btnClose" data-dismiss="modal"
+                                                                    aria-label="Close"> <span
+                                                                        aria-hidden="true">&times;</span> </button>
+                                                            </div>
+                                                            <h4 style="padding:10px 10px 10px 12px">Xác nhận xóa</h4>
+                                                            <hr>
+                                                        </div>
+                                                        <p class="font-weight-bold mb-2" style="margin-bottom:20px">Bạn
+                                                            có muốn xóa không ?</p>
+
+                                                    </div>
+                                                    <div class="card-body px-sm-4 mb-2 pt-1 pb-0">
+                                                        <div class="row">
+                                                            <hr>
+                                                        </div>
+                                                        <div class="row justify-content-end no-gutters">
+                                                            <div class="col-auto"
+                                                                style="float:right; margin-right:20px">
+                                                                <button type="button" class="btn btn-light text-muted"
+                                                                    data-dismiss="modal">Cancel</button>
+                                                                <button type="button" class="btn btn-danger px-4"><a
+                                                                        class="btnDeleteUser"
+                                                                        href="{{URL::to('/xoa-thuong-hieu.html/'.$brand->maThuongHieu)}}">Delete</a></button>
+                                                            </div>
+                                                            <!-- <div class="col-auto"><button type="button" class="btn btn-danger px-4" data-dismiss="modal">Delete</button></div> -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
 
-       
-  
+                        @endforeach
+
+
                     </tbody>
                 </table>
             </div>
-            <footer class="panel-footer">
-                <div class="row">
-
-                    <div class="col-sm-5 text-center">
-                        <small class="text-muted inline m-t-sm m-b-sm">showing 20-30 of 50 items</small>
-                    </div>
-                    <div class="col-sm-7 text-right text-center-xs">
-                        <ul class="pagination pagination-sm m-t-none m-b-none">
-                            <li><a href=""><i class="fa fa-chevron-left"></i></a></li>
-                            <li><a href="">1</a></li>
-                            <li><a href="">2</a></li>
-                            <li><a href="">3</a></li>
-                            <li><a href="">4</a></li>
-                            <li><a href=""><i class="fa fa-chevron-right"></i></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </footer>
         </div>
     </div>
-</section>
+</div>
 @endsection

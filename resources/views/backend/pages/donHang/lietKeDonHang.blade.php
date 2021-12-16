@@ -1,113 +1,59 @@
 @extends('backend.layouts.master')
 @section('title','Liệt kê đơn hàng')
 @section('content')
-<section class="wrapper">
-    <div class="table-agile-info">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                Liệt kê đơn hàng
+<div class="container-fluid" id="container-wrapper">
+    <div class="col-lg-12">
+        <div class="card mb-4">
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Liệt kê đơn hàng</h6>
             </div>
-            <div class="row w3-res-tb">
-                <div class="col-sm-5 m-b-xs">
-                    <select class="input-sm form-control w-sm inline v-middle">
-                        <option value="0">Bulk action</option>
-                        <option value="1">Delete selected</option>
-                        <option value="2">Bulk edit</option>
-                        <option value="3">Export</option>
-                    </select>
-                    <button class="btn btn-sm btn-default">Apply</button>
-                </div>
-                <div class="col-sm-4">
-                </div>
-                <div class="col-sm-3">
-                    <div class="input-group">
-                        <input type="text" class="input-sm form-control" placeholder="Search">
-                        <span class="input-group-btn">
-                            <button class="btn btn-sm btn-default" type="button">Go!</button>
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div class="table-responsive">
-                <table class="table table-striped b-t b-light">
-                    <thead>
+            <div class="table-responsive p-3">
+                <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+                    <thead class="thead-light">
                         <tr>
-                            <th style="width:20px;">
-                                <label class="i-checks m-b-none">
-                                    <input type="checkbox"><i></i>
-                                </label>
-                            </th>
                             <th>ID đơn hàng</th>
-                            <th>ID khách hàng</th>
+                            <th>Tên người nhận</th>
+                            <th>Địa chỉ</th>
+                            <th>Số điện thoại</th>
                             <th>Ngày đặt hàng</th>
+                            <th>Tổng tiền</th>
                             <th>Trạng thái</th>
-                            <th style="width:30px;"></th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach($all_order as $key => $order)
                         <tr>
-                            <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label>
-                            </td>
-                            <td>Idrawfast prototype</td>
-                            <td><span class="text-ellipsis">{item.PrHelpText1}</span></td>
-                            <td><span class="text-ellipsis">{item.PrHelpText1}</span></td>
-                            <td>Lorem</td>
+                            <td>{{$order->maDonHang}}</td>
+                            <td><span class="text-ellipsis">{{$order->tenNguoiNhanHang}}</span></td>
+                            <td>{{$order->diaChiGiaoHang}}</td>
+                            <td><span class="text-ellipsis">{{$order->soDienThoai}}</span></td>
+                            <td>{{$order->ngayDatHang}}</td>
+                            <td>@php echo number_format($order->tongTien) @endphp VNĐ</td>
                             <td>
-                                <a href="{{URL::to('/chi-tiet-don-hang.html')}}" class="active" ui-toggle-class=""><i
-                                        class="fa fa-eye text-success text-active"></i><i
-                                        class="fa fa-times text-danger text"></i></a>
+                                @if($order->trangThaiDonHang == 0)
+                                @php echo "Đơn hàng mới"; @endphp
+                                @else
+                                @php echo "Đã thanh toán"; @endphp
+                                @endif
+                            </td>
+                            <td>
+                                <div class="buttonAction">
+                                    <a href="http://localhost:8080/doAnChuyenNganh/chi-tiet-don-hang.html/3"
+                                        class="btn btn-success" role="button" style="font-size: 12px;">
+                                        <i class="fa fa-eye text-active" style="color:#ffffff;"></i> Xem chi tiết</a>
+
+                                </div>
+
                             </td>
                         </tr>
-                        <tr>
-                            <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label>
-                            </td>
-                            <td>Formasa</td>
-                            <td>8c</td>
-                            <td>Jul 22, 2013</td>
-                            <td>Lorem</td>
-                            <td>
-                                <a href="{{URL::to('/chi-tiet-don-hang.html')}}" ui-toggle-class=""><i class="fa fa-eye text-success text-active"></i><i
-                                        class="fa fa-times text-danger text"></i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label>
-                            </td>
-                            <td>Avatar system</td>
-                            <td>15c</td>
-                            <td>Jul 15, 2013</td>
-                            <td>Lorem</td>
-                            <td>
-                                <a href="" class="active" ui-toggle-class=""><i
-                                        class="fa fa-eye text-success text-active"></i><i
-                                        class="fa fa-times text-danger text"></i></a>
-                            </td>
-                        </tr>
+                        @endforeach
 
 
                     </tbody>
                 </table>
             </div>
-            <footer class="panel-footer">
-                <div class="row">
-
-                    <div class="col-sm-5 text-center">
-                        <small class="text-muted inline m-t-sm m-b-sm">showing 20-30 of 50 items</small>
-                    </div>
-                    <div class="col-sm-7 text-right text-center-xs">
-                        <ul class="pagination pagination-sm m-t-none m-b-none">
-                            <li><a href=""><i class="fa fa-chevron-left"></i></a></li>
-                            <li><a href="">1</a></li>
-                            <li><a href="">2</a></li>
-                            <li><a href="">3</a></li>
-                            <li><a href="">4</a></li>
-                            <li><a href=""><i class="fa fa-chevron-right"></i></a></li>
-                        </ul>
-                    </div>
-                </div>
-            </footer>
         </div>
     </div>
-</section>
-
+</div>
 @endsection

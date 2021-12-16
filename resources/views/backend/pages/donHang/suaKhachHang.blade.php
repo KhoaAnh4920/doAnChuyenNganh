@@ -29,7 +29,7 @@
                                     <input type="text" class="form-control" id="exampleInputPassword1"
                                         placeholder="Password">
                                 </div>
-                                <button type="submit" class="btn btn-info">Submit</button>
+                                <button type="submit" class="btn btn-success">Submit</button>
                             </form>
                         </div>
 

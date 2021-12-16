@@ -33,16 +33,46 @@
             <div class="row">
                 <div class="col-sm-4">
                     <div class="logo pull-left">
-                        <a href="{{URL::to('/')}}"><img src="{{asset('public/frontend/images/home/logo.png')}}" alt="" /></a>
+                        <a href="{{URL::to('/')}}"><img src="{{asset('public/frontend/images/home/logo.png')}}"
+                                alt="" /></a>
                     </div>
-                    
+
                 </div>
                 <div class="col-sm-8">
                     <div class="shop-menu pull-right">
                         <ul class="nav navbar-nav">
-                            <li><a href="{{URL::to('/checkout.html')}}"><i class="fa fa-crosshairs"></i>Thanh toán</a></li>
-                            <li><a href="{{URL::to('/cart.html')}}"><i class="fa fa-shopping-cart"></i> Giỏ hàng</a></li>
-                            <li><a href="{{URL::to('/login.html')}}"><i class="fa fa-lock"></i> Đăng nhập</a></li>
+                            <li><a href="{{URL::to('/checkout.html')}}"><i class="fa fa-crosshairs"></i>Thanh toán</a>
+                            </li>
+                            <li>
+                                <a href="{{URL::to('/cart.html')}}"><i class="fa fa-shopping-cart"></i>
+                                @if(Cart::content()->count() != 0) 
+                                    @php echo "Giỏ hàng(" .Cart::content()->count().")"  @endphp
+                                @else
+                                    @php echo "Giỏ hàng" @endphp
+                                @endif
+                                </a>
+                            </li>
+                            <?php
+                            $users_name = Session::get('user_name');     
+                            $users_avatar = Session::get('user_avatar');    
+                            if($users_name){
+                            ?>
+                            <li class="dropdown" style="padding-left: 0px">
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <!-- <img style="width:25px; border-radius:50%;" src="public/upload/avatar/<?=$users_avatar?>"> -->
+                            <img style="width:30px; border-radius:50%;" src="{{asset('public/upload/avatar/')}}/{{$users_avatar}}">
+                            <span class="username"><?=$users_name ?></span>
+                            <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu extended logout" style="padding:10px">
+                                <li><a href="{{URL::to('/logoutUser.html')}}" style="margin-top: 0px"><i class="fa fa-key"></i>Đăng xuất</a></li>
+                            </ul>
+                            </li>
+                            <?php 
+                             }else{
+                             ?>
+                             <li><a href="{{URL::to('/login.html')}}"><i class="fa fa-lock"></i>Đăng nhập</a></li>
+                             <?php } ?>
                         </ul>
                     </div>
                 </div>
@@ -68,7 +98,14 @@
                     <div class="mainmenu pull-left">
                         <ul class="nav navbar-nav collapse navbar-collapse">
                             <li><a href="{{URL::to('/')}}" class="active">Trang chủ</a></li>
-                            <li class="dropdown"><a href="#">Sản phẩm<i class="fa fa-angle-down"></i></a>
+                            <li class="dropdown"><a href="#">Apple<i class="fa fa-angle-down"></i></a>
+                                <ul role="menu" class="sub-menu">
+                                    <li><a href="{{URL::to('/product.html')}}">Sản phẩm 1</a></li>
+                                    <li><a href="{{URL::to('/product.html')}}">Sản phẩm 2</a></li>
+                                    <li><a href="{{URL::to('/product.html')}}">Sản phẩm 3</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown"><a href="#">Laptop<i class="fa fa-angle-down"></i></a>
                                 <ul role="menu" class="sub-menu">
                                     <li><a href="{{URL::to('/product.html')}}">Sản phẩm 1</a></li>
                                     <li><a href="{{URL::to('/product.html')}}">Sản phẩm 2</a></li>

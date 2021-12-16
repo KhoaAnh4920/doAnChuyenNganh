@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'abddf6063493ec2a91aa6853295a82922bacf487',
+        'reference' => '6f66ab6548f888de47f3e8c5d8633883aa48538b',
         'name' => 'laravel/laravel',
         'dev' => true,
     ),
@@ -66,6 +66,15 @@
             'aliases' => array(),
             'reference' => '848d8125239d7dbf8ab25cb7f054f1a630e68c2e',
             'dev_requirement' => true,
+        ),
+        'gloudemans/shoppingcart' => array(
+            'pretty_version' => '2.6.0',
+            'version' => '2.6.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../gloudemans/shoppingcart',
+            'aliases' => array(),
+            'reference' => 'f460ab7312cce32cb428cf39a500a2d16600b1d6',
+            'dev_requirement' => false,
         ),
         'hamcrest/hamcrest-php' => array(
             'pretty_version' => 'v1.2.2',
@@ -298,7 +307,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'abddf6063493ec2a91aa6853295a82922bacf487',
+            'reference' => '6f66ab6548f888de47f3e8c5d8633883aa48538b',
             'dev_requirement' => false,
         ),
         'laravel/tinker' => array(
