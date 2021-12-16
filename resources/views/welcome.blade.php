@@ -89,6 +89,8 @@
                     <a href="https://forge.laravel.com">Forge</a>
                     <a href="https://github.com/laravel/laravel">GitHub</a>
                 </div>
+                
+                <h1>Test xung đột</h1>
             </div>
 
             <h3>Xung đột 2</h3>
