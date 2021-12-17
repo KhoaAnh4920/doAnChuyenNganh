@@ -62,6 +62,9 @@
     padding: 0;
     position: absolute;
 }
+.order{
+    margin-top:20px;
+}
 </style>
 
 @endsection
@@ -74,42 +77,43 @@
             <div class="col-md-7 order-md-1">
                 <h4 class="mb-3">Thông tin giao hàng</h4>
                 <form class="needs-validation" action="{{URL::to('/handle-order')}}" method="post">
-                {!! csrf_field() !!}
-                <input type="hidden" name="total_price" value="{{Cart::subtotal()}}">
-                <input type="hidden" name="users_id" value="@php echo Session::get('users_id'); @endphp">
+                    {!! csrf_field() !!}
+                    <input type="hidden" name="total_price" value="{{Cart::subtotal()}}">
+                    <input type="hidden" name="users_id" value="@php echo Session::get('user_id'); @endphp">
                     @foreach($info_user as $key =>$user)
-                    <div class="row">
+                    <div class="row order">
                         <div class="col-md-12 mb-6">
                             <label for="firstName">Họ tên</label>
-                            <input type="text" class="form-control" placeholder="" value="{{$user->users_name}}" name="order_cusName" required="">
+                            <input type="text" class="form-control" placeholder="" value="{{$user->users_name}}"
+                                name="order_cusName" required="">
                         </div>
                     </div>
 
-                    <div class="row">
+                    <div class="row order">
                         <div class="col-md-6 mb-3">
                             <label for="firstName">Email</label>
-                            <input type="text" class="form-control" value="{{$user->users_email}}" name="order_cusEmail" required="">
+                            <input type="text" class="form-control" value="{{$user->users_email}}" name="order_cusEmail"
+                                required="">
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="lastName">Số điện thoại</label>
-                            <input type="text" class="form-control" placeholder="" name="order_cusPhone" value="{{$user->users_phone}}" required="">
+                            <input type="text" class="form-control" placeholder="" name="order_cusPhone"
+                                value="{{$user->users_phone}}" required="">
                         </div>
                     </div>
 
-                    <div class="mb-3">
+                    <div class="mb-3 order">
                         <label for="address">Địa chỉ nhận hàng</label>
-                        <input type="text" class="form-control" placeholder="1234 Main St" name="order_cusAddress" required="">
-
+                        <input type="text" class="form-control" placeholder="1234 Main St"
+                            value="{{$user->users_address}}" name="order_cusAddress" required>
                     </div>
                     @endforeach
 
 
                     <div class="step">
-
                         <div class="step-sections " step="2">
-
                             <div id="section-shipping-rate" class="section">
-                                <div class="section-header">
+                                <div class="section-header order">
                                     <h4 class="mb-3">Phương thức vận chuyển</h4>
                                 </div>
                                 <div class="section-content">
@@ -141,7 +145,7 @@
                             </div>
 
                             <div id="section-payment-method" class="section">
-                                <div class="section-header">
+                                <div class="section-header order">
                                     <h4 class="mb-3">Phương thức thanh toán</h4>
                                 </div>
                                 <div class="section-content">
@@ -197,7 +201,7 @@
             <div class="col-md-5 order-md-2 mb-4">
                 <h4 class="d-flex justify-content-between align-items-center mb-3">
                     <span class="text-muted">Your cart</span>
-                    <span class="badge badge-secondary badge-pill">3</span>
+                    <span class="badge badge-secondary badge-pill">{{Cart::content()->count()}}</span>
                 </h4>
                 <ul class="list-group mb-3">
                     @foreach($cart_content as $key => $cart_pro)
@@ -217,25 +221,27 @@
                                     <td class="product-image" rowspan=2 style="width: 100px;">
                                         <div class="product-thumbnail">
                                             <div class="product-thumbnail-wrapper">
-                                                <img class="product-thumbnail-image"
-                                                    alt="{{$cart_pro->options->name}}"
+                                                <img class="product-thumbnail-image" alt="{{$cart_pro->options->name}}"
                                                     style="height: 100px;"
                                                     src="{{asset('public/upload/products/')}}/{{$cart_pro->options->image}}">
                                             </div>
-                             
+
                                         </div>
                                     </td>
                                     <td class="product-description" colspan=2>
-                                        <span class="product-description-name order-summary-emphasis" style="font-size:16px">{{$cart_pro->name}}</span>
+                                        <span class="product-description-name order-summary-emphasis"
+                                            style="font-size:16px">{{$cart_pro->name}}</span>
 
                                     </td>
-                                    
-                                    
+
+
                                 </tr>
                                 <tr>
-                                    <td class="product-quantity"><span style="font-size:13px">SL: {{$cart_pro->qty}}</span> </td>
+                                    <td class="product-quantity"><span style="font-size:13px">SL:
+                                            {{$cart_pro->qty}}</span> </td>
                                     <td class="product-price">
-                                        <span class="order-summary-emphasis" style="float:right">@php echo number_format($cart_pro->price) @endphp đ</span>
+                                        <span class="order-summary-emphasis" style="float:right">@php echo
+                                            number_format($cart_pro->price) @endphp đ</span>
                                     </td>
                                 </tr>
 
@@ -243,7 +249,7 @@
                         </table>
                     </li>
                     @endforeach
-                    
+
 
 
                     <li class="list-group-item d-flex justify-content-between">
@@ -262,15 +268,6 @@
                 </form> -->
             </div>
         </div>
-
-        <footer class="my-5 pt-5 text-muted text-center text-small">
-            <p class="mb-1">© 2017-2018 Company Name</p>
-            <ul class="list-inline">
-                <li class="list-inline-item"><a href="#">Privacy</a></li>
-                <li class="list-inline-item"><a href="#">Terms</a></li>
-                <li class="list-inline-item"><a href="#">Support</a></li>
-            </ul>
-        </footer>
     </div>
 </section>
 <!--/#cart_items-->

@@ -82,7 +82,8 @@ class AdminController extends Controller
             Session::put('user_avatar', $result->users_avatar);
             Session::put('user_name', $result->users_name);
             
-            Session::put('users_id', $result->users_id);
+            Session::put('user_id', $result->users_id);
+
             return Redirect::to('/trang-chu.html');
             }
             else{

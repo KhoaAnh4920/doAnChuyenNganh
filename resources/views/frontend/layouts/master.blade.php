@@ -37,7 +37,7 @@
         <div class="container">
             <div class="row">
                 @unless(isset($noslidebar))
-                @include("frontend.partial.slidebar")
+                    @include("frontend.partial.slidebar")
                 @endunless
                 @yield('defaultContent')
 
@@ -46,13 +46,13 @@
     </section>
     @endunless
 
-    @if(empty(Session::get('message')))
+    <!-- @if(empty(Session::get('message')))
     	@php $message = ""; @endphp
     @endif
 
 	@if(!empty(Session::get('message')))
-    	@php $message = Session::get('message');; @endphp
-    @endif
+    	@php $message = Session::get('message'); @endphp
+    @endif -->
 
     <!--Model Popup starts-->
     <div class="container">
@@ -67,9 +67,23 @@
 
                         <div class="modal-body">
                             <div class="thank-you-pop">
-                                <img src="http://goactionstations.co.uk/wp-content/uploads/2017/03/Green-Round-Tick.png"
-                                    alt="">
-                                <p>{{$message}}</p>
+                                @if(!empty(Session::get('error_code')) && Session::get('error_code') == 7)
+                                    <img src="https://vinhcuugroup.vn/wp-content/uploads/2019/11/dang-nhappng.png"
+                                            alt="">
+                                @else
+                                    <img src="http://goactionstations.co.uk/wp-content/uploads/2017/03/Green-Round-Tick.png"
+                                        alt="">
+                                @endif
+                                <p>
+
+                                    @if(!empty(Session::get('error_code')) && Session::get('error_code') == 5)
+                                        Thêm giỏ hàng thành công
+                                    @elseif(!empty(Session::get('error_code')) && Session::get('error_code') == 6)
+                                        Đặt hàng thành công
+                                    @else
+                                        Vui lòng đăng nhập để đặt hàng
+                                    @endif
+                                </p>
                             </div>
 
                         </div>
@@ -80,6 +94,8 @@
         </div>
     </div>
     <!--Model Popup ends-->
+
+    
 
 
 

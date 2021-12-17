@@ -8,16 +8,30 @@ use Redirect;
 use DB;
 session_start();
 use Cart;
+use View;
+use Carbon\Carbon;
 
 class CartController extends Controller
 {
     public function cart(){
+        // Header //
+        $cate_of_Apple = DB::table("danhmucsanpham")
+            ->whereRaw('danhmucsanpham.maDanhMuc IN (select dbsanpham.maDanhMuc FROM dbsanpham JOIN thuonghieu on thuonghieu.maThuongHieu = dbsanpham.maThuongHieu WHERE thuonghieu.maThuongHieu = 1)')
+            ->get();
+        $cate_of_Gear = DB::table("danhmucsanpham")
+            ->select('tenDanhMuc', 'slug')
+            ->where('danhMucCha', 14)
+            ->get();
 
         $contentCart = Cart::content();
       
         //Cart::destroy();
+
+        View::share('cate_of_Apple', $cate_of_Apple);
+        View::share('cate_of_Gear', $cate_of_Gear);
         
-        return view('frontend.pages.orderPages.cart')->with('contentCart', $contentCart);
+        return view('frontend.pages.orderPages.cart')
+        ->with('contentCart', $contentCart);
     }
 
     public function addCart(Request $request){
@@ -48,7 +62,7 @@ class CartController extends Controller
 
         Cart::add($data);
 
-        return redirect()->back();
+        return redirect()->back()->with('error_code', 5);
     }
     public function DeleteItemCart($rowId){
 
@@ -74,19 +88,45 @@ class CartController extends Controller
         }
         return redirect()->back();
     }
+
+    public function checkLogin(){
+        $user_id = Session::get('user_id');
+        if($user_id == null){
+            return Redirect::to('/login.html')->with('error_code', 7)->send();
+        }
+            //return redirect()->back()->with('error_code', 7)->send();
+    }
+
     public function order(){
         // Check login //
-        $users_id = Session::get('users_id');
-        
+        $this->checkLogin();
+
+        // Header //
+        $cate_of_Apple = DB::table("danhmucsanpham")
+            ->whereRaw('danhmucsanpham.maDanhMuc IN (select dbsanpham.maDanhMuc FROM dbsanpham JOIN thuonghieu on thuonghieu.maThuongHieu = dbsanpham.maThuongHieu WHERE thuonghieu.maThuongHieu = 1)')
+            ->get();
+        $cate_of_Gear = DB::table("danhmucsanpham")
+            ->select('tenDanhMuc', 'slug')
+            ->where('danhMucCha', 14)
+            ->get();
+        //var_dump($cate_of_Gear); exit;
+
+        // end header
+
+        $users_id = Session::get('user_id');
         $info_user = DB::table('users')->where('users_id', $users_id)->get();
         
-
         $cart_content = Cart::content();
+
+        View::share('cate_of_Apple', $cate_of_Apple);
+        View::share('cate_of_Gear', $cate_of_Gear);
+
         return view('frontend.pages.orderPages.order')->with('cart_content',$cart_content)->with('info_user', $info_user);
     }
     public function handleOrder(Request $request){
         $data = array();
 
+        // Thêm vào data đơn hàng //
         $data['tenNguoiNhanHang'] = $request->order_cusName;
         $data['soDienThoai'] = $request->order_cusPhone;
         //$data['ngayDatHang'] = $request->order_cusPhone;
@@ -94,8 +134,28 @@ class CartController extends Controller
         $data['tongTien'] = $request->total_price;
         $data['trangThaiDonHang'] = 0;
         $data['users_id'] = $request->users_id;
+        $data['ngayDatHang'] = Carbon::now('Asia/Ho_Chi_Minh');
 
-        var_dump($data); exit;
-        
+        DB::table('donhang')->insert($data);
+
+        // Thêm vào data chi tiết đơn hàng //
+
+        $get_id_order = DB::table('donhang')->select('maDonHang')->orderBy('maDonHang', 'DESC')->first();
+
+        $id_order = $get_id_order->maDonHang;
+   
+
+        $cart_content = Cart::content();
+        $dataChiTiet = array();
+        $dataChiTiet['maDonHang'] = $id_order;
+        foreach($cart_content as $key =>$cart_pro){
+            $dataChiTiet['maSanPham'] = $cart_pro->id;
+            $dataChiTiet['giaSanPham'] = $cart_pro->price;
+            $dataChiTiet['soLuong'] = $cart_pro->qty;
+            //var_dump($dataChiTiet); exit;
+            DB::table('chitietdonhang')->insert($dataChiTiet);
+        }
+        Cart::destroy();
+        return Redirect::to('/trang-chu.html')->with('error_code', 6);
     }
 }

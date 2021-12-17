@@ -33,6 +33,7 @@ Route::get('/delete-item-cart/{row_id}', 'CartController@DeleteItemCart');
 Route::get('/delete-item-cart', 'CartController@DeleteAllCart');
 Route::post('/update-cart', 'CartController@updateCart');
 Route::get('/checkout.html', 'HomeController@checkout');
+Route::get('/checkout-detail.html/{order_id}', 'HomeController@checkoutDetail');
 Route::get('/order.html', 'CartController@order');
 Route::post('/handle-order', 'CartController@handleOrder');
 

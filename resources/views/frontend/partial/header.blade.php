@@ -45,11 +45,11 @@
                             </li>
                             <li>
                                 <a href="{{URL::to('/cart.html')}}"><i class="fa fa-shopping-cart"></i>
-                                @if(Cart::content()->count() != 0) 
-                                    @php echo "Giỏ hàng(" .Cart::content()->count().")"  @endphp
-                                @else
+                                    @if(Cart::content()->count() != 0)
+                                    @php echo "Giỏ hàng(" .Cart::content()->count().")" @endphp
+                                    @else
                                     @php echo "Giỏ hàng" @endphp
-                                @endif
+                                    @endif
                                 </a>
                             </li>
                             <?php
@@ -58,21 +58,23 @@
                             if($users_name){
                             ?>
                             <li class="dropdown" style="padding-left: 0px">
-                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                            <!-- <img style="width:25px; border-radius:50%;" src="public/upload/avatar/<?=$users_avatar?>"> -->
-                            <img style="width:30px; border-radius:50%;" src="{{asset('public/upload/avatar/')}}/{{$users_avatar}}">
-                            <span class="username"><?=$users_name ?></span>
-                            <b class="caret"></b>
-                            </a>
-                            <ul class="dropdown-menu extended logout" style="padding:10px">
-                                <li><a href="{{URL::to('/logoutUser.html')}}" style="margin-top: 0px"><i class="fa fa-key"></i>Đăng xuất</a></li>
-                            </ul>
+                                <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                    <!-- <img style="width:25px; border-radius:50%;" src="public/upload/avatar/<?=$users_avatar?>"> -->
+                                    <img style="width:30px; border-radius:50%;"
+                                        src="{{asset('public/upload/avatar/')}}/{{$users_avatar}}">
+                                    <span class="username"><?=$users_name ?></span>
+                                    <b class="caret"></b>
+                                </a>
+                                <ul class="dropdown-menu extended logout" style="padding:10px">
+                                    <li><a href="{{URL::to('/logoutUser.html')}}" style="margin-top: 0px"><i
+                                                class="fa fa-key"></i>Đăng xuất</a></li>
+                                </ul>
                             </li>
                             <?php 
                              }else{
                              ?>
-                             <li><a href="{{URL::to('/login.html')}}"><i class="fa fa-lock"></i>Đăng nhập</a></li>
-                             <?php } ?>
+                            <li><a href="{{URL::to('/login.html')}}"><i class="fa fa-lock"></i>Đăng nhập</a></li>
+                            <?php } ?>
                         </ul>
                     </div>
                 </div>
@@ -100,16 +102,20 @@
                             <li><a href="{{URL::to('/')}}" class="active">Trang chủ</a></li>
                             <li class="dropdown"><a href="#">Apple<i class="fa fa-angle-down"></i></a>
                                 <ul role="menu" class="sub-menu">
-                                    <li><a href="{{URL::to('/product.html')}}">Sản phẩm 1</a></li>
-                                    <li><a href="{{URL::to('/product.html')}}">Sản phẩm 2</a></li>
-                                    <li><a href="{{URL::to('/product.html')}}">Sản phẩm 3</a></li>
+                                    @foreach($cate_of_Apple as $key => $pro_apple)
+                                    <li><a
+                                            href="{{URL::to('/category-product.html/'.$pro_apple->slug)}}">{{$pro_apple->tenDanhMuc}}</a>
+                                    </li>
+                                    @endforeach
                                 </ul>
                             </li>
-                            <li class="dropdown"><a href="#">Laptop<i class="fa fa-angle-down"></i></a>
+                            <li class="dropdown"><a href="#">Gaming gear<i class="fa fa-angle-down"></i></a>
                                 <ul role="menu" class="sub-menu">
-                                    <li><a href="{{URL::to('/product.html')}}">Sản phẩm 1</a></li>
-                                    <li><a href="{{URL::to('/product.html')}}">Sản phẩm 2</a></li>
-                                    <li><a href="{{URL::to('/product.html')}}">Sản phẩm 3</a></li>
+                                    @foreach($cate_of_Gear as $key => $pro_gear)
+                                    <li><a
+                                            href="{{URL::to('/category-product.html/'.$pro_gear->slug)}}">{{$pro_gear->tenDanhMuc}}</a>
+                                    </li>
+                                    @endforeach
                                 </ul>
                             </li>
                             <li><a href="{{URL::to('/danh-muc-bai-viet.html')}}">Trang tin tức</a></li>

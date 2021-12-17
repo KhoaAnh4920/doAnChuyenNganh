@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Session;
 use Redirect;
 use DB;
+use View;
 session_start();
 
 class BrandController extends Controller
@@ -16,6 +17,17 @@ class BrandController extends Controller
             return Redirect::to('/admin-login.html')->send();
     }
     public function Brandproduct($brand_slug){
+        // Header //
+        $cate_of_Apple = DB::table("danhmucsanpham")
+            ->whereRaw('danhmucsanpham.maDanhMuc IN (select dbsanpham.maDanhMuc FROM dbsanpham JOIN thuonghieu on thuonghieu.maThuongHieu = dbsanpham.maThuongHieu WHERE thuonghieu.maThuongHieu = 1)')
+            ->get();
+        $cate_of_Gear = DB::table("danhmucsanpham")
+            ->select('tenDanhMuc', 'slug')
+            ->where('danhMucCha', 14)
+            ->get();
+
+        // end header
+
         $all_brands = DB::table("thuonghieu")
         ->leftJoin("dbsanpham", function($join){
             $join->on("thuonghieu.mathuonghieu", "=", "dbsanpham.mathuonghieu");
@@ -35,6 +47,10 @@ class BrandController extends Controller
         }
         $product_of_brand = DB::table('dbsanpham')->where("maThuongHieu", $brand_by_id)->paginate(6);
         $name_brand = DB::table('thuonghieu')->where('maThuongHieu', $brand_by_id)->select('tenThuongHieu')->get();
+
+        View::share('cate_of_Apple', $cate_of_Apple);
+        View::share('cate_of_Gear', $cate_of_Gear);
+        
         return view('frontend.pages.productsPages.brandProduct')->with('all_brands', $all_brands)
         ->with('all_category_products', $all_category_products)
         ->with('product_of_brand', $product_of_brand)

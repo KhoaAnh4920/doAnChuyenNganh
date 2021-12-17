@@ -5,10 +5,14 @@
 <script src="{{asset('public/backend/ckeditor/ckeditor.js')}}"></script>
 <script src="{{asset('public/backend/vendor/chart.js/Chart.min.js')}}"></script>
 <script src="{{asset('public/backend/js/demo/chart-area-demo.js')}}"></script>
+
+<!-- Show ckeditor  -->
 <script>
 CKEDITOR.replace('ckeditor_addProduct');
 CKEDITOR.replace('ckeditor_editProduct');
 </script>
+
+<!-- Hiện modal form thành công  -->
 @if(!empty(Session::get('error_code')) && Session::get('error_code') == 5)
 <script>
 $(function() {
@@ -16,6 +20,8 @@ $(function() {
 });
 </script>
 @endif
+
+
 <script language="javascript">
 function ChangeToSlug() {
     var title, slug;
@@ -51,7 +57,8 @@ function ChangeToSlug() {
     document.getElementById('convert_slug').value = slug;
 }
 </script>
-// Load danh mục hình sản phẩm //
+
+ <!-- Load danh mục hình sản phẩm  -->
 <script type="text/javascript">
 // load_gallery();
 

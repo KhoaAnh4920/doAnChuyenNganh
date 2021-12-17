@@ -31,18 +31,21 @@
                             <td>{{$order->ngayDatHang}}</td>
                             <td>@php echo number_format($order->tongTien) @endphp VNĐ</td>
                             <td>
-                                @if($order->trangThaiDonHang == 0)
-                                @php echo "Đơn hàng mới"; @endphp
-                                @else
-                                @php echo "Đã thanh toán"; @endphp
-                                @endif
+                                <span class="badge badge-info">
+                                    @if($order->trangThaiDonHang == 0)
+                                        @php echo "Đơn hàng mới"; @endphp
+                                    @elseif($order->trangThaiDonHang == 1)
+                                        @php echo "Đã thanh toán"; @endphp
+                                    @else
+                                        @php echo "Đã hủy"; @endphp
+                                    @endif
+
+                                </span>
                             </td>
                             <td>
                                 <div class="buttonAction">
-                                    <a href="http://localhost:8080/doAnChuyenNganh/chi-tiet-don-hang.html/3"
-                                        class="btn btn-success" role="button" style="font-size: 12px;">
-                                        <i class="fa fa-eye text-active" style="color:#ffffff;"></i> Xem chi tiết</a>
-
+                                    <a href="{{URL::to('/chi-tiet-don-hang.html/'.$order->maDonHang)}}"
+                                        class="btn btn-sm btn-primary">Detail</a>
                                 </div>
 
                             </td>

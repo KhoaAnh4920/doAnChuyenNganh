@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Session;
 use Redirect;
 use DB;
+use View;
 session_start();
 
 class ProductController extends Controller
@@ -15,6 +16,20 @@ class ProductController extends Controller
         return view('frontend.pages.productsPages.product');
     }
     public function productDetails($pro_slug){
+        // Header //
+        $cate_of_Apple = DB::table("danhmucsanpham")
+            ->whereRaw('danhmucsanpham.maDanhMuc IN (select dbsanpham.maDanhMuc FROM dbsanpham JOIN thuonghieu on thuonghieu.maThuongHieu = dbsanpham.maThuongHieu WHERE thuonghieu.maThuongHieu = 1)')
+            ->get();
+        $cate_of_Gear = DB::table("danhmucsanpham")
+            ->select('tenDanhMuc', 'slug')
+            ->where('danhMucCha', 14)
+            ->get();
+        //var_dump($cate_of_Gear); exit;
+
+        // end header
+
+        
+
         $pro_id = DB::table('dbsanpham')->select('maSanPham')->where('slug', $pro_slug)->get();
 
         foreach($pro_id as $key => $id){
@@ -36,11 +51,15 @@ class ProductController extends Controller
         foreach($detail_pro as $key => $val){
             $cate = $val->maDanhMuc;
         }
+        View::share('cate_of_Apple', $cate_of_Apple);
+        View::share('cate_of_Gear', $cate_of_Gear);
 
         $recommmendedProducts = DB::table('dbsanpham')->where('maDanhMuc', $cate)->limit(6)->get();
         return view('frontend.pages.productsPages.productDetails')->with('detail_pro', $detail_pro)
         ->with('recommmendedProducts', $recommmendedProducts)
-        ->with('gallery_pro', $gallery_pro);
+        ->with('gallery_pro', $gallery_pro)
+        ->with('cate_of_Apple', $cate_of_Apple)
+        ->with('cate_of_Gear', $cate_of_Gear); 
     }
 
     

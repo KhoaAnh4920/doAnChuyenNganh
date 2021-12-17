@@ -1,6 +1,6 @@
-@extends('frontend.layouts.master',['noslider' => true],['noslidebar' => true])
-@section('title','Chi tiết Sản phẩm')
-
+@extends('frontend.layouts.master',['noslider' => true], ['noslidebar' => true])
+@section('title','Sản phẩm')
+@section('advertisement')
 @section('defaultContent')
 <div class="col-sm-12">
 

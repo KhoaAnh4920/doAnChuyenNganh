@@ -7,6 +7,7 @@ use Session;
 use Redirect;
 use DB;
 use Cart;
+use View;
 session_start();
 
 class HomeController extends Controller
@@ -26,11 +27,13 @@ class HomeController extends Controller
         // end sidebar//
 
         // Header //
-        $cate_of_brand = DB::table("danhmucsanpham")
-                ->whereRaw('danhmucsanpham.maDanhMuc IN (select dbsanpham.maDanhMuc FROM dbsanpham JOIN thuonghieu on thuonghieu.maThuongHieu = dbsanpham.maThuongHieu WHERE thuonghieu.maThuongHieu = 1)')
-                ->get();
-        //var_dump($cate_of_brand); exit;
-
+        $cate_of_Apple = DB::table("danhmucsanpham")
+            ->whereRaw('danhmucsanpham.maDanhMuc IN (select dbsanpham.maDanhMuc FROM dbsanpham JOIN thuonghieu on thuonghieu.maThuongHieu = dbsanpham.maThuongHieu WHERE thuonghieu.maThuongHieu = 1)')
+            ->get();
+        $cate_of_Gear = DB::table("danhmucsanpham")
+            ->select('tenDanhMuc', 'slug')
+            ->where('danhMucCha', 14)
+            ->get();
         // end header
 
         // Đếm số lượng danh mục con của từng danh mục cha //
@@ -98,19 +101,21 @@ class HomeController extends Controller
         ->limit(6)
         ->get();
 
+        View::share('cate_of_Apple', $cate_of_Apple);
+        View::share('cate_of_Gear', $cate_of_Gear);
 
         return view('frontend.pages.topPages.index')->with('all_brands', $all_brands)
         ->with('all_category_products', $all_category_products)
-       
         ->with('recommmendedProducts', $recommmendedProducts)
         ->with('count_danhMucCon', $count_danhMucCon)
         ->with('danhSachDienThoai', $danhSachDienThoai)
         ->with('danhMucConDienThoai', $danhMucConDienThoai)
         ->with('countdanhSachDienThoai', $countdanhSachDienThoai)
-
         ->with('danhSachLaptop', $danhSachLaptop)
         ->with('countdanhSachLaptop', $countdanhSachLaptop)
         ->with('danhMucConLaptop', $danhMucConLaptop);
+        // ->with('cate_of_Apple', $cate_of_Apple)
+        // ->with('cate_of_Gear', $cate_of_Gear);
     }
 
     public function load_more_product(Request $request){
@@ -169,25 +174,101 @@ class HomeController extends Controller
         echo $output;
         
     }
+    public function checkLogin(){
+        $user_id = Session::get('user_id');
+        if($user_id == null)
+            return redirect()->back()->with('error_code', 5);
+    }
     
     public function checkout(){
         // Check login //
-        $users_id = Session::get('users_id');
+        $this->checkLogin();
+        if(!empty(Session::get('error_code')))
+            Session::forget('error_code'); 
+        // Header //
+        $cate_of_Apple = DB::table("danhmucsanpham")
+            ->whereRaw('danhmucsanpham.maDanhMuc IN (select dbsanpham.maDanhMuc FROM dbsanpham JOIN thuonghieu on thuonghieu.maThuongHieu = dbsanpham.maThuongHieu WHERE thuonghieu.maThuongHieu = 1)')
+            ->get();
+        $cate_of_Gear = DB::table("danhmucsanpham")
+            ->select('tenDanhMuc', 'slug')
+            ->where('danhMucCha', 14)
+            ->get();
+        // end header
+
+        $users_id = Session::get('user_id');
         
         $info_order = DB::table('donhang')->where('users_id', $users_id)->get();
-        
-        
 
         $cart_content = Cart::content();
-        return view('frontend.pages.orderPages.checkout')->with('cart_content',$cart_content)->with('info_order', $info_order);
+
+        View::share('cate_of_Apple', $cate_of_Apple);
+        View::share('cate_of_Gear', $cate_of_Gear);
+
+        return view('frontend.pages.orderPages.checkout')
+        ->with('cart_content',$cart_content)
+        ->with('info_order', $info_order);
+    }
+    public function checkoutDetail($order_id){
+        // Check login //
+        $this->checkLogin();
+        // Header //
+        $cate_of_Apple = DB::table("danhmucsanpham")
+            ->whereRaw('danhmucsanpham.maDanhMuc IN (select dbsanpham.maDanhMuc FROM dbsanpham JOIN thuonghieu on thuonghieu.maThuongHieu = dbsanpham.maThuongHieu WHERE thuonghieu.maThuongHieu = 1)')
+            ->get();
+        $cate_of_Gear = DB::table("danhmucsanpham")
+            ->select('tenDanhMuc', 'slug')
+            ->where('danhMucCha', 14)
+            ->get();
+        // end header
+        
+        $detail_order = DB::table("chitietdonhang")
+        ->join("dbsanpham", function($join){
+            $join->on("chitietdonhang.masanpham", "=", "dbsanpham.masanpham");
+        })
+        ->select("chitietdonhang.*", "dbsanpham.tenSanPham", "dbsanpham.hinhAnh")
+        ->where("chitietdonhang.madonhang", $order_id)
+        ->get();
+
+        $cart_content = Cart::content();
+
+        View::share('cate_of_Apple', $cate_of_Apple);
+        View::share('cate_of_Gear', $cate_of_Gear);
+        
+        return view('frontend.pages.orderPages.checkout-detail')->with('cart_content',$cart_content)->with('detail_order', $detail_order);
     }
     
     
     
     public function login(){
+        // Header //
+        $cate_of_Apple = DB::table("danhmucsanpham")
+            ->whereRaw('danhmucsanpham.maDanhMuc IN (select dbsanpham.maDanhMuc FROM dbsanpham JOIN thuonghieu on thuonghieu.maThuongHieu = dbsanpham.maThuongHieu WHERE thuonghieu.maThuongHieu = 1)')
+            ->get();
+        $cate_of_Gear = DB::table("danhmucsanpham")
+            ->select('tenDanhMuc', 'slug')
+            ->where('danhMucCha', 14)
+            ->get();
+        // end header
+
+        View::share('cate_of_Apple', $cate_of_Apple);
+        View::share('cate_of_Gear', $cate_of_Gear);
+
         return view('frontend.pages.loginUserPages.login');
     }
     public function contact(){
+        // Header //
+        $cate_of_Apple = DB::table("danhmucsanpham")
+            ->whereRaw('danhmucsanpham.maDanhMuc IN (select dbsanpham.maDanhMuc FROM dbsanpham JOIN thuonghieu on thuonghieu.maThuongHieu = dbsanpham.maThuongHieu WHERE thuonghieu.maThuongHieu = 1)')
+            ->get();
+        $cate_of_Gear = DB::table("danhmucsanpham")
+            ->select('tenDanhMuc', 'slug')
+            ->where('danhMucCha', 14)
+            ->get();
+        // end header
+
+        View::share('cate_of_Apple', $cate_of_Apple);
+        View::share('cate_of_Gear', $cate_of_Gear);
+
         return view('frontend.pages.contactPages.contact');
     }
 }

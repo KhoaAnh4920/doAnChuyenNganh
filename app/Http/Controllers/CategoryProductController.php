@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Session;
 use Redirect;
 use DB;
+use View;
 session_start();
 
 class CategoryProductController extends Controller
@@ -27,6 +28,17 @@ class CategoryProductController extends Controller
         ->where('danhmucsanpham.danhMucCha', 0)
         ->get();
         // End sidebar //
+
+        // Header //
+        $cate_of_Apple = DB::table("danhmucsanpham")
+            ->whereRaw('danhmucsanpham.maDanhMuc IN (select dbsanpham.maDanhMuc FROM dbsanpham JOIN thuonghieu on thuonghieu.maThuongHieu = dbsanpham.maThuongHieu WHERE thuonghieu.maThuongHieu = 1)')
+            ->get();
+        $cate_of_Gear = DB::table("danhmucsanpham")
+            ->select('tenDanhMuc', 'slug')
+            ->where('danhMucCha', 14)
+            ->get();
+
+        // end header
         
 
         $cate_id = DB::table('danhmucsanpham')->select('maDanhMuc', 'danhMucCha')->where("slug", $cate_slug)->get();
@@ -59,7 +71,9 @@ class CategoryProductController extends Controller
         ->with('all_category_products', $all_category_products)
         ->with('product_of_cate', $product_of_cate)
         ->with('name_product', $name_product)
-        ->with('count_danhMucCon', $count_danhMucCon);
+        ->with('count_danhMucCon', $count_danhMucCon)
+        ->with('cate_of_Apple', $cate_of_Apple)
+        ->with('cate_of_Gear', $cate_of_Gear);
     }
 
 

@@ -7,6 +7,18 @@
 <script src="{{asset('public/frontend/js/lightslider.js')}}"></script>
 <script src="{{asset('public/frontend/js/lightgallery-all.min.js')}}"></script>
 <script src="{{asset('public/frontend/js/prettify.js')}}"></script>
+
+<!-- Hiện modal form thành công  -->
+
+@if(!empty(Session::get('error_code')))
+<script>
+$(function() {
+    $('#ignismyModal').modal('show');
+});
+</script>
+
+@endif
+
 <!-- <script type="text/javascript">
     load_more_product();
     function load_more_product(id = ''){
@@ -86,13 +98,6 @@ $(document).ready(function() {
   });
 </script>
 
-@if(!empty(Session::get('error_code')) && Session::get('error_code') == 5)
-<script type="text/javascript">
-$(document).ready(function() {
-    $('#ignismyModal').modal('show');
-});
-</script>
-@endif
 
 <!-- <script>
 function myFunction() {

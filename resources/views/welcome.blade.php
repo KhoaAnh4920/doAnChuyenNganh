@@ -90,12 +90,11 @@
                     <a href="https://github.com/laravel/laravel">GitHub</a>
                 </div>
                 
-                <h1>Test xung đột</h1>
+        
             </div>
 
 
 
-            <h3>Xung đột 4</h3>
         </div>
     </body>
 </html>

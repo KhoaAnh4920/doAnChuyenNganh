@@ -42,8 +42,6 @@
             {{ $product_of_cate->render()}}
     </ul>
     
-
-   
 </div>
 <!--features_items-->
 @endsection
