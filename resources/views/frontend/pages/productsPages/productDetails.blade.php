@@ -36,9 +36,6 @@
                             Thêm giỏ hàng
                         </button>
                     </span>
-                    <br>
-                    <img src="{{asset('public/frontend/images/product-details/rating.png')}}" width= 150px ; height= 20px; alt="" />
-                    <br>
                     <p><b>Trạng thái: </b> {{$pro->trangThai == 1 ? 'Còn hàng' : 'Hết hàng'}}</p>
                     <p><b>Danh mục: </b>{{$pro->tendanhmuc}}</p>
                     <p><b>Hãng: </b>{{$pro->tenthuonghieu}}</p>
