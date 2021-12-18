@@ -24,7 +24,8 @@ hr {
         width: unset
     }
 }
-.pagination{
+
+.pagination {
     float: right;
 }
 </style>
@@ -81,43 +82,46 @@ hr {
                                     <a href="#my-modal_{{$pro->maSanPham}}" style="margin-left:2px" data-toggle="modal"
                                         class="btn btn-danger" role="button"><i class="fa fa-trash text"
                                             style="color:#ffffff"></i></a>
-                                </div>
 
-                                <div id="my-modal_{{$pro->maSanPham}}" class="modal fade" tabindex="-1" role="dialog"
-                                    aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <div class="modal-content border-0">
-                                            <div class="modal-body p-0">
-                                                <div class="card border-0 p-sm-3 p-2 justify-content-center">
-                                                    <div class="card-header pb-0 bg-white border-0 ">
+                                    <div id="my-modal_{{$pro->maSanPham}}" class="modal fade" tabindex="-1"
+                                        role="dialog" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content border-0">
+                                                <div class="modal-body p-0">
+                                                    <div class="card border-0 p-sm-3 p-2 justify-content-center">
+                                                        <div class="card-header pb-0 bg-white border-0 ">
 
                                                         <div class="row">
-                                                            <div class="col ml-auto"><button type="button"
-                                                                    class="close btnClose" data-dismiss="modal"
-                                                                    aria-label="Close"> <span
-                                                                        aria-hidden="true">&times;</span> </button>
-                                                            </div>
-                                                            <h4 style="padding:10px 10px 10px 12px">Xác nhận xóa</h4>
-                                                            <hr>
-                                                        </div>
-                                                        <p class="font-weight-bold mb-2" style="margin-bottom:20px">Bạn
-                                                            có muốn xóa không ?</p>
+                                                                <h4 style="padding:10px 10px 10px 12px">Xác nhận xóa
+                                                                </h4>
+                                                                <div class="col ml-auto"><button type="button"
+                                                                        class="close btnClose" data-dismiss="modal"
+                                                                        aria-label="Close"> <span
+                                                                            aria-hidden="true">&times;</span> </button>
+                                                                </div>
 
-                                                    </div>
-                                                    <div class="card-body px-sm-4 mb-2 pt-1 pb-0">
-                                                        <div class="row">
-                                                            <hr>
-                                                        </div>
-                                                        <div class="row justify-content-end no-gutters">
-                                                            <div class="col-auto"
-                                                                style="float:right; margin-right:20px">
-                                                                <button type="button" class="btn btn-light text-muted"
-                                                                    data-dismiss="modal">Cancel</button>
-                                                                <button type="button" class="btn btn-danger px-4"><a
-                                                                        class="btnDeleteUser"
-                                                                        href="{{URL::to('/xoa-san-pham.html/'.$pro->maSanPham)}}">Delete</a></button>
+                                                                <hr>
                                                             </div>
-                                                            <!-- <div class="col-auto"><button type="button" class="btn btn-danger px-4" data-dismiss="modal">Delete</button></div> -->
+                                                            <p class="font-weight-bold mb-2" style="margin-bottom:20px">
+                                                                Bạn có muốn xóa không ?</p>
+
+                                                        </div>
+                                                        <div class="card-body px-sm-4 mb-2 pt-1 pb-0">
+                                                            <div class="row">
+                                                                <hr>
+                                                            </div>
+                                                            <div class="row justify-content-end no-gutters">
+                                                                <div class="col-auto"
+                                                                    style="float:right; margin-right:20px">
+                                                                    <button type="button"
+                                                                        class="btn btn-light text-muted"
+                                                                        data-dismiss="modal">Cancel</button>
+                                                                    <button type="button" class="btn btn-danger px-4"><a
+                                                                            class="btnDeleteUser"
+                                                                            href="{{URL::to('/xoa-san-pham.html/'.$pro->maSanPham)}}">Delete</a></button>
+                                                                </div>
+                                                                <!-- <div class="col-auto"><button type="button" class="btn btn-danger px-4" data-dismiss="modal">Delete</button></div> -->
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -125,6 +129,8 @@ hr {
                                         </div>
                                     </div>
                                 </div>
+
+
                             </td>
 
                         </tr>
@@ -163,9 +169,9 @@ hr {
                                         class="page-link">Next</a></li>
                             </ul> -->
 
-                            
+
                             {{ $all_products->links("pagination::bootstrap-4")}}
-                        
+
                         </div>
                     </div>
                 </div>

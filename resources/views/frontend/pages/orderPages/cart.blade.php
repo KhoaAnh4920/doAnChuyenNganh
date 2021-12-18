@@ -177,12 +177,12 @@ p.noItemCart a {
                                                 src="{{asset('public/upload/products/')}}/{{$cart_pro->options->image}}"
                                                 style="height: 100px;"> </a>
                                         <div class="media-body">
-                                            <h4 class="media-heading cart_name_pro"><a href="#">{{$cart_pro->name}}</a>
+                                            <h4 class="media-heading cart_name_pro"><a href="{{URL::to('/product-details.html/'.$cart_pro->options->slug_Pro)}}">{{$cart_pro->name}}</a>
                                             </h4>
                                             <h5 class="media-heading"> Danh mục: <a
-                                                    href="#">{{$cart_pro->options->category}}</a></h5>
+                                                    href="{{URL::to('/category-product.html/'.$cart_pro->options->slug_Cate)}}">{{$cart_pro->options->category}}</a></h5>
                                             <h5 class="media-heading"> Thương hiệu: <a
-                                                    href="#">{{$cart_pro->options->brand}}</a></h5>
+                                                    href="{{URL::to('/brands-product.html/'.$cart_pro->options->slug_Brand)}}">{{$cart_pro->options->brand}}</a></h5>
                                         </div>
                                     </div>
                                 </td>

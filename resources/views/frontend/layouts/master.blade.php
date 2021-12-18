@@ -80,8 +80,10 @@
                                         Thêm giỏ hàng thành công
                                     @elseif(!empty(Session::get('error_code')) && Session::get('error_code') == 6)
                                         Đặt hàng thành công
-                                    @else
+                                    @elseif(!empty(Session::get('error_code')) && Session::get('error_code') == 7)
                                         Vui lòng đăng nhập để đặt hàng
+                                    @else
+                                        Cập nhật thành công
                                     @endif
                                 </p>
                             </div>

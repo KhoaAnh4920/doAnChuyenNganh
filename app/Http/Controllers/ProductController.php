@@ -133,7 +133,6 @@ class ProductController extends Controller
         DB::table('dbsanpham')->insert($data);
 
         $pro_id = DB::table('dbsanpham')->select('maSanPham')->orderBy('maSanPham', 'DESC')->first();
-        //var_dump($pro_id); exit;
         $data2['maSanPham'] = $pro_id->maSanPham;
 
         if($gallery_image){
@@ -149,7 +148,6 @@ class ProductController extends Controller
             }
         }
 
-        
         Session::put('message', 'Thêm thành công');
         return Redirect::to('/liet-ke-san-pham.html')->with('error_code', 5);
     }

@@ -89,6 +89,7 @@ Route::get('/sua-khach-hang.html', 'OrderController@suaKhachHang');
 Route::get('/sua-chi-tiet-don-hang.html', 'OrderController@suaChiTietDonHang');
 Route::get('/them-don-hang.html', 'OrderController@themDonHang');
 Route::post('/update-qty-product', 'OrderController@update_qty');
+Route::post('/update-status-order', 'OrderController@update_status_order');
 
 // Danh mục bài viết //
 Route::get('/liet-ke-danh-muc-bai-viet.html', 'CategoryNewsController@lietKeDanhMucBaiViet');

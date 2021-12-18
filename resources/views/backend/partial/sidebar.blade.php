@@ -52,7 +52,7 @@
         <div id="collapseTableUser" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Tables</h6>
-            <a class="collapse-item" href="{{URL::to('/liet-ke-user.html')}}">Liệt kê user</a>
+            <a class="collapse-item" href="{{URL::to('/liet-ke-user.html')}}">Xem DS user</a>
             <a class="collapse-item" href="{{URL::to('/them-user.html')}}">Thêm user</a>
           </div>
         </div>
@@ -66,7 +66,7 @@
         <div id="collapseTableCategoryProduct" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Tables</h6>
-            <a class="collapse-item" href="{{URL::to('/liet-ke-danh-muc-san-pham.html')}}">Liệt kê danh mục sản phẩm</a>
+            <a class="collapse-item" href="{{URL::to('/liet-ke-danh-muc-san-pham.html')}}">Xem danh mục sản phẩm</a>
             <a class="collapse-item" href="{{URL::to('/them-danh-muc-san-pham.html')}}">Thêm danh mục sản phẩm</a>
           </div>
         </div>
@@ -80,7 +80,7 @@
         <div id="collapseTableBrand" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Tables</h6>
-            <a class="collapse-item" href="{{URL::to('/liet-ke-thuong-hieu.html')}}">Liệt kê thương hiệu</a>
+            <a class="collapse-item" href="{{URL::to('/liet-ke-thuong-hieu.html')}}">Xem DS thương hiệu</a>
             <a class="collapse-item" href="{{URL::to('/them-thuong-hieu.html')}}">Thêm thương hiệu</a>
           </div>
         </div>
@@ -94,7 +94,7 @@
         <div id="collapseTableProduct" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Tables</h6>
-            <a class="collapse-item" href="{{URL::to('/liet-ke-san-pham.html')}}">Liệt kê sản phẩm</a>
+            <a class="collapse-item" href="{{URL::to('/liet-ke-san-pham.html')}}">Xem DS sản phẩm</a>
             <a class="collapse-item" href="{{URL::to('/them-san-pham.html')}}">Thêm sản phẩm</a>
           </div>
         </div>

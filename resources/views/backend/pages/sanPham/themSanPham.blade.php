@@ -43,8 +43,8 @@
                                 <label class="custom-file-label" for="customFile">Choose file</label> -->
                                 <input type="file" onchange="readURL(this);" class="custom-file-input" id="customFile" name="hinhAnh">
                                 <label class="custom-file-label" for="customFile">Choose file</label>
-                                <img id="blah" style="width:100px; margin-top:5px; margin-bottom:70px"
-                                    src="">
+                                <img id="blah" style="width:70px; height:70px ;margin-top:5px; margin-bottom:60px"
+                                    src="http://www.ncenet.com/wp-content/uploads/2020/04/no-image-png-2.png">
                             </div>
                         </div>
                         <div class="form-group">

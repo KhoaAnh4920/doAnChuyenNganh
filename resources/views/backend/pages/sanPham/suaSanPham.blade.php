@@ -27,7 +27,7 @@
                         {!! csrf_field() !!}
                         <div class="form-group">
                             <label for="exampleInputNameProduct">Mã sản phẩm</label>
-                            <input type="text" class="form-control" value="{{$pro->maSanPham}}" name="maSanPham"
+                            <input type="text" class="form-control" readonly value="{{$pro->maSanPham}}" name="maSanPham"
                                 placeholder="Mã sản phẩm">
                         </div>
                         <div class="form-group">

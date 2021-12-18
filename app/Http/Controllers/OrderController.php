@@ -24,7 +24,8 @@ class OrderController extends Controller
     }
     public function chiTietDonHang($order_id){
         $this->checkLogin();
-        $order_by_id = DB::table('donhang')->where('maDonHang', $order_id)->get();
+        $order_by_id = DB::table('donhang')->where('maDonHang', $order_id)->first();
+        //var_dump($order_by_id); exit;
         $order_detail = DB::table("chitietdonhang")
         ->join("dbsanpham", function($join){
             $join->on("chitietdonhang.masanpham", "=", "dbsanpham.masanpham");
@@ -32,6 +33,8 @@ class OrderController extends Controller
         ->select("chitietdonhang.*", "dbsanpham.tensanpham")
         ->where("chitietdonhang.madonhang", "=", $order_id)
         ->get();
+
+
         
         return view('backend.pages.donHang.lietKeChiTietDonHang')->with('order_by_id', $order_by_id)->with('order_detail', $order_detail);
     }
@@ -65,4 +68,11 @@ class OrderController extends Controller
 		// $order_details->product_sales_quantity = $data['order_qty'];
 		// $order_details->save();
 	}
+    public function update_status_order(Request $request){
+        $this->checkLogin();
+        $choosen = $request->state_order;
+        $id_order = $request->id_order;
+        DB::table('donhang')->where('maDonHang', $id_order)->update(['trangThaiDonHang' => $choosen]);
+        return Redirect::back()->with('error_code', 5);
+    }
 }

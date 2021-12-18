@@ -46,11 +46,10 @@ class CartController extends Controller
         ->join("thuonghieu", function($join){
             $join->on("thuonghieu.maThuongHieu", "dbsanpham.maThuongHieu", "=");
         })
-        ->select("dbsanpham.*", "danhmucsanpham.tenDanhMuc", "thuonghieu.tenThuongHieu")
+        ->select("dbsanpham.*", "danhmucsanpham.tenDanhMuc", "danhmucsanpham.slug as slug_Cate","thuonghieu.tenThuongHieu", "thuonghieu.slug as slug_Brand")
         ->where("dbsanpham.masanpham", "=", $pro_id)
         ->first();
         
-
         $data['id']= $product->maSanPham;
         $data['qty']= $qty_pro;
         $data['price']= $product->giaSanPham;
@@ -58,6 +57,9 @@ class CartController extends Controller
         $data['options']['image']= $product->hinhAnh;
         $data['options']['category']= $product->tenDanhMuc;
         $data['options']['brand']= $product->tenThuongHieu;
+        $data['options']['slug_Pro']= $product->slug;
+        $data['options']['slug_Cate']= $product->slug_Cate;
+        $data['options']['slug_Brand']= $product->slug_Brand;
 
 
         Cart::add($data);
@@ -80,7 +82,7 @@ class CartController extends Controller
            $qty = $qty_pro;
            Cart::update($rowId, $qty);
        }
-        return redirect()->back();
+        return redirect()->back()->with('error_code', 8)->send();;
     }
     public function DeleteAllCart(){
         if(Cart::count() != 0){

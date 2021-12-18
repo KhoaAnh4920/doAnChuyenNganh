@@ -31,16 +31,18 @@
                             <td>{{$order->ngayDatHang}}</td>
                             <td>@php echo number_format($order->tongTien) @endphp VNĐ</td>
                             <td>
-                                <span class="badge badge-info">
+                                
                                     @if($order->trangThaiDonHang == 0)
-                                        @php echo "Đơn hàng mới"; @endphp
+                                        <span class="badge badge-info">Đơn hàng mới</span>
                                     @elseif($order->trangThaiDonHang == 1)
-                                        @php echo "Đã thanh toán"; @endphp
+                                        <span class="badge badge-warning">Đang giao hàng</span>
+                                    @elseif($order->trangThaiDonHang == 2)
+                                        <span class="badge badge-success">Đã giao hàng</span>
                                     @else
-                                        @php echo "Đã hủy"; @endphp
+                                        <span class="badge badge-danger">Hủy đơn hàng</span>
                                     @endif
 
-                                </span>
+                                
                             </td>
                             <td>
                                 <div class="buttonAction">

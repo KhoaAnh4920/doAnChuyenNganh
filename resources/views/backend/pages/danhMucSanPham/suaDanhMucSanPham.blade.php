@@ -26,8 +26,8 @@
                         method="post">
                         {!! csrf_field() !!}
                         <div class="form-group">
-                            <label for="exampleInputCatagoryProductID">ID</label>
-                            <input type="text" class="form-control" name="maDanhMuc"
+                            <label for="exampleInputCatagoryProductID">ID danh mục</label>
+                            <input type="text" class="form-control" readonly name="maDanhMuc"
                                 value="{{$cate_product->maDanhMuc}}">
                         </div>
                         <div class="form-group">

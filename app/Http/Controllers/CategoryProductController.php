@@ -153,47 +153,47 @@ class CategoryProductController extends Controller
         return Redirect::to('/liet-ke-danh-muc-san-pham.html')->with('error_code', 5);;
     }
 
-    public function product_tabs(Request $request){
-        $data = $request->all();
+    // public function product_tabs(Request $request){
+    //     $data = $request->all();
 
-        $output = '';
-        $product = DB::table('dbsanpham')->where('maDanhMuc', $data['cate_id'])->limit(4)->get();
-        $product_count = $product->count();
-        if($product_count > 0){
-            $output.= "
-            <div class='tab-content'>
-                <div class='tab-pane fade active in' id='tshirt'>
-                ";
-                foreach($product as $key => $pro){
-                $output.= " <div class='col-sm-3'>
-                        <div class='product-image-wrapper'>
-                            <div class='single-products'>
-                                <div class='productinfo text-center'>
-                                <a href='".url('/product-details.html/'.$pro->slug)."'><img src='public/upload/products/$pro->hinhAnh' alt='$pro->tenSanPham' /></a>
-                                    <h2>".number_format($pro->giaSanPham)." VNĐ</h2>
-                                    <a href='".url('/product-details.html/'.$pro->slug)."'><p>$pro->tenSanPham</p></a>
-                                    <a href='".url('/product-details.html/'.$pro->slug)."' class='btn btn-default add-to-cart'>Xem ngay <i class='fa fa-arrow-right' aria-hidden='true'></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>";
+    //     $output = '';
+    //     $product = DB::table('dbsanpham')->where('maDanhMuc', $data['cate_id'])->limit(4)->get();
+    //     $product_count = $product->count();
+    //     if($product_count > 0){
+    //         $output.= "
+    //         <div class='tab-content'>
+    //             <div class='tab-pane fade active in' id='tshirt'>
+    //             ";
+    //             foreach($product as $key => $pro){
+    //             $output.= " <div class='col-sm-3'>
+    //                     <div class='product-image-wrapper'>
+    //                         <div class='single-products'>
+    //                             <div class='productinfo text-center'>
+    //                             <a href='".url('/product-details.html/'.$pro->slug)."'><img src='public/upload/products/$pro->hinhAnh' alt='$pro->tenSanPham' /></a>
+    //                                 <h2>".number_format($pro->giaSanPham)." VNĐ</h2>
+    //                                 <a href='".url('/product-details.html/'.$pro->slug)."'><p>$pro->tenSanPham</p></a>
+    //                                 <a href='".url('/product-details.html/'.$pro->slug)."' class='btn btn-default add-to-cart'>Xem ngay <i class='fa fa-arrow-right' aria-hidden='true'></i></a>
+    //                             </div>
+    //                         </div>
+    //                     </div>
+    //                 </div>";
 
-                }
-            $output.= " </div>
-            </div>
-            ";
-        }else{
-            $output.= "
-            <div class='tab-content'>
-                <div class='tab-pane fade active in' id='tshirt'>
-                    <div class='col-sm-12'>
-                        <h4 style='text-align: center; margin-bottom: 50px;'>Chưa có sản phẩm</h4>
-                    </div>
-                </div>
-            </div>
+    //             }
+    //         $output.= " </div>
+    //         </div>
+    //         ";
+    //     }else{
+    //         $output.= "
+    //         <div class='tab-content'>
+    //             <div class='tab-pane fade active in' id='tshirt'>
+    //                 <div class='col-sm-12'>
+    //                     <h4 style='text-align: center; margin-bottom: 50px;'>Chưa có sản phẩm</h4>
+    //                 </div>
+    //             </div>
+    //         </div>
             
-            ";
-        }
-        echo $output;
-    }
+    //         ";
+    //     }
+    //     echo $output;
+    // }
 }
