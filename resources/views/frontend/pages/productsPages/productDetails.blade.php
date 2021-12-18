@@ -24,9 +24,9 @@
                 <input type='hidden' name='product_id' value='{{$pro->maSanPham}}'>
                     <!--/product-information-->
                     <img src="{{asset('public/frontend/images/product-details/new.jpg')}}" class="newarrival" alt="" />
-                    <h2>{{$pro->tenSanPham}}</h2>
-                    <p>ID Sản phẩm: {{$pro->maSanPham}}</p>
-                    <img src="{{asset('public/frontend/images/product-details/rating.png')}}" alt="" />
+
+                    <h2>{{$pro->tenSanPham}} </h2>
+                    <p>Mã Sản phẩm: {{$pro->maSanPham}}</p>
                     <span>
                         <span>{{number_format($pro->giaSanPham)}} VNĐ</span>
                         <label>Số lượng:</label>
@@ -36,6 +36,9 @@
                             Thêm giỏ hàng
                         </button>
                     </span>
+                    <br>
+                    <img src="{{asset('public/frontend/images/product-details/rating.png')}}" width= 150px ; height= 20px; alt="" />
+                    <br>
                     <p><b>Trạng thái: </b> {{$pro->trangThai == 1 ? 'Còn hàng' : 'Hết hàng'}}</p>
                     <p><b>Danh mục: </b>{{$pro->tendanhmuc}}</p>
                     <p><b>Hãng: </b>{{$pro->tenthuonghieu}}</p>
