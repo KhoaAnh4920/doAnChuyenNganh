@@ -143,7 +143,6 @@ class ProductController extends Controller
 
             DB::table('danhmuchinh')->insert($data2);
             //Session::put('message', 'Thêm thành công');
-            
             //return Redirect::to('/liet-ke-user.html')
             }
         }
@@ -153,14 +152,16 @@ class ProductController extends Controller
     }
 
     public function deleteGallery($gal_id){
+        foreach($gal_id as $key => $img){
+        $image = DB::table('danhmuchinh')->select('hinh')->where('maHinhSanPham', $img)->get();
         
-        $image = DB::table('danhmuchinh')->select('hinh')->where('maHinhSanPham', $gal_id)->get();
         foreach($image as $key =>$hinh){
             $h = $hinh->hinh;
         }
-        unlink('public/upload/gallery/'.$h);
-        DB::table('danhmuchinh')->where('maHinhSanPham', $gal_id)->delete();
         
+        unlink('public/upload/gallery/'.$h);
+        DB::table('danhmuchinh')->where('maHinhSanPham', $img)->delete();
+        }
     }
 
     
