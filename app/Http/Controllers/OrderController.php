@@ -74,6 +74,8 @@ class OrderController extends Controller
         $choosen = $request->state_order;
         $id_order = $request->id_order;
         DB::table('donhang')->where('maDonHang', $id_order)->update(['trangThaiDonHang' => $choosen]);
-        return Redirect::back()->with('error_code', 5);
+        Alert::success('Cập nhật thành công');
+
+        return Redirect::back();
     }
 }

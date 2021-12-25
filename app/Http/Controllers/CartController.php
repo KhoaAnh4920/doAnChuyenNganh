@@ -98,7 +98,7 @@ class CartController extends Controller
     public function checkLogin(){
         $user_id = Session::get('user_id');
         if($user_id == null){
-            return Redirect::to('/login.html')->with('error_code', 7)->send();
+            return Redirect::to('/login.html');
         }
             //return redirect()->back()->with('error_code', 7)->send();
     }
