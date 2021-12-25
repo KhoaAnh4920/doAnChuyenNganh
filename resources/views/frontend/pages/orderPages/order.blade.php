@@ -71,7 +71,7 @@
 @section('content')
 
 <section id="cart_items">
-    <div class="container" style="max-width: 960px">
+    <div class="container">
         <div class="row">
 
             <div class="col-md-7 order-md-1">
@@ -200,7 +200,7 @@
             </div>
             <div class="col-md-5 order-md-2 mb-4">
                 <h4 class="d-flex justify-content-between align-items-center mb-3">
-                    <span class="text-muted">Your cart</span>
+                    <span class="text-muted">Giỏ hàng</span>
                     <span class="badge badge-secondary badge-pill">{{Cart::content()->count()}}</span>
                 </h4>
                 <ul class="list-group mb-3">

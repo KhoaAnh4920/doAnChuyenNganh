@@ -8,7 +8,7 @@
 @section('content')
 <div id="customer_orders" class="container">
 
-<h3>Sản phẩm đã đặt</h3>
+    <h3>Sản phẩm đã đặt</h3>
 
     <table class="table table-hover" style="margin-top:30px">
         <thead>
@@ -18,7 +18,7 @@
                 <th class="order_number">Tên Sản phẩm</th>
                 <th class="date">Số lượng</th>
                 <th class="payment_status">Giá</th>
-                <th class="total">Thành tiền</th>
+                <th class="total">Tổng cộng</th>
             </tr>
         </thead>
         <tbody>
@@ -27,45 +27,37 @@
             @php $i++ @endphp
             <tr class="odd cancelled_order">
                 <td><span>@php echo $i @endphp</span></td>
-                <td><img class="media-object" src="{{asset('public/upload/products/')}}/{{$order->hinhAnh}}" style="height: 60px;"></td>
+                <td><img class="media-object" src="{{asset('public/upload/products/')}}/{{$order->hinhAnh}}"
+                        style="height: 60px;"></td>
                 <td>{{$order->tenSanPham}}</td>
                 <td><span>{{$order->soLuong}}</span></td>
                 <td><span class="status_pending">{{$order->giaSanPham}}</span></td>
                 <td><span class="total money">
-                    @php 
+                        @php
                         $sum = $order->giaSanPham * $order->soLuong;
-                        echo number_format($sum); 
-                    @endphp đ
-                </span></td>
+                        echo number_format($sum);
+                        @endphp đ
+                    </span></td>
             </tr>
 
             @endforeach
 
         </tbody>
-        <!-- <tfoot>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td><h4>Tổng cộng</h4></td>
-                        <td class="text-right"><h4>{{Cart::subtotal()}} đ</h4></td>
-                    </tr>
-                    <tr>
-                        <td> <button type="button" onclick="location.href='{{URL::to('/delete-item-cart')}}'" class="btn btn-danger">
-                            <span class="fa fa-times"></span> Xóa tất cả
-                        </button> </td>
-                        <td>  </td>
-                        <td>  </td>
-                        <td>
-                        <button type="submit" class="btn btn-default">
-                            <span class="fa fa-shopping-cart"></span> Cập nhật
-                        </button></td>
-                        <td>
-                        <button type="button" class="btn btn-success" onclick="location.href='{{URL::to('/order.html')}}'">
-                            Thanh toán <span class="fa fa-angle-right"></span>
-                        </button></td>
-                    </tr>
-                </tfoot> -->
+        <tfoot>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+                    <h4>Tổng tiền</h4>
+                </td>
+                <td class="text-left">
+                    <h4>{{$tongTien->tongTien}} đ</h4>
+                </td>
+            </tr>
+
+        </tfoot>
     </table>
 
 </div>

@@ -52,8 +52,8 @@
                             <div class="custom-file">
                                 <input type="file" onchange="readURL(this);" class="custom-file-input" id="customFile" name="user_avatar">
                                 <label class="custom-file-label" for="customFile">Choose file</label>
-                                <img id="blah" style="width:80px;height:80px;  margin-top:5px;
-                                    src="">
+                                <img id="blah" style="width:80px;height:80px;  margin-top:5px;"
+                                    src="http://www.ncenet.com/wp-content/uploads/2020/04/no-image-png-2.png">
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary" style="margin-top:30px">Submit</button>

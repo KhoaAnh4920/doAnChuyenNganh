@@ -150,7 +150,7 @@
                     <div class="product-image-wrapper">
                         <div class="single-products">
                             <div class="productinfo text-center">
-                                <a href="{{URL::to('/product-details.html/'.$pre_pro->slug)}}"><img src="{{asset('public/upload/products/')}}/{{$pre_pro->hinhAnh}}" alt="{{$pre_pro->tenSanPham}}" /></a>
+                                <a href="{{URL::to('/product-details.html/'.$pre_pro->slug)}}"><img style="width:200px" src="{{asset('public/upload/products/')}}/{{$pre_pro->hinhAnh}}" alt="{{$pre_pro->tenSanPham}}" /></a>
                                 <h2>{{number_format($pre_pro->giaSanPham)}} VNĐ</h2>
                                 <a href="{{URL::to('/product-details.html/'.$pre_pro->slug)}}"><p>{{$pre_pro->tenSanPham}}</p></a>         
                                 <a href="{{URL::to('/product-details.html/'.$pre_pro->slug)}}" class="btn btn-default add-to-cart">Chi tiết <i class="fa fa-arrow-right"></i></a>
@@ -158,6 +158,19 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- <div class="col-sm-4">
+                        <div class="product-image-wrapper">
+                            <div class="single-products">
+                                <div class="productinfo text-center">
+                                <a href="{{URL::to('/product-details.html/'.$ds->slug)}}"><img style="width:200px" src="{{asset('public/upload/products/')}}/{{$ds->hinhAnh}}" alt="{{$ds->hinhAnh}}" /></a>
+                                    <h2>{{number_format($ds->giaSanPham)}} VNĐ</h2>
+                                    <a href="{{URL::to('/product-details.html/'.$ds->slug)}}"><p>{{$ds->tenSanPham}}</p></a>
+                                    <a href="{{URL::to('/product-details.html/'.$ds->slug)}}" class="btn btn-default add-to-cart">Chi tiết <i class="fa fa-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                </div> -->
                 <?php if($dem == 2 || $dem == (count($recommmendedProducts) -1)) 
                 {
                     echo "</div>";

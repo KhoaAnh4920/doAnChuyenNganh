@@ -81,6 +81,7 @@ Route::post('/update-product.html/{pro_id}', 'ProductController@updateProduct');
 Route::get('/product-details.html/{pro_slug}', 'ProductController@productDetails');
 Route::get('/xoa-san-pham.html/{pro_id}', 'ProductController@xoaSanPham');
 Route::post('/set-gallerySession', 'ProductController@setSession');
+Route::get('/search-result', 'ProductController@searchProduct');
 
 //  Đơn hàng //
 Route::get('/liet-ke-don-hang.html', 'OrderController@lietKeDonHang');
@@ -112,4 +113,5 @@ Route::get('/sua-bai-viet.html', 'NewsController@suaBaiViet');
 //Slider //
 Route::get('/liet-ke-slider.html', 'HomeController@lietKeSlider');
 Route::get('/them-slider.html', 'HomeController@themSlider');
+Route::get('/delete-slider/{slide_id}', 'HomeController@deleteSlider');
 Route::post('/create-slider', 'HomeController@createSlider');

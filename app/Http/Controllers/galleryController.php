@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Session;
 use Redirect;
 use DB;
+use Alert;
 session_start();
 
 class galleryController extends Controller

@@ -9,6 +9,7 @@ use DB;
 session_start();
 use Cart;
 use View;
+use Alert;
 use Carbon\Carbon;
 
 class CartController extends Controller
@@ -61,13 +62,12 @@ class CartController extends Controller
         $data['options']['slug_Cate']= $product->slug_Cate;
         $data['options']['slug_Brand']= $product->slug_Brand;
 
-
         Cart::add($data);
+        Alert::success('Thêm giỏ hàng thành công');
 
-        return redirect()->back()->with('error_code', 5);
+        return redirect()->back();
     }
     public function DeleteItemCart($rowId){
-
         Cart::remove($rowId);
         return redirect()->back();
     }
@@ -75,14 +75,18 @@ class CartController extends Controller
 
         $data = array();
         $data = $request->quanlity;
-        //var_dump($data); exit;
 
        foreach($data as $key => $qty_pro){
            $rowId = $key;
            $qty = $qty_pro;
-           Cart::update($rowId, $qty);
+           if($qty < 1){
+                Alert::error('Số lượng sản phẩm không hợp lệ');
+           }
+           else
+                Cart::update($rowId, $qty);
        }
-        return redirect()->back()->with('error_code', 8)->send();;
+        Alert::success('Cập nhật thành công');
+        return redirect()->back();
     }
     public function DeleteAllCart(){
         if(Cart::count() != 0){
@@ -158,6 +162,7 @@ class CartController extends Controller
             DB::table('chitietdonhang')->insert($dataChiTiet);
         }
         Cart::destroy();
-        return Redirect::to('/trang-chu.html')->with('error_code', 6);
+        Alert::success('Đặt hàng thành công');
+        return Redirect::to('/trang-chu.html');
     }
 }

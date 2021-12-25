@@ -10,16 +10,15 @@
 						</ol> -->
 						
 						<div class="carousel-inner row">
-							<div class="item active col-sm-12">
-								<img src="{{asset('public/frontend/images/Slider/hinh1.png')}}" style="width:100%" class="img-fluid" alt="" />
+							@php $i= 1 @endphp
+							@foreach($all_slider as $key => $slide)
+
+							<div class="item {{($i == 1) ? 'active' : ''}} col-sm-12">
+								<img src="{{asset('public/upload/slider/')}}/{{$slide->hinhAnh}}" style="width:100%" class="img-fluid" alt="" />
 							</div>
-							<div class="item col-sm-12">
-								<img src="{{asset('public/frontend/images/Slider/hinh2.png')}}" style="width:100%" class="img-fluid" alt="" />
-							</div>
-							
-							<div class="item col-sm-12">	
-								<img src="{{asset('public/frontend/images/Slider/hinh3.jpg')}}" style="width:100%" class="img-fluid" alt="" />
-							</div>		
+							@php $i++ @endphp
+							@endforeach
+	
 						</div>
 						
 						<a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">

@@ -10,6 +10,7 @@ use App\CategoryProduct;
 use App\Brand;
 use App\Product;
 use View;
+use Alert;
 session_start();
 
 class ProductController extends Controller
@@ -130,7 +131,12 @@ class ProductController extends Controller
             // Session::put('message', 'Thêm thành công');
             // return Redirect::to('/liet-ke-san-pham.html')->with('error_code', 5);
         }
-        DB::table('dbsanpham')->insert($data);
+        //var_dump($data); exit;
+        $n = DB::table('dbsanpham')->insert($data);
+        if($n <=0){
+            Alert::error('Lỗi thêm sản phẩm');
+            return;
+        }
 
         $pro_id = DB::table('dbsanpham')->select('maSanPham')->orderBy('maSanPham', 'DESC')->first();
         $data2['maSanPham'] = $pro_id->maSanPham;
@@ -141,14 +147,18 @@ class ProductController extends Controller
             $image->move('public/upload/gallery', $get_name_image);
             $data2['hinh'] = $get_name_image;
 
-            DB::table('danhmuchinh')->insert($data2);
+            $n = DB::table('danhmuchinh')->insert($data2);
+            if($n <=0){
+                Alert::error('Lỗi thêm danh mục hình');
+                return;
+            }
             //Session::put('message', 'Thêm thành công');
             //return Redirect::to('/liet-ke-user.html')
             }
         }
 
-        Session::put('message', 'Thêm thành công');
-        return Redirect::to('/liet-ke-san-pham.html')->with('error_code', 5);
+        Alert::success('Thêm sản phẩm thành công');
+        return Redirect::to('/liet-ke-san-pham.html');
     }
 
     public function deleteGallery($gal_id){
@@ -224,12 +234,13 @@ class ProductController extends Controller
         if($get_image){
             $get_name_image = $get_image->getClientOriginalName(); // Lấy tên file
             $get_image->move('public/upload/products', $get_name_image);
+            unlink('public/upload/products/'.$data['hinhAnh']);
             $data['hinhAnh'] = $get_name_image;
 
-            var_dump($data); exit;
-            DB::table('dbsanpham')->where('maSanPham', $pro_id)->update($data);
-            Session::put('message', 'Cập nhật thành công');
-            return Redirect::to('/liet-ke-san-pham.html')->with('error_code', 5);
+            // var_dump($data); exit;
+            // DB::table('dbsanpham')->where('maSanPham', $pro_id)->update($data);
+            // Session::put('message', 'Cập nhật thành công');
+            // return Redirect::to('/liet-ke-san-pham.html')->with('error_code', 5);
         }
 
         if($gallery_image){
@@ -246,17 +257,27 @@ class ProductController extends Controller
         }
         
 
-        DB::table('dbsanpham')->where('maSanPham', $pro_id)->update($data);
-        Session::put('message', 'Cập nhật thành công');
-        return Redirect::to('/liet-ke-san-pham.html')->with('error_code', 5);
+        $n = DB::table('dbsanpham')->where('maSanPham', $pro_id)->update($data);
+        if($n > 0)
+            Alert::success('Cập nhật thành công');
+        else
+            Alert::error('Cập nhật thất bại');
+        return Redirect::to('/liet-ke-san-pham.html');
     }
 
     public function xoaSanPham($pro_id){
         $this->checkLogin();
-
-        Product::where('maSanPham', $pro_id)->delete();
-        Session::put('message', 'Xóa thành công');
-        return Redirect::to('/liet-ke-san-pham.html')->with('error_code', 5);
+        $hinhAnh = DB::table('dbsanpham')->where('maSanPham', $pro_id)->get();
+        foreach($hinhAnh as $key => $pro){
+            $data['hinhAnh'] = $pro->hinhAnh;
+        }
+        unlink('public/upload/products/'.$data['hinhAnh']);
+        $n = Product::where('maSanPham', $pro_id)->delete();
+        if($n)
+            Alert::success('Xóa thành công');
+        else
+            Alert::error('Xóa thất bại');
+        return Redirect::to('/liet-ke-san-pham.html');
     }
     // Put id của danh mục hình cần xóa vào session
     public function setSession(Request $request){
@@ -265,5 +286,54 @@ class ProductController extends Controller
         Session::put('gal_del', $request->gal_del);
 
 
+    }
+
+    // Kết quả tìm kiếm //
+    public function searchProduct(){
+        // Sidebar //
+        $all_brands = Brand::leftJoin("dbsanpham", function($join){
+            $join->on("thuonghieu.mathuonghieu", "=", "dbsanpham.mathuonghieu");
+        })
+        ->select("thuonghieu.*", DB::raw('count(dbsanpham.masanpham) as sl'))
+        ->groupBy("thuonghieu.maThuongHieu")
+        ->get();
+        $all_category_products = CategoryProduct::orderby('maDanhMuc')->get();
+        $count_danhMucCon = CategoryProduct::select( "danhmucsanpham.maDanhMuc as maDanhMucCha","danhmucsanpham.tenDanhMuc","danhmucsanpham.slug",DB::raw('(select count(*) from danhmucsanpham where danhmucsanpham.danhMucCha = maDanhMucCha) as SL'))
+        ->where('danhmucsanpham.danhMucCha', 0)
+        ->get();
+        // End sidebar //
+
+        // Header //
+        $cate_of_Apple = CategoryProduct::whereRaw('danhmucsanpham.maDanhMuc IN (select dbsanpham.maDanhMuc FROM dbsanpham JOIN thuonghieu on thuonghieu.maThuongHieu = dbsanpham.maThuongHieu WHERE thuonghieu.maThuongHieu = 1)')
+            ->get();
+        $cate_of_Gear = CategoryProduct::select('tenDanhMuc', 'slug')
+            ->where('danhMucCha', 14)
+            ->get();
+
+        // end header
+
+
+        $kw = $_GET['kw'];
+        $result_search = Product::join("danhmucsanpham", function($join){
+            $join->on("dbsanpham.maDanhMuc", "=", "danhmucsanpham.maDanhMuc");
+        })
+        ->join("thuonghieu", function($join){
+            $join->on("dbsanpham.maThuongHieu", "thuonghieu.maThuongHieu", "=");
+        })
+        ->select("dbsanpham.*", "danhmucsanpham.tendanhmuc", "thuonghieu.tenthuonghieu")
+        ->where("thuonghieu.tenThuongHieu", "like", "%".$kw."%")
+        ->orwhere("danhmucsanpham.tenDanhMuc", "like", "%".$kw."%")
+        ->orwhere("dbsanpham.tenSanPham", "like", "%".$kw."%")
+        ->orwhere("dbsanpham.giaSanPham", "like", "%".$kw."%")
+        ->orwhere("dbsanpham.moTaSanPham", "like", "%".$kw."%")
+        ->paginate(6);
+    
+
+        return view('frontend.pages.productsPages.searchPage')->with('all_brands', $all_brands)
+        ->with('all_category_products', $all_category_products)
+        ->with('count_danhMucCon', $count_danhMucCon)
+        ->with('cate_of_Apple', $cate_of_Apple)
+        ->with('cate_of_Gear', $cate_of_Gear)
+        ->with('result_search', $result_search);
     }
 }

@@ -55,7 +55,8 @@
     @endif -->
 
     <!--Model Popup starts-->
-    <div class="container">
+    @include('sweet::alert')
+    <!-- <div class="container">
         <div class="row">
             <div class="modal fade" id="ignismyModal" role="dialog">
                 <div class="modal-dialog">
@@ -94,7 +95,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <!--Model Popup ends-->
 
     

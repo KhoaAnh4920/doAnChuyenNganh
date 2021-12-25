@@ -15,6 +15,8 @@
     href='//fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic'
     rel='stylesheet' type='text/css'>
 
+
+<script src="https://unpkg.com/sweetalert2@7.18.0/dist/sweetalert2.all.js"></script>
 <style>
 .thank-you-pop {
     width: 100%;
@@ -77,40 +79,68 @@
 #ignismyModal .modal-header {
     border: 0px;
 }
-#preview img{
-    width:100px; margin-top:5px;
+
+#preview img {
+    width: 100px;
+    margin-top: 5px;
 }
+
 .thumbnail {
-width:120px;
-position:relative;
-float: left;
-margin: 1em;
+    width: 120px;
+    position: relative;
+    float: left;
+    margin: 1em;
 }
 
 .thumbnail img {
-max-width:100%;
-max-height:100%;
-padding:10px;
+    max-width: 100%;
+    max-height: 100%;
+    padding: 10px;
 }
 
 .thumbnail a {
-display:block;
-width:15px;
-height:15px;
-position:absolute;
-top:3px;
-right:3px;
-background:#c00;
-overflow:hidden;
-text-indent:-9999px;
+    display: block;
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    background: #c00;
+    overflow: hidden;
+    text-indent: -9999px;
 }
 
 
 /*--thank you pop ends here--*/
 
-input[type="file"] {display: block;}
-.imageThumb {max-height: 75px; border: 2px solid; padding: 1px; cursor: pointer;}
-.pip {display: inline-block; margin: 10px 10px 0 0;}
-.remove, .removeDefault { display: block;background: #444;border: 1px solid black;color: white;text-align: center;cursor: pointer;}
-.remove:hover {background: white;color: black;}
+input[type="file"] {
+    display: block;
+}
+
+.imageThumb {
+    max-height: 75px;
+    border: 2px solid;
+    padding: 1px;
+    cursor: pointer;
+}
+
+.pip {
+    display: inline-block;
+    margin: 10px 10px 0 0;
+}
+
+.remove,
+.removeDefault {
+    display: block;
+    background: #444;
+    border: 1px solid black;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+}
+
+.remove:hover {
+    background: white;
+    color: black;
+}
 </style>

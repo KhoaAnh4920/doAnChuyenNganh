@@ -76,17 +76,20 @@ hr {
                                             <div class="modal-body p-0">
                                                 <div class="card border-0 p-sm-3 p-2 justify-content-center">
                                                     <div class="card-header pb-0 bg-white border-0 ">
+
                                                         <div class="row">
+                                                            <h4 style="padding:10px 10px 10px 12px">Xác nhận xóa
+                                                            </h4>
                                                             <div class="col ml-auto"><button type="button"
                                                                     class="close btnClose" data-dismiss="modal"
                                                                     aria-label="Close"> <span
                                                                         aria-hidden="true">&times;</span> </button>
                                                             </div>
-                                                            <h4 style="padding:10px 10px 10px 12px">Xác nhận xóa</h4>
+
                                                             <hr>
                                                         </div>
-                                                        <p class="font-weight-bold mb-2" style="margin-bottom:20px">Bạn
-                                                            có muốn xóa không ?</p>
+                                                        <p class="font-weight-bold mb-2" style="margin-bottom:20px">
+                                                            Bạn có muốn xóa không ?</p>
 
                                                     </div>
                                                     <div class="card-body px-sm-4 mb-2 pt-1 pb-0">

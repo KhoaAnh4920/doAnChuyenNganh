@@ -48,16 +48,16 @@ hr {
                                 <th>ID</th>
                                 <th>Hình Ảnh</th>
                                 <th>Tên</th>
-                                <th>Username</th>
                                 <th>Mô tả</th>
                                 <th>Trạng thái</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($all_slider as $key => $slide)
                             <tr>
                                 <td style="vertical-align: middle;">{{$slide->maSlider}}</td>
-                                <td style="vertical-align: middle;"><img width="120px" height="500px"
+                                <td style="vertical-align: middle;"><img width="500px" height="200px"
                                         src="public/upload/slider/{{$slide->hinhAnh}}" alt="{{$slide->hinhAnh}}">
                                 </td>
                                 <td style="vertical-align: middle;">{{$slide->tenSlider}}</td>

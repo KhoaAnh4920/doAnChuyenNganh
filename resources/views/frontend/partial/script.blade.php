@@ -106,3 +106,14 @@ function myFunction() {
   alert(x);
 }
 </script> -->
+
+ <!-- Sự kiện enter search  -->
+<script>
+var input = document.getElementById("searchText");
+input.addEventListener("keyup", function(event) {
+  if (event.keyCode === 13) {
+   event.preventDefault();
+   document.getElementById("mybutton").click();
+  }
+});
+</script>

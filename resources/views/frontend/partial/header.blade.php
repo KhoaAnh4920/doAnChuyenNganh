@@ -125,7 +125,10 @@
                 </div>
                 <div class="col-sm-3">
                     <div class="search_box pull-right">
-                        <input type="text" placeholder="Search" />
+                        <form action="{{URL::to('/search-result')}}" method='get'>
+                            <input type="text" id="searchText" name='kw' placeholder="Search" />
+                            <button id="mybutton" type="button" onclick="myFunction()" style="display:none">Submit</button>
+                        </form>
                     </div>
                 </div>
             </div>

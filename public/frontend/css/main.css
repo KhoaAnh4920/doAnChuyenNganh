@@ -942,10 +942,10 @@ h2.title {
 
 
 .add-to-cart {
-  background:#F5F5ED;
+  background: #FE980F;
   border: 0 none;
   border-radius: 0;
-  color: #696763;
+  color: #FFFFFF;
   font-family: 'Roboto', sans-serif;
   font-size: 15px;
   margin-bottom: 25px;
@@ -1288,7 +1288,6 @@ h2.title {
   color: #FFFFFF;
   font-family: 'Roboto', sans-serif;
   font-size: 15px;
-  margin-bottom: 10px;
   margin-left: 20px;
 }
 

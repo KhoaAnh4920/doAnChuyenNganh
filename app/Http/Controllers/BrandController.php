@@ -8,6 +8,7 @@ use Redirect;
 use DB;
 use App\Brand;
 use View;
+use Alert;
 session_start();
 
 class BrandController extends Controller
@@ -86,11 +87,15 @@ class BrandController extends Controller
         if(($sl_sanPham[0]->sl) > 0){
             Session::put('message', 'Thương hiệu đã có sản phẩm, không thể xóa');
         }else{
-            Brand::where('maThuongHieu', $brand_id)->delete();
-            Session::put('message', 'Xóa thành công');
+            $n = Brand::where('maThuongHieu', $brand_id)->delete();
+            if($n > 0)
+                Alert::success('Xóa thành công');
+            else
+                Alert::error('Xóa thất bại');
+            //Session::put('message', 'Xóa thành công');
         }
 
-        return redirect('/liet-ke-thuong-hieu.html')->with('error_code', 5);
+        return redirect('/liet-ke-thuong-hieu.html');
     }
     public function createBrand(Request $request){
         $this->checkLogin();
@@ -107,8 +112,12 @@ class BrandController extends Controller
         $brand->trangThai = $request->trangThai;
 
         //DB::table('thuonghieu')->insert($data);
-        $brand->save();
-        Session::put('message', 'Thêm thành công');
+        $n = $brand->save();
+        if($n)
+            Alert::success('Thêm thành công');
+        else
+            Alert::error('Thêm thất bại');
+        //Session::put('message', 'Thêm thành công');
         return redirect('/liet-ke-thuong-hieu.html')->with('error_code', 5);
     }
     public function updateBrand(Request $request,$brand_id){
@@ -120,11 +129,15 @@ class BrandController extends Controller
         $brand->slug = $request->slug_thuonghieu;
         $brand->moTaThuongHieu = $request->moTaThuongHieu;
         $brand->trangThai = $request->trangThai;
-        $brand->save();
+        $n = $brand->save();
+        if($n)
+            Alert::success('Cập nhật thành công');
+        else
+            Alert::error('Cập nhật thất bại');
         
         //DB::table('thuonghieu')->where('maThuongHieu', $brand_id)->update($data);
-        Session::put('message', 'Cập nhật thành công');
-        return redirect('/liet-ke-thuong-hieu.html')->with('error_code', 5);
+        //Session::put('message', 'Cập nhật thành công');
+        return redirect('/liet-ke-thuong-hieu.html');
     }
 
 }

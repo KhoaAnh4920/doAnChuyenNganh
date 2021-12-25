@@ -29,13 +29,32 @@
                     <p>Mã Sản phẩm: {{$pro->maSanPham}}</p>
                     <span>
                         <span>{{number_format($pro->giaSanPham)}} VNĐ</span>
-                        <label>Số lượng:</label>
-                        <input type="number" name="qty_pro" value="1" min="1" max="100" />
-                        <button type="submit" class="btn btn-fefault cart">
+                        
+                    </span>
+                    <div>
+                    <label>Số lượng:</label>
+                        <input style="padding: 6px 12px; height:32px " type="number" name="qty_pro" value="1" min="1" max="100" />
+                        <button type="submit" class="btn btn-fefault cart" style="height:32px">
                             <i class="fa fa-shopping-cart"></i>
                             Thêm giỏ hàng
                         </button>
-                    </span>
+                    </div>
+                    <hr>
+
+                    <!-- <ul style="border-top: 1px solid #ebebeb; padding-top: 40px; margin-top: 50px;">
+                            <li><b>Tình trạng</b> <span>Còn hàng</span></li>
+                            <li><b>Vận chuyển</b> <span>01 ngày. <samp>Miễn phí vận chuyển</samp></span></li>
+                            <li><b>Trọng lượng</b> <span>0.5 kg</span></li>
+                            <li><b>Chia sẻ</b>
+                                <div class="share">
+                                    <a href="#"><i class="fa fa-facebook"></i></a>
+                                    <a href="#"><i class="fa fa-twitter"></i></a>
+                                    <a href="#"><i class="fa fa-instagram"></i></a>
+                                    <a href="#"><i class="fa fa-pinterest"></i></a>
+                                </div>
+                            </li>
+                        </ul> -->
+                    
                     <p><b>Trạng thái: </b> {{$pro->trangThai == 1 ? 'Còn hàng' : 'Hết hàng'}}</p>
                     <p><b>Danh mục: </b>{{$pro->tendanhmuc}}</p>
                     <p><b>Hãng: </b>{{$pro->tenthuonghieu}}</p>

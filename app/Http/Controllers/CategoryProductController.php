@@ -9,6 +9,7 @@ use DB;
 use App\CategoryProduct;
 use App\Brand;
 use View;
+use Alert;
 session_start();
 
 class CategoryProductController extends Controller
@@ -110,7 +111,11 @@ class CategoryProductController extends Controller
         $category->danhMucCha = $request->thuocDanhMuc;
         $category->trangThai = $request->trangThai;
 
-        $category->save();
+        $n = $category->save();
+        if($n)
+            Alert::success('Thêm thành công');
+        else
+            Alert::error('Thêm thất bại');
 
         // $data['tenDanhMuc'] = $request->tenDanhMuc;
         // $data['slug'] = $request->slug_danhmucsanpham;
@@ -119,8 +124,8 @@ class CategoryProductController extends Controller
         // $data['trangThai'] = $request->trangThai;
         
         // DB::table('danhmucsanpham')->insert($data);
-        Session::put('message', 'Thêm thành công');
-        return Redirect::to('/liet-ke-danh-muc-san-pham.html')->with('error_code', 5);
+        //Session::put('message', 'Thêm thành công');
+        return Redirect::to('/liet-ke-danh-muc-san-pham.html');
     }
     public function updateCategoryProduct(Request $request, $cate_product_id){
         $this->checkLogin();
@@ -133,7 +138,11 @@ class CategoryProductController extends Controller
         $category->danhMucCha = $request->thuocDanhMuc;
         $category->trangThai = $request->trangThai;
 
-        $category->save();
+        $n = $category->save();
+        if($n)
+            Alert::success('Thêm thành công');
+        else
+            Alert::error('Thêm thất bại');
         // $data = array();
         // $data['tenDanhMuc'] = $request->tenDanhMuc;
         // $data['slug'] = $request->slug_danhmucsanpham;
@@ -143,8 +152,8 @@ class CategoryProductController extends Controller
 
         //var_dump($data); exit;
         //DB::table('danhmucsanpham')->where('maDanhMuc', $cate_product_id)->update($data);
-        Session::put('message', 'Cập nhật thành công');
-        return Redirect::to('/liet-ke-danh-muc-san-pham.html')->with('error_code', 5);
+        //Session::put('message', 'Cập nhật thành công');
+        return Redirect::to('/liet-ke-danh-muc-san-pham.html');
     }
     public function xoaDanhMucSanPham($cate_product_id){
         $this->checkLogin();
@@ -155,17 +164,26 @@ class CategoryProductController extends Controller
         ->where("danhmucsanpham.maDanhMuc", $cate_product_id)
         ->groupBy("danhmucsanpham.maDanhMuc")
         ->get();
+        // Check danh mục cha //
+        $maDanhMucCha = CategoryProduct::select(DB::raw("count(*) as sl"))
+        ->where("danhmucsanpham.danhmuccha", "=", $cate_product_id)
+        ->get();
+
+
+        if($maDanhMucCha[0]->sl > 0 || $sl_sanPham[0]->sl > 0){
+            if(($sl_sanPham[0]->sl) > 0)
+                Alert::error('Danh mục đã có sản phẩm');
+            else
+                Alert::error('Không thể xóa danh mục cha');
+        }else{
+            $n = CategoryProduct::where('maDanhMuc', $cate_product_id)->delete();
+            if($n)
+                Alert::success('Xóa thành công');
+            else
+                Alert::error('Xóa thất bại');
+        }
         
-       // var_dump($sl_sanPham[0]->sl); exit;
-       if(($sl_sanPham[0]->sl) > 0){
-            Session::put('error_mess', 'Danh mục đã có sản phẩm, không thể xóa');
-            return Redirect::to('/liet-ke-danh-muc-san-pham.html');
-       }else{
-            CategoryProduct::where('maDanhMuc', $cate_product_id)->delete();
-            Session::put('message', 'Xóa thành công');
-       }
-        
-        return Redirect::to('/liet-ke-danh-muc-san-pham.html')->with('error_code', 5);;
+        return Redirect::to('/liet-ke-danh-muc-san-pham.html');
     }
 
     // public function product_tabs(Request $request){

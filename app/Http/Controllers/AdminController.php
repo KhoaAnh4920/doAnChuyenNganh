@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Session;
 use Redirect;
 use DB;
+use Alert;
 session_start();
 
 class AdminController extends Controller
@@ -132,16 +133,24 @@ class AdminController extends Controller
             $get_image->move('public/upload/avatar', $get_name_image);
             $data['users_avatar'] = $get_name_image;
 
-            DB::table('users')->insert($data);
-            Session::put('message', 'Đăng ký thành công');
-            return redirect()->back()->with('error_code', 5);
+            $n = DB::table('users')->insert($data);
+            if($n > 0)
+                Alert::success('Cập nhật thành công');
+            else
+                Alert::error('Cập nhật thất bại');
+            //Session::put('message', 'Đăng ký thành công');
+            return redirect()->back();
         }
         $data['users_avatar'] = "unknown.png";
     
 
-        DB::table('users')->insert($data);
+        $n = DB::table('users')->insert($data);
+        if($n > 0)
+            Alert::success('Cập nhật thành công');
+        else
+            Alert::error('Cập nhật thất bại');
         Session::put('message', 'Đăng ký thành công');
-        return redirect()->back()->with('error_code', 5);
+        return redirect()->back();
     }
     public function updateUsers(Request $request,$users_id){
         $avatar = DB::table('users')->where('users_id', $users_id)->get();
@@ -166,20 +175,28 @@ class AdminController extends Controller
             $data['users_avatar'] = $get_name_image;
 
             DB::table('users')->where('users_id', $users_id)->update($data);
-            Session::put('message', 'Thêm thành công');
-            return Redirect::to('/liet-ke-user.html')->with('error_code', 5);
+            //Session::put('message', 'Thêm thành công');
+            Alert::success('Cập nhật thành công');
+            return Redirect::to('/liet-ke-user.html');
         }
 
         
-        DB::table('users')->where('users_id', $users_id)->update($data);
-        Session::put('message', 'Cập nhật thành công');
-        return Redirect::to('/liet-ke-user.html')->with('error_code', 5);
+        $n = DB::table('users')->where('users_id', $users_id)->update($data);
+        //Session::put('message', 'Cập nhật thành công');
+        if($n > 0)
+            Alert::success('Cập nhật thành công');
+        else
+            Alert::error('Cập nhật thất bại');
+        return Redirect::to('/liet-ke-user.html');
     }
 
     public function deleteUsers($users_id){
-        DB::table('users')->where('users_id',$users_id)->delete();
-        Session::put('message','Xóa user thành công');
-        return Redirect::to('/liet-ke-user.html')->with('error_code', 5);
+        $n = DB::table('users')->where('users_id',$users_id)->delete();
+        if($n > 0)
+            Alert::success('Xóa thành công');
+        else
+            Alert::error('Xóa thất bại');
+        return Redirect::to('/liet-ke-user.html');
     }
 
 

@@ -49,7 +49,10 @@ p.noItemCart a {
             <tr>
                 <th class="order_number">Mã đơn hàng</th>
                 <th class="date">Ngày đặt</th>
+                <th class="date">Tên người nhận</th>
+                <th class="address">Địa chỉ nhận hàng</th>
                 <th class="payment_status">Trạng thái thanh toán</th>
+                <th class="address">Trạng thái đơn hàng</th>
                 <th class="total">Tổng tiền</th>
             </tr>
         </thead>
@@ -60,9 +63,23 @@ p.noItemCart a {
             @foreach($info_order as $key => $order)
             <tr class="odd cancelled_order">
                 <td><a href="{{URL::to('/checkout-detail.html/'.$order->maDonHang)}}" title="">{{$order->maDonHang}}</a>
-                </td>
+                </td>            
                 <td><span>{{$order->ngayDatHang}}</span></td>
+                <td><span>{{$order->tenNguoiNhanHang}}</span></td>
+                <td><span>{{$order->diaChiGiaoHang}}</span></td>
                 <td><span class="status_pending">Thanh toán khi nhận hàng</span></td>
+                <td>
+                                
+                    @if($order->trangThaiDonHang == 0)
+                        <span>Đơn hàng mới</span>
+                    @elseif($order->trangThaiDonHang == 1)
+                        <span>Đang giao hàng</span>
+                    @elseif($order->trangThaiDonHang == 2)
+                        <span>Đã giao hàng</span>
+                    @else
+                        <span>Hủy đơn hàng</span>
+                    @endif                             
+                </td>
                 <td><span class="total money">@php echo number_format($order->tongTien) @endphp đ</span></td>
             </tr>
             @endforeach
