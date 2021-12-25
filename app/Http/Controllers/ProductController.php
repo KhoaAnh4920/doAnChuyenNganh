@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Session;
 use Redirect;
 use DB;
+use App\CategoryProduct;
+use App\Brand;
+use App\Product;
 use View;
 session_start();
 
@@ -17,26 +20,23 @@ class ProductController extends Controller
     }
     public function productDetails($pro_slug){
         // Header //
-        $cate_of_Apple = DB::table("danhmucsanpham")
-            ->whereRaw('danhmucsanpham.maDanhMuc IN (select dbsanpham.maDanhMuc FROM dbsanpham JOIN thuonghieu on thuonghieu.maThuongHieu = dbsanpham.maThuongHieu WHERE thuonghieu.maThuongHieu = 1)')
-            ->get();
-        $cate_of_Gear = DB::table("danhmucsanpham")
-            ->select('tenDanhMuc', 'slug')
-            ->where('danhMucCha', 14)
-            ->get();
+        $cate_of_Apple = CategoryProduct::whereRaw('danhmucsanpham.maDanhMuc IN (select dbsanpham.maDanhMuc FROM dbsanpham JOIN thuonghieu on thuonghieu.maThuongHieu = dbsanpham.maThuongHieu WHERE thuonghieu.maThuongHieu = 1)')
+                        ->get();
+        $cate_of_Gear = CategoryProduct::select('tenDanhMuc', 'slug')
+                        ->where('danhMucCha', 14)
+                        ->get();
         //var_dump($cate_of_Gear); exit;
 
         // end header
 
         
 
-        $pro_id = DB::table('dbsanpham')->select('maSanPham')->where('slug', $pro_slug)->get();
+        $pro_id = Product::select('maSanPham')->where('slug', $pro_slug)->get();
 
         foreach($pro_id as $key => $id){
             $pro_by_id = $id->maSanPham;
         }
-        $detail_pro = DB::table("dbsanpham")
-        ->join("danhmucsanpham", function($join){
+        $detail_pro = Product::join("danhmucsanpham", function($join){
             $join->on("danhmucsanpham.maDanhMuc", "=", "dbsanpham.maDanhMuc");
         })
         ->join("thuonghieu", function($join){
@@ -54,7 +54,7 @@ class ProductController extends Controller
         View::share('cate_of_Apple', $cate_of_Apple);
         View::share('cate_of_Gear', $cate_of_Gear);
 
-        $recommmendedProducts = DB::table('dbsanpham')->where('maDanhMuc', $cate)->limit(6)->get();
+        $recommmendedProducts = Product::where('maDanhMuc', $cate)->limit(6)->get();
         return view('frontend.pages.productsPages.productDetails')->with('detail_pro', $detail_pro)
         ->with('recommmendedProducts', $recommmendedProducts)
         ->with('gallery_pro', $gallery_pro)
@@ -73,7 +73,7 @@ class ProductController extends Controller
         $this->checkLogin();
 
         Session::forget('gal_del');
-        $all_products = DB::table('dbsanpham')->join('danhmucsanpham', 'danhmucsanpham.maDanhMuc', '=', 'dbsanpham.maDanhMuc')
+        $all_products = Product::join('danhmucsanpham', 'danhmucsanpham.maDanhMuc', '=', 'dbsanpham.maDanhMuc')
         ->join('thuonghieu', 'thuonghieu.maThuongHieu', '=', 'dbsanpham.maThuongHieu')
         ->select("dbsanpham.*", "danhmucsanpham.tendanhmuc", "thuonghieu.tenthuonghieu")
         ->paginate(10);
@@ -83,17 +83,17 @@ class ProductController extends Controller
     public function themSanPham(){
         $this->checkLogin();
 
-        $all_brands = DB::table('thuonghieu')->orderby('maThuongHieu')->get();
-        $all_category_products = DB::table('danhmucsanpham')->orderby('maDanhMuc')->get();
+        $all_brands = Brand::orderby('maThuongHieu')->get();
+        $all_category_products = CategoryProduct::orderby('maDanhMuc')->get();
 
         return view('backend.pages.sanPham.themSanPham')->with('all_brands', $all_brands)->with('all_category_products', $all_category_products);
     }
     public function suaSanPham($pro_id){
         $this->checkLogin();
 
-        $all_brands = DB::table('thuonghieu')->orderby('maThuongHieu')->get();
+        $all_brands = Brand::orderby('maThuongHieu')->get();
         $all_category_products = DB::table('danhmucsanpham')->orderby('maDanhMuc')->get();
-        $edit_pro = DB::table('dbsanpham')->where('maSanPham', $pro_id)->get();
+        $edit_pro = Product::where('maSanPham', $pro_id)->get();
 
         $cate_image = DB::table('danhmuchinh')->where('maSanPham', $pro_id)->get();
 
@@ -254,7 +254,7 @@ class ProductController extends Controller
     public function xoaSanPham($pro_id){
         $this->checkLogin();
 
-        DB::table('dbsanpham')->where('maSanPham', $pro_id)->delete();
+        Product::where('maSanPham', $pro_id)->delete();
         Session::put('message', 'Xóa thành công');
         return Redirect::to('/liet-ke-san-pham.html')->with('error_code', 5);
     }

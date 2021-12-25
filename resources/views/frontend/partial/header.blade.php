@@ -33,7 +33,7 @@
             <div class="row">
                 <div class="col-sm-4">
                     <div class="logo pull-left">
-                        <a href="{{URL::to('/')}}"><img src="{{asset('public/frontend/images/home/logo.png')}}"
+                        <a href="{{URL::to('/')}}"><img src="{{asset('public/frontend/images/home/logoImg.png')}}"
                                 alt="" /></a>
                     </div>
 

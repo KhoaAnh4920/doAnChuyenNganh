@@ -8,6 +8,7 @@ use Redirect;
 use DB;
 use Cart;
 use View;
+use App\Slider;
 session_start();
 
 class HomeController extends Controller
@@ -270,5 +271,35 @@ class HomeController extends Controller
         View::share('cate_of_Gear', $cate_of_Gear);
 
         return view('frontend.pages.contactPages.contact');
+    }
+
+    public function lietKeSlider(){
+        $this->checkLogin();
+        $all_slider = Slider::orderBy('maSlider', 'DESC')->get();
+        return view('backend.pages.slider.lietKeSlider')->with('all_slider', $all_slider);
+    }
+    public function themSlider(){
+        return view('backend.pages.slider.themSlider');
+    }
+    public function createSlider(Request $request){
+
+        $this->checkLogin();
+        $slider = new Slider();
+        $slider->tenSlider = $request->slider_name;
+        $slider->moTa = $request->slider_desc;
+        $slider->trangThai = $request->slider_status;
+
+        $get_image = $request->file('slider_img');
+
+        if($get_image){
+            $get_name_image = $get_image->getClientOriginalName(); // Lấy tên file
+            $get_image->move('public/upload/slider', $get_name_image);
+            $slider->hinhAnh = $get_name_image;
+
+            $slider->save();
+            Session::put('message', 'Thêm thành công');
+            return redirect()->back()->with('error_code', 5);
+        }
+
     }
 }

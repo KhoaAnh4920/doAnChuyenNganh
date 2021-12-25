@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Session;
 use Redirect;
 use DB;
+use App\CategoryProduct;
+use App\Brand;
 use View;
 session_start();
 
@@ -15,40 +17,35 @@ class CategoryProductController extends Controller
     public function Categoryproduct($cate_slug){
 
         // Sidebar //
-        $all_brands = DB::table("thuonghieu")
-        ->leftJoin("dbsanpham", function($join){
+        $all_brands = Brand::leftJoin("dbsanpham", function($join){
             $join->on("thuonghieu.mathuonghieu", "=", "dbsanpham.mathuonghieu");
         })
         ->select("thuonghieu.*", DB::raw('count(dbsanpham.masanpham) as sl'))
         ->groupBy("thuonghieu.maThuongHieu")
         ->get();
-        $all_category_products = DB::table('danhmucsanpham')->orderby('maDanhMuc')->get();
-        $count_danhMucCon = DB::table('danhmucsanpham')
-        ->select( "danhmucsanpham.maDanhMuc as maDanhMucCha","danhmucsanpham.tenDanhMuc","danhmucsanpham.slug",DB::raw('(select count(*) from danhmucsanpham where danhmucsanpham.danhMucCha = maDanhMucCha) as SL'))
+        $all_category_products = CategoryProduct::orderby('maDanhMuc')->get();
+        $count_danhMucCon = CategoryProduct::select( "danhmucsanpham.maDanhMuc as maDanhMucCha","danhmucsanpham.tenDanhMuc","danhmucsanpham.slug",DB::raw('(select count(*) from danhmucsanpham where danhmucsanpham.danhMucCha = maDanhMucCha) as SL'))
         ->where('danhmucsanpham.danhMucCha', 0)
         ->get();
         // End sidebar //
 
         // Header //
-        $cate_of_Apple = DB::table("danhmucsanpham")
-            ->whereRaw('danhmucsanpham.maDanhMuc IN (select dbsanpham.maDanhMuc FROM dbsanpham JOIN thuonghieu on thuonghieu.maThuongHieu = dbsanpham.maThuongHieu WHERE thuonghieu.maThuongHieu = 1)')
+        $cate_of_Apple = CategoryProduct::whereRaw('danhmucsanpham.maDanhMuc IN (select dbsanpham.maDanhMuc FROM dbsanpham JOIN thuonghieu on thuonghieu.maThuongHieu = dbsanpham.maThuongHieu WHERE thuonghieu.maThuongHieu = 1)')
             ->get();
-        $cate_of_Gear = DB::table("danhmucsanpham")
-            ->select('tenDanhMuc', 'slug')
+        $cate_of_Gear = CategoryProduct::select('tenDanhMuc', 'slug')
             ->where('danhMucCha', 14)
             ->get();
 
         // end header
         
 
-        $cate_id = DB::table('danhmucsanpham')->select('maDanhMuc', 'danhMucCha')->where("slug", $cate_slug)->get();
+        $cate_id = CategoryProduct::select('maDanhMuc', 'danhMucCha')->where("slug", $cate_slug)->get();
         foreach($cate_id as $key =>$id){
             $cate_by_id = $id->maDanhMuc;
             $id_danh_muc_cha = $id->danhMucCha;
         }
 
-        $sl_DanhMucCon = DB::table('danhmucsanpham')
-        ->select(DB::raw('count(*) as SL'))
+        $sl_DanhMucCon = CategoryProduct::select(DB::raw('count(*) as SL'))
         ->where('danhmucsanpham.danhMucCha', $cate_by_id)
         ->first();
 
@@ -65,7 +62,7 @@ class CategoryProductController extends Controller
         
         
         
-        $name_product = DB::table('danhmucsanpham')->where('slug', $cate_slug)->select('tenDanhMuc')->get();
+        $name_product = CategoryProduct::where('slug', $cate_slug)->select('tenDanhMuc')->get();
 
         return view('frontend.pages.productsPages.categoryProduct')->with('all_brands', $all_brands)
         ->with('all_category_products', $all_category_products)
@@ -88,53 +85,71 @@ class CategoryProductController extends Controller
 
     public function lietKeDanhMucSanPham(){
         $this->checkLogin();
-        $all_category_products = DB::table('danhmucsanpham')->orderby('maDanhMuc')->get();
+        $all_category_products = CategoryProduct::orderby('maDanhMuc')->get();
         return view('backend.pages.danhMucSanPham.lietKeDanhMucSanPham')->with('all_category_products' ,$all_category_products);
     }
     public function themDanhMucSanPham(){
         $this->checkLogin();
-        $cate_parent = DB::table('danhmucsanpham')->where('danhMucCha', 0)->get();
+        $cate_parent = CategoryProduct::where('danhMucCha', 0)->get();
         return view('backend.pages.danhMucSanPham.themDanhMucSanPham')->with('cate_parent', $cate_parent);
     }
     public function suaDanhMucSanPham($cate_product_id){
         $this->checkLogin();
-        $edit_cate_product = DB::table('danhmucsanpham')->where('maDanhMuc', $cate_product_id)->get();
-        $cate_parent = DB::table('danhmucsanpham')->where('danhMucCha', 0)->get();
+        $edit_cate_product = CategoryProduct::where('maDanhMuc', $cate_product_id)->get();
+        $cate_parent = CategoryProduct::where('danhMucCha', 0)->get();
         return view('backend.pages.danhMucSanPham.suaDanhMucSanPham')->with('edit_cate_procuct', $edit_cate_product)
         ->with('cate_parent', $cate_parent);
     }
     public function createCategoryProduct(Request $request){
         $this->checkLogin();
         $data = array();
-        $data['tenDanhMuc'] = $request->tenDanhMuc;
-        $data['slug'] = $request->slug_danhmucsanpham;
-        $data['moTaDanhMuc'] = $request->moTaDanhMuc;
-        $data['danhMucCha'] = $request->thuocDanhMuc;
-        $data['trangThai'] = $request->trangThai;
+        $category = new CategoryProduct();
+        $category->tenDanhMuc = $request->tenDanhMuc;
+        $category->slug = $request->slug_danhmucsanpham;
+        $category->moTaDanhMuc = $request->moTaDanhMuc;
+        $category->danhMucCha = $request->thuocDanhMuc;
+        $category->trangThai = $request->trangThai;
+
+        $category->save();
+
+        // $data['tenDanhMuc'] = $request->tenDanhMuc;
+        // $data['slug'] = $request->slug_danhmucsanpham;
+        // $data['moTaDanhMuc'] = $request->moTaDanhMuc;
+        // $data['danhMucCha'] = $request->thuocDanhMuc;
+        // $data['trangThai'] = $request->trangThai;
         
-        //var_dump($data); exit;
-        DB::table('danhmucsanpham')->insert($data);
+        // DB::table('danhmucsanpham')->insert($data);
         Session::put('message', 'Thêm thành công');
         return Redirect::to('/liet-ke-danh-muc-san-pham.html')->with('error_code', 5);
     }
     public function updateCategoryProduct(Request $request, $cate_product_id){
         $this->checkLogin();
-        $data = array();
-        $data['tenDanhMuc'] = $request->tenDanhMuc;
-        $data['slug'] = $request->slug_danhmucsanpham;
-        $data['moTaDanhMuc'] = $request->moTaDanhMuc;
-        $data['trangThai'] = $request->trangThai;
-        $data['danhMucCha'] = $request->thuocDanhMuc;
+
+        $category = CategoryProduct::find($cate_product_id);
+
+        $category->tenDanhMuc = $request->tenDanhMuc;
+        $category->slug = $request->slug_danhmucsanpham;
+        $category->moTaDanhMuc = $request->moTaDanhMuc;
+        $category->danhMucCha = $request->thuocDanhMuc;
+        $category->trangThai = $request->trangThai;
+
+        $category->save();
+        // $data = array();
+        // $data['tenDanhMuc'] = $request->tenDanhMuc;
+        // $data['slug'] = $request->slug_danhmucsanpham;
+        // $data['moTaDanhMuc'] = $request->moTaDanhMuc;
+        // $data['trangThai'] = $request->trangThai;
+        // $data['danhMucCha'] = $request->thuocDanhMuc;
 
         //var_dump($data); exit;
-        DB::table('danhmucsanpham')->where('maDanhMuc', $cate_product_id)->update($data);
+        //DB::table('danhmucsanpham')->where('maDanhMuc', $cate_product_id)->update($data);
         Session::put('message', 'Cập nhật thành công');
         return Redirect::to('/liet-ke-danh-muc-san-pham.html')->with('error_code', 5);
     }
     public function xoaDanhMucSanPham($cate_product_id){
         $this->checkLogin();
 
-        $sl_sanPham= DB::table("danhmucsanpham")->leftJoin("dbsanpham", function($join){
+        $sl_sanPham= CategoryProduct::leftJoin("dbsanpham", function($join){
 	    $join->on("danhmucsanpham.madanhmuc", "=", "dbsanpham.madanhmuc");})
         ->select("danhmucsanpham.tendanhmuc", DB::raw("count(dbsanpham.masanpham) as sl"))
         ->where("danhmucsanpham.maDanhMuc", $cate_product_id)
@@ -146,7 +161,7 @@ class CategoryProductController extends Controller
             Session::put('error_mess', 'Danh mục đã có sản phẩm, không thể xóa');
             return Redirect::to('/liet-ke-danh-muc-san-pham.html');
        }else{
-            DB::table('danhmucsanpham')->where('maDanhMuc', $cate_product_id)->delete();
+            CategoryProduct::where('maDanhMuc', $cate_product_id)->delete();
             Session::put('message', 'Xóa thành công');
        }
         

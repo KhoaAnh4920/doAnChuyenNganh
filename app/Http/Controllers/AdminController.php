@@ -121,6 +121,7 @@ class AdminController extends Controller
         $data['users_name'] = $request->users_name;
         $data['users_email'] = $request->users_email;
         $data['users_password'] = md5($request->users_password);
+        $data['users_address'] = $request->users_address;
         $data['users_phone'] = $request->users_phone;
         $data['users_role'] = $request->role;
 
@@ -131,14 +132,12 @@ class AdminController extends Controller
             $get_image->move('public/upload/avatar', $get_name_image);
             $data['users_avatar'] = $get_name_image;
 
-            var_dump($data); exit;
-
             DB::table('users')->insert($data);
             Session::put('message', 'Đăng ký thành công');
             return redirect()->back()->with('error_code', 5);
         }
         $data['users_avatar'] = "unknown.png";
-        var_dump($data); exit;
+    
 
         DB::table('users')->insert($data);
         Session::put('message', 'Đăng ký thành công');

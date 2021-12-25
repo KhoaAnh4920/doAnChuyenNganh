@@ -52,7 +52,6 @@
 @section('defaultContent')
 <div class="col-sm-9 padding-right">						
     
-
     <div class="category-tab">
         <!--Điện thoại nổi bật-->
         <div class="col-sm-12">

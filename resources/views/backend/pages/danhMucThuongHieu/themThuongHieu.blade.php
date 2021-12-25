@@ -21,7 +21,7 @@
                     <h6 class="m-0 font-weight-bold text-primary">Thêm thương hiệu</h6>
                 </div>
                 <div class="card-body">
-                    <form role="form" action="{{URL::to('/create-category-product.html')}}" method="post">
+                    <form role="form" action="{{URL::to('/create-brand.html')}}" method="post">
                         {!! csrf_field() !!}
                         <div class="form-group">
                             <label for="exampleInputNameBrand">Tên thương hiệu</label>

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Session;
 use Redirect;
 use DB;
+use App\Brand;
 use View;
 session_start();
 
@@ -28,8 +29,7 @@ class BrandController extends Controller
 
         // end header
 
-        $all_brands = DB::table("thuonghieu")
-        ->leftJoin("dbsanpham", function($join){
+        $all_brands = Brand::leftJoin("dbsanpham", function($join){
             $join->on("thuonghieu.mathuonghieu", "=", "dbsanpham.mathuonghieu");
         })
         ->select("thuonghieu.*", DB::raw('count(dbsanpham.masanpham) as sl'))
@@ -41,9 +41,10 @@ class BrandController extends Controller
         ->where('danhmucsanpham.danhMucCha', 0)
         ->get();
 
-        $brand_id = DB::table('thuonghieu')->select('maThuongHieu')->where("slug", $brand_slug)->get();
+        $brand_id = Brand::where("slug", $brand_slug)->pluck('maThuongHieu');
+        //var_dump($brand_id); exit;
         foreach($brand_id as $key =>$id){
-            $brand_by_id = $id->maThuongHieu;
+            $brand_by_id = $id;
         }
         $product_of_brand = DB::table('dbsanpham')->where("maThuongHieu", $brand_by_id)->paginate(6);
         $name_brand = DB::table('thuonghieu')->where('maThuongHieu', $brand_by_id)->select('tenThuongHieu')->get();
@@ -59,7 +60,7 @@ class BrandController extends Controller
     }
     public function lietKeThuongHieu(){
         $this->checkLogin();
-        $all_brands = DB::table('thuonghieu')->orderby('maThuongHieu')->get();
+        $all_brands = Brand::orderby('maThuongHieu')->get();
         return view('backend.pages.danhMucThuongHieu.lietKeThuongHieu')->with('all_brands', $all_brands);
     }
     public function themThuongHieu(){
@@ -68,14 +69,14 @@ class BrandController extends Controller
     }
     public function suaThuongHieu($brand_id){
         $this->checkLogin();
-        $edit_brand = DB::table('thuonghieu')->where('maThuongHieu', $brand_id)->get();
+        $edit_brand = Brand::where('maThuongHieu', $brand_id)->get();
  
         return view('backend.pages.danhMucThuongHieu.suaThuongHieu')->with('edit_brand', $edit_brand);
     }
     public function xoaThuongHieu($brand_id){
         $this->checkLogin();
 
-        $sl_sanPham= DB::table("thuonghieu")->leftJoin("dbsanpham", function($join){
+        $sl_sanPham= Brand::leftJoin("dbsanpham", function($join){
         $join->on("thuonghieu.maThuongHieu", "=", "dbsanpham.maThuongHieu");})
         ->select("thuongHieu.tenThuongHieu", DB::raw("count(dbsanpham.masanpham) as sl"))
         ->where("thuonghieu.maThuongHieu", $brand_id)
@@ -85,7 +86,7 @@ class BrandController extends Controller
         if(($sl_sanPham[0]->sl) > 0){
             Session::put('message', 'Thương hiệu đã có sản phẩm, không thể xóa');
         }else{
-            DB::table('thuonghieu')->where('maThuongHieu', $brand_id)->delete();
+            Brand::where('maThuongHieu', $brand_id)->delete();
             Session::put('message', 'Xóa thành công');
         }
 
@@ -93,25 +94,35 @@ class BrandController extends Controller
     }
     public function createBrand(Request $request){
         $this->checkLogin();
-        $data = array();
-        $data['tenThuongHieu'] = $request->tenThuongHieu;
-        $data['slug'] = $request->slug_thuonghieu;
-        $data['moTaThuongHieu'] = $request->moTaThuongHieu;
-        $data['trangThai'] = $request->trangThai;
+        // $data = array();
+        // $data['tenThuongHieu'] = $request->tenThuongHieu;
+        // $data['slug'] = $request->slug_thuonghieu;
+        // $data['moTaThuongHieu'] = $request->moTaThuongHieu;
+        // $data['trangThai'] = $request->trangThai;
 
-        DB::table('thuonghieu')->insert($data);
+        $brand = new Brand();
+        $brand->tenThuongHieu = $request->tenThuongHieu;
+        $brand->slug = $request->slug_thuonghieu;
+        $brand->moTaThuongHieu = $request->moTaThuongHieu;
+        $brand->trangThai = $request->trangThai;
+
+        //DB::table('thuonghieu')->insert($data);
+        $brand->save();
         Session::put('message', 'Thêm thành công');
         return redirect('/liet-ke-thuong-hieu.html')->with('error_code', 5);
     }
     public function updateBrand(Request $request,$brand_id){
         $this->checkLogin();
         $data = array();
-        $data['tenThuongHieu'] = $request->tenThuongHieu;
-        $data['slug'] = $request->slug_thuonghieu;
-        $data['moTaThuongHieu'] = $request->moTaThuongHieu;
-        $data['trangThai'] = $request->trangThai;
+
+        $brand = Brand::find($brand_id);
+        $brand->tenThuongHieu = $request->tenThuongHieu;
+        $brand->slug = $request->slug_thuonghieu;
+        $brand->moTaThuongHieu = $request->moTaThuongHieu;
+        $brand->trangThai = $request->trangThai;
+        $brand->save();
         
-        DB::table('thuonghieu')->where('maThuongHieu', $brand_id)->update($data);
+        //DB::table('thuonghieu')->where('maThuongHieu', $brand_id)->update($data);
         Session::put('message', 'Cập nhật thành công');
         return redirect('/liet-ke-thuong-hieu.html')->with('error_code', 5);
     }

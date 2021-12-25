@@ -43,6 +43,7 @@
                         <input type="email" name="users_email" placeholder="Email đăng nhập*" require />
                         <input type="text" name="users_name" placeholder="Tên người dùng*" require />
                         <input type="password" name="users_password" placeholder="Mật khẩu*" require />
+                        <input type="text" name="users_address" placeholder="Địa chỉ" />
                         <input type="text" name="users_phone" placeholder="Số điện thoại" />
                         <input type="hidden" name="role" value="1" />
                         <button type="submit" class="btn btn-default">Đăng ký</button>

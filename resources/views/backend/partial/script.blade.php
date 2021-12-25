@@ -13,6 +13,10 @@ CKEDITOR.replace('ckeditor_editProduct');
 </script>
 
 <!-- Hiện modal form thành công  -->
+
+<!-- @php session()->forget('error_code'); @endphp -->
+
+
 @if(!empty(Session::get('error_code')) && Session::get('error_code') == 5)
 <script>
 $(function() {
@@ -20,7 +24,7 @@ $(function() {
 });
 </script>
 @endif
-
+@php var_dump(Session::get('error_code'));@endphp
 
 <script language="javascript">
 function ChangeToSlug() {

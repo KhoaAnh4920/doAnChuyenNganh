@@ -101,10 +101,15 @@ Route::get('/them-bai-viet.html', 'NewsController@themBaiViet');
 Route::get('/sua-bai-viet.html', 'NewsController@suaBaiViet');
 
 // Danh mục hình // 
-Route::get('/liet-ke-danh-muc-hinh.html/{pro_id}', 'galleryController@lietKeDanhMucHinh');
-Route::get('/them-danh-muc-hinh.html', 'galleryController@themDanhMucHinh');
-Route::get('/sua-danh-muc-hinh.html', 'galleryController@suaDanhMucHinh');
-Route::post('/hien-thi-danh-muc-hinh', 'galleryController@hienThiDanhMuc');
-Route::post('/insert-gallery/{pro_id}', 'galleryController@insertGallery');
-Route::get('/delete-gallery/{pro_id}', 'galleryController@deleteGallery');
-Route::post('/update-gallery', 'galleryController@updateGallery');
+// Route::get('/liet-ke-danh-muc-hinh.html/{pro_id}', 'galleryController@lietKeDanhMucHinh');
+// Route::get('/them-danh-muc-hinh.html', 'galleryController@themDanhMucHinh');
+// Route::get('/sua-danh-muc-hinh.html', 'galleryController@suaDanhMucHinh');
+// Route::post('/hien-thi-danh-muc-hinh', 'galleryController@hienThiDanhMuc');
+// Route::post('/insert-gallery/{pro_id}', 'galleryController@insertGallery');
+// Route::get('/delete-gallery/{pro_id}', 'galleryController@deleteGallery');
+// Route::post('/update-gallery', 'galleryController@updateGallery');
+
+//Slider //
+Route::get('/liet-ke-slider.html', 'HomeController@lietKeSlider');
+Route::get('/them-slider.html', 'HomeController@themSlider');
+Route::post('/create-slider', 'HomeController@createSlider');
