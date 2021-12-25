@@ -4,7 +4,7 @@
 <!-- Container Fluid-->
 <div class="container-fluid" id="container-wrapper">
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Form Basics</h1>
+        <h1 class="h3 mb-0 text-gray-800">Thêm slider</h1>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="./">Home</a></li>
             <li class="breadcrumb-item">Forms</li>
@@ -41,7 +41,7 @@
                             <input type="text" class="form-control" name="slider_desc" placeholder="Mô tả">
                         </div>
                         <div class="form-group">
-                            <label for="slider_status">Trạng thái</label>
+                            <label for="slider_status">Trạng thái: </label>
                             <select name="slider_status">
                                 <option value="0" selected>Ẩn</option>
                                 <option value="1">Hiển thị</option>
