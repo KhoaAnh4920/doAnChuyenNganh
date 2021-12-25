@@ -39,6 +39,11 @@ class CartController extends Controller
         $data = array();
         $pro_id = $request->product_id;
         $qty_pro = $request->qty_pro;
+
+        if($qty_pro < 1){
+            Alert::error('Số lượng sản phẩm không hợp lệ');
+            return redirect()->back();
+        }
   
         $product = DB::table("dbsanpham")
         ->join("danhmucsanpham", function($join){
@@ -75,17 +80,21 @@ class CartController extends Controller
 
         $data = array();
         $data = $request->quanlity;
+        $i = 0;
 
        foreach($data as $key => $qty_pro){
            $rowId = $key;
            $qty = $qty_pro;
-           if($qty < 1){
-                Alert::error('Số lượng sản phẩm không hợp lệ');
-           }
-           else
+
+           if($qty > 0){
+                $i++;
                 Cart::update($rowId, $qty);
+           }    
        }
-        Alert::success('Cập nhật thành công');
+        if($i > 0)
+            Alert::success('Cập nhật thành công '.$i.' sản phẩm');
+        else
+            Alert::error('Cập nhật thất bại');
         return redirect()->back();
     }
     public function DeleteAllCart(){
@@ -100,7 +109,7 @@ class CartController extends Controller
         if($user_id == null){
             return Redirect::to('/login.html');
         }
-            //return redirect()->back()->with('error_code', 7)->send();
+        return redirect()->back();
     }
 
     public function order(){

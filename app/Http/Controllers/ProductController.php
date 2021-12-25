@@ -314,6 +314,22 @@ class ProductController extends Controller
 
 
         $kw = $_GET['kw'];
+
+        // $count_search = Product::join("danhmucsanpham", function($join){
+        //     $join->on("dbsanpham.maDanhMuc", "=", "danhmucsanpham.maDanhMuc");
+        // })
+        // ->join("thuonghieu", function($join){
+        //     $join->on("dbsanpham.maThuongHieu", "thuonghieu.maThuongHieu", "=");
+        // })
+        // ->select("dbsanpham.*", "danhmucsanpham.tendanhmuc", "thuonghieu.tenthuonghieu")
+        // ->where("thuonghieu.tenThuongHieu", "like", "%".$kw."%")
+        // ->orwhere("danhmucsanpham.tenDanhMuc", "like", "%".$kw."%")
+        // ->orwhere("dbsanpham.tenSanPham", "like", "%".$kw."%")
+        // ->orwhere("dbsanpham.giaSanPham", "like", "%".$kw."%")
+        // ->orwhere("dbsanpham.moTaSanPham", "like", "%".$kw."%")
+        // ->get();
+        
+
         $result_search = Product::join("danhmucsanpham", function($join){
             $join->on("dbsanpham.maDanhMuc", "=", "danhmucsanpham.maDanhMuc");
         })
@@ -327,7 +343,6 @@ class ProductController extends Controller
         ->orwhere("dbsanpham.giaSanPham", "like", "%".$kw."%")
         ->orwhere("dbsanpham.moTaSanPham", "like", "%".$kw."%")
         ->paginate(6);
-    
 
         return view('frontend.pages.productsPages.searchPage')->with('all_brands', $all_brands)
         ->with('all_category_products', $all_category_products)

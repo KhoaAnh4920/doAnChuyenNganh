@@ -9,7 +9,7 @@
 @section('defaultContent')
 <div class="features_items">
     <!--features_items-->
-    <h2 class="title text-center">{{count($result_search)}} sản phẩm được tìm thấy</h2>
+    <h2 class="title text-center">{{$result_search->total()}} sản phẩm được tìm thấy</h2>
 
 
     @if(count($result_search) > 0)
