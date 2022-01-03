@@ -121,6 +121,15 @@ class AdminController extends Controller
         $data = array();
         $data['users_name'] = $request->users_name;
         $data['users_email'] = $request->users_email;
+
+        $all_users = DB::table('users')->orderBy('users_id', 'DESC')->get();
+        foreach($all_users as $key => $u){
+            if($u->users_email == $data['users_email']){
+                Alert::error('Email đã tồn tại');
+                return redirect()->back();
+            }
+        }
+
         $data['users_password'] = md5($request->users_password);
         $data['users_address'] = $request->users_address;
         $data['users_phone'] = $request->users_phone;
@@ -135,9 +144,9 @@ class AdminController extends Controller
 
             $n = DB::table('users')->insert($data);
             if($n > 0)
-                Alert::success('Cập nhật thành công');
+                Alert::success('Tạo thành công');
             else
-                Alert::error('Cập nhật thất bại');
+                Alert::error('Tạo thất bại');
             //Session::put('message', 'Đăng ký thành công');
             return redirect()->back();
         }
@@ -146,10 +155,9 @@ class AdminController extends Controller
 
         $n = DB::table('users')->insert($data);
         if($n > 0)
-            Alert::success('Cập nhật thành công');
+            Alert::success('Tạo thành công');
         else
-            Alert::error('Cập nhật thất bại');
-        Session::put('message', 'Đăng ký thành công');
+            Alert::error('Tạo thất bại');
         return redirect()->back();
     }
     public function updateUsers(Request $request,$users_id){

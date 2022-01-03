@@ -10,6 +10,7 @@ session_start();
 use Cart;
 use View;
 use Alert;
+use Mail;
 use Carbon\Carbon;
 
 class CartController extends Controller
@@ -106,15 +107,27 @@ class CartController extends Controller
 
     public function checkLogin(){
         $user_id = Session::get('user_id');
+        
         if($user_id == null){
-            return Redirect::to('/login.html');
+            return -1;
         }
-        return redirect()->back();
+        $userActive = DB::table('users')->where('users_id', $user_id)->first();
+        if($userActive->active != 1){
+            return 0;
+        }
+        return 1;
     }
 
     public function order(){
         // Check login //
-        $this->checkLogin();
+        $n = $this->checkLogin();
+        if($n == -1){
+            Alert::error('Vui lòng đăng nhập tài khoản để đặt hàng');
+            return Redirect::to('/login.html');
+        }else if($n == 0){
+            Alert::error('Vui lòng kích hoạt tài khoản để đặt hàng');
+            return Redirect::to('/trang-chu.html');
+        }
 
         // Header //
         $cate_of_Apple = DB::table("danhmucsanpham")
@@ -138,10 +151,26 @@ class CartController extends Controller
 
         return view('frontend.pages.orderPages.order')->with('cart_content',$cart_content)->with('info_user', $info_user);
     }
+    public function sendMailOrder($data, $cart_content, $email){
+        $title_mail = "Xác nhận đặt hàng ";
+        //$to_email = $email;
+        $data['email'] = $email; //send to this email
+       // $link_reset_pass = url('/actice-account?id='.$users_id.'&token='.$token);
+             
+       // $data = array("name"=>$title_mail,"body"=>$link_reset_pass,'email'=>$to_email); //body of mail.blade.php
+                
+        Mail::send('frontend.pages.orderPages.notify_orderMail', ['data'=>$data, 'oderDetail' =>$cart_content] , function($message) use ($title_mail,$data){
+		    $message->to($data['email'])->subject($title_mail);//send this mail with subject
+		    $message->from($data['email'],$title_mail);//send from this mail
+	    });
+        //--send mail
+        return true;
+    }
     public function handleOrder(Request $request){
         $data = array();
 
         // Thêm vào data đơn hàng //
+        $email = $request->order_cusEmail;
         $data['tenNguoiNhanHang'] = $request->order_cusName;
         $data['soDienThoai'] = $request->order_cusPhone;
         //$data['ngayDatHang'] = $request->order_cusPhone;
@@ -170,6 +199,7 @@ class CartController extends Controller
             //var_dump($dataChiTiet); exit;
             DB::table('chitietdonhang')->insert($dataChiTiet);
         }
+        $this->sendMailOrder($data, $cart_content, $email);
         Cart::destroy();
         Alert::success('Đặt hàng thành công');
         return Redirect::to('/trang-chu.html');

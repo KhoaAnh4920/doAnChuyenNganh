@@ -19,18 +19,31 @@ $(function() {
 
 @endif
 
-<!-- <script type="text/javascript">
-    load_more_product();
-    function load_more_product(id = ''){
+
+<script type="text/javascript">
+
+    var currentLocation = window.location.pathname ;
+    var slug ='';
+    var pot= 0;
+    for(i = currentLocation.length - 1; i >= 0; i--){
+        if(currentLocation[i] == '/'){
+            pot = i;
+            break;
+        }
+    }
+    slug = currentLocation.substr(pot+1);
+
+    load_more_news(0,slug);
+    function load_more_news(id = '', slug = ''){
         var _token = $('meta[name="csrf-token"]').attr('content');
         $.ajax({
-                url:'{{url('/load_more_product')}}',
+                url:'{{url('/load_more_news')}}',
                 method:"POST",
 
-                data:{id:id,_token:_token},
+                data:{id:id,_token:_token, slug:slug},
                 success:function(data){
                     $('#load_more_button').remove();
-                    $('#all_product').append(data);
+                    $('#mainlist').append(data);
                    
                 }
 
@@ -38,9 +51,9 @@ $(function() {
     }
     $(document).on('click','#load_more_button' ,function () {
         var id = $(this).data('id');
-        load_more_product(id);
+        load_more_news(id, slug);
     });
-</script> -->
+</script>
 
 <!-- <script type="text/javascript">
     $(document).ready(function(){

@@ -10,6 +10,8 @@
 <script>
 CKEDITOR.replace('ckeditor_addProduct');
 CKEDITOR.replace('ckeditor_editProduct');
+CKEDITOR.replace('ckeditor_addContentNews');
+CKEDITOR.replace('ckeditor_addDescNews');
 </script>
 
 <!-- Hiện modal form thành công  -->
@@ -171,14 +173,18 @@ $('.update_quantity_order').click(function() {
 <script>
 function readURL(input) {
 
+    // FileReader đọc dữ liệu từ input file //
     if (input.files && input.files[0]) {
         var reader = new FileReader();
 
+        // Xử lý cho sự kiện load
         reader.onload = function(e) {
             $('#blah')
                 .attr('src', e.target.result);
+            // add data vào src img
+            // thiết lập thuộc tính src và gán bằng dữ liệu data base64 của reader result
         };
-
+        // Tiến hành đọc file bằng phương thức readAsDataURL, fileReader.result sẽ là một URL đại diện cho dữ liệu đọc được.
         reader.readAsDataURL(input.files[0]);
     }
     console.log(input.files.length);
@@ -220,16 +226,22 @@ function readURL(input) {
 <script>
 $(document).ready(function() {
 
+    //kiem tra trinh duyet co ho tro File API
     if (window.File && window.FileList && window.FileReader) {
         $("#files").on("change", function(e) {
-            //alert("ok");
+            alert(files.length);
+            // lấy thông tin của file đã tải lên bằng property event.target.files
             var files = e.target.files,
-                filesLength = files.length;
+                filesLength = files.length; // Lấy số lượng file//
+            
             for (var i = 0; i < filesLength; i++) {
                 var f = files[i]
                 var fileReader = new FileReader();
+                //onload được kích hoạt khi quá trình đọc kết thúc thành công
                 fileReader.onload = (function(e) {
-                    var file = e.target;
+                    // e là event của kết quả fileReader.readAsDataURL(f);
+                    
+                    //var file = e.target;
                     //   $("<span class=\"pip\">" +
                     //     "<img class=\"imageThumb\" src=\"" + e.target.result + "\" title=\"" + file.name + "\"/>" +
                     //     "<br/><span class=\"remove\">Remove image</span>" +
@@ -243,6 +255,7 @@ $(document).ready(function() {
                         $(this).parent(".pip").remove();
                     });
                 });
+                // Tiến hành đọc file bằng phương thức readAsDataURL
                 fileReader.readAsDataURL(f);
             }
         });

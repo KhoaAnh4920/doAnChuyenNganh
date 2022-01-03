@@ -18,11 +18,11 @@ Route::get('/trang-chu.html', 'HomeController@index');
 Route::get('/product.html', 'ProductController@product');
 
 Route::get('/login.html', 'HomeController@login');
-Route::post('/load_more_product', 'HomeController@load_more_product');
+Route::post('/load_more_news', 'NewsController@load_more_news');
 
 Route::get('/contact.html', 'HomeController@contact');
-Route::get('/danh-muc-bai-viet.html', 'NewsController@danhMucBaiViet');
-Route::get('/chi-tiet-bai-viet.html', 'NewsController@hienThiBaiViet');
+Route::get('/danh-muc-bai-viet.html/{tenDanhMuc}', 'NewsController@danhMucBaiViet');
+Route::get('/chi-tiet-bai-viet.html/{new_slug}', 'NewsController@hienThiBaiViet');
 Route::post('/login-users', 'AdminController@loginUser');
 Route::get('/logoutUser.html', 'AdminController@logoutUser');
 
@@ -95,11 +95,18 @@ Route::post('/update-status-order', 'OrderController@update_status_order');
 // Danh mục bài viết //
 Route::get('/liet-ke-danh-muc-bai-viet.html', 'CategoryNewsController@lietKeDanhMucBaiViet');
 Route::get('/them-danh-muc-bai-viet.html', 'CategoryNewsController@themDanhMucBaiViet');
-Route::get('/sua-danh-muc-bai-viet.html', 'CategoryNewsController@suaDanhMucBaiViet');
+Route::get('/sua-danh-muc-bai-viet.html/{cate_id}', 'CategoryNewsController@suaDanhMucBaiViet');
+Route::get('/xoa-danh-muc-bai-viet.html/{cate_id}', 'CategoryNewsController@xoaDanhMucBaiViet');
+Route::post('/create-category-news', 'CategoryNewsController@createCategory');
+Route::post('/update-category-news/{cate_id}', 'CategoryNewsController@updateCategory');
 
-Route::get('/tat-ca-bai-viet.html', 'NewsController@tatCaBaiViet');
+// Bài viết //
+Route::get('/liet-ke-bai-viet.html', 'NewsController@tatCaBaiViet');
 Route::get('/them-bai-viet.html', 'NewsController@themBaiViet');
-Route::get('/sua-bai-viet.html', 'NewsController@suaBaiViet');
+Route::get('/sua-bai-viet.html/{news_id}', 'NewsController@suaBaiViet');
+Route::post('/update-news/{news_id}', 'NewsController@updateNews');
+Route::get('/xoa-bai-viet.html/{news_id}', 'NewsController@xoaBaiViet');
+Route::post('/create-news', 'NewsController@createNews');
 
 // Danh mục hình // 
 // Route::get('/liet-ke-danh-muc-hinh.html/{pro_id}', 'galleryController@lietKeDanhMucHinh');
@@ -115,3 +122,13 @@ Route::get('/liet-ke-slider.html', 'HomeController@lietKeSlider');
 Route::get('/them-slider.html', 'HomeController@themSlider');
 Route::get('/delete-slider/{slide_id}', 'HomeController@deleteSlider');
 Route::post('/create-slider', 'HomeController@createSlider');
+
+//
+Route::get('/forgot-password.html', 'HomeController@forgotPass');
+Route::post('/recover-pass', 'MailController@recover_pass');
+Route::get('/update-new-pass', 'MailController@updateNewPass');
+Route::get('/actice-account', 'MailController@activeAccount');
+Route::post('/update-pass-handle', 'MailController@handleUpdatePass');
+Route::post('/signin-users.html', 'MailController@signInUser');
+
+

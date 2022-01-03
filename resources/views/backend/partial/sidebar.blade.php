@@ -127,6 +127,34 @@
             </div>
         </div>
     </li>
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTableCategoryPost"
+            aria-expanded="true" aria-controls="collapseTableCategoryPost">
+            <i class="fa fa-th"></i>
+            <span>Danh mục bài viết</span>
+        </a>
+        <div id="collapseTableCategoryPost" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Tables</h6>
+                <a class="collapse-item" href="{{URL::to('/liet-ke-danh-muc-bai-viet.html')}}">Danh mục bài viết</a>
+                <a class="collapse-item" href="{{URL::to('/them-danh-muc-bai-viet.html')}}">Thêm danh mục bài viết</a>
+            </div>
+        </div>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTablePost"
+            aria-expanded="true" aria-controls="collapseTablePost">
+            <i class="fa fa-th"></i>
+            <span>Bài viết</span>
+        </a>
+        <div id="collapseTablePost" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Tables</h6>
+                <a class="collapse-item" href="{{URL::to('/liet-ke-bai-viet.html')}}">Liệt kê bài viết</a>
+                <a class="collapse-item" href="{{URL::to('/them-bai-viet.html')}}">Thêm bài viết</a>
+            </div>
+        </div>
+    </li>
 
 
     <hr class="sidebar-divider">

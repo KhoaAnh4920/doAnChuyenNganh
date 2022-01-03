@@ -124,66 +124,10 @@ class HomeController extends Controller
         // ->with('cate_of_Gear', $cate_of_Gear);
     }
 
-    // public function load_more_product(Request $request){
-
-    //     $data = $request->all();
-
-    //     // Click vào load more //
-    //     if($data['id'] > 0){
-    //         $newProducts = DB::table("dbsanpham")->where('trangThai', '1')->where('maSanPham', '<', $data['id'])->orderby('maSanPham', 'DESC')->take(6)->get();
-    //     }else{ // Mặc định mới vào trang // 
-    //         $newProducts = DB::table("dbsanpham")->orderby('maSanPham', 'DESC')->take(6)->get();
-    //     }
-
-        
-    //     $output = '';
-    //     if(!$newProducts->isEmpty()){
-    //         foreach($newProducts as $key => $pro_new){
-    //             $last_id = $pro_new->maSanPham;
-    //             $output.="
-                
-    //             <div class='col-sm-4'>
-    //                 <div class='product-image-wrapper'>
-    //                     <div class='single-products'>
-    //                         <div class='productinfo text-center'>
-    //                             <a href='".url('/product-details.html/'.$pro_new->slug)."'><img
-    //                                     style='width:200px' src='public/upload/products/$pro_new->hinhAnh' alt='$pro_new->tenSanPham' /></a>
-    //                             <h2>".number_format($pro_new->giaSanPham)." VNĐ</h2>
-    //                             <a href='".url('/product-details.html/'.$pro_new->slug)."'>
-    //                                 <p>$pro_new->tenSanPham</p>
-    //                             </a>
-    //                             <a href='".url('/product-details.html/'.$pro_new->slug)."' class='btn btn-default add-to-cart'>Chi tiết <i class='fa fa-arrow-right'></i></a>
-    //                         </div>
-    
-    //                     </div>
-    //                 </div>
-    //             </div>";
-    //         }
-    //         $output .="
-    //                 <div id='load_more'>
-    //                     <button name='load_more_button' class='btn btn-primary form-control' data-id='".$last_id."'
-    //                     id ='load_more_button'>Xem thêm <i class='fa fa-angle-double-down' aria-hidden='true'></i></button>
-    //                 </div>
-                
-    //             ";
-    //     }else{
-    //         $output .="
-    //                 <div id='load_more'>
-    //                     <button type='button' name='load_more_button' class='btn btn-default form-control'
-    //                     id ='load_more_button'>Đang cập nhật...</button>
-    //                 </div>
-                
-    //             ";
-    //     }
-        
-        
-    //     echo $output;
-        
-    // }
     public function checkLogin(){
         $user_id = Session::get('user_id');
         if($user_id == null)
-            return redirect()->back()->with('error_code', 5);
+            return redirect()->back();
     }
     
     public function checkout(){
@@ -351,5 +295,21 @@ class HomeController extends Controller
         Slider::where('maSlider', $slide_id)->delete();
         Alert::success('Xóa thành công');
         return redirect()->back();
+    }
+
+    public function forgotPass(){
+        // Header //
+        $cate_of_Apple = DB::table("danhmucsanpham")
+            ->whereRaw('danhmucsanpham.maDanhMuc IN (select dbsanpham.maDanhMuc FROM dbsanpham JOIN thuonghieu on thuonghieu.maThuongHieu = dbsanpham.maThuongHieu WHERE thuonghieu.maThuongHieu = 1)')
+            ->get();
+        $cate_of_Gear = DB::table("danhmucsanpham")
+            ->select('tenDanhMuc', 'slug')
+            ->where('danhMucCha', 14)
+            ->get();
+        // end header
+
+        View::share('cate_of_Apple', $cate_of_Apple);
+        View::share('cate_of_Gear', $cate_of_Gear);
+        return view('frontend.pages.loginUserPages.forgotPass');
     }
 }

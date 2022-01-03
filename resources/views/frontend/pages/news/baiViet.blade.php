@@ -8,47 +8,19 @@
 @endsection
 @section('defaultContent')
 <div class="features_items">
-    <h2 style="margin:0;position: inherit;font-size: 22px" class="title text-center">Tiêu đề bài viết</h2>
+    <h2 style="margin:0;position: inherit;font-size: 20px; color:#000; margin-bottom:10px" class="title">{{$news->tieuDe}}</h2>
+    <div class="userdetail">
+        <p style="font-size:12px; color: #999; display:inline-block">By</p>
+        <p style="color:#288ad6; font-size:12px; font-weight:600; display:inline-block"> {{$news->users_name}}</p>
+        <span style="font-size:12px; color: #999;">{{$news->created_at}}</span>
+    </div>
 
     <div class="product-image-wrapper" style="border: none;">
 
         <div class="single-products" style="margin:10px 0;padding: 2px">
             <div class="row" id="row-detail-1">
                 <div class="col-md-12 comboImage" id="detail-img">
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Distinctio illum in nam ipsum quos
-                        culpa! Voluptatum, in! Sequi ad dolore esse itaque ullam nisi, minima cum impedit blanditiis
-                        doloremque vel.
-                        Quisquam reiciendis provident fugiat libero quibusdam iste hic sequi nobis esse odit, dolorem
-                        veniam sint officiis velit tempore eaque accusamus ad dolorum? Explicabo asperiores, mollitia
-                        ducimus esse at dolorum ab?</p>
-                    <img src="{{asset('public/frontend/images/shop/product12.jpg')}}" alt="#"
-                        style="display:block; margin-left:auto; margin-right:auto; padding-bottom: 10px">
-                    <div class="captionImg" style="font-size:14px; text-align:center; margin-bottom:15px">Hình ảnh 1
-                    </div>
-                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta excepturi asperiores nisi esse
-                        consequuntur vel fuga reiciendis accusamus illum eos libero error est unde ad aut, culpa non
-                        eveniet. Laborum.
-                        Ipsa dolor, sit dicta officiis molestiae, doloribus a dolores maiores quis perspiciatis
-                        voluptatum ex nesciunt ea repellat nulla exercitationem adipisci quae doloremque labore dolorem
-                        eum. Nisi et deleniti dignissimos sint!
-                        Soluta atque illum, iste dolorem voluptatum assumenda ullam mollitia repellendus quaerat
-                        dignissimos quidem explicabo unde, voluptate magni delectus veniam voluptas totam eos nobis
-                        impedit est. Earum, nisi quidem? Ab, libero.
-                        Repudiandae quaerat sint magnam pariatur qui dolorum accusantium, totam assumenda inventore
-                        minus libero perferendis excepturi iure dolores ad eum! Facilis doloremque placeat optio
-                        quisquam aliquid reprehenderit accusantium eligendi iusto omnis?
-                        A architecto atque adipisci animi sed voluptatibus incidunt nemo, omnis, inventore nisi quo vero
-                        natus voluptatem iure illum eveniet nesciunt repellendus maxime repellat rerum earum! Nesciunt
-                        ut reiciendis molestias ipsa?</p>
-                    <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Soluta excepturi asperiores nisi esse
-                        consequuntur vel fuga reiciendis accusamus illum eos libero error est unde ad aut, culpa non
-                        eveniet. Laborum.
-                        Ipsa dolor, sit dicta officiis molestiae, doloribus a dolores maiores quis perspiciatis
-                        voluptatum ex nesciunt ea repellat nulla exercitationem adipisci quae doloremque labore dolorem
-                        eum. Nisi et deleniti dignissimos sint!
-                        Soluta atque illum, iste dolorem voluptatum assumenda ullam mollitia repellendus quaerat
-                        dignissimos quidem explicabo unde, voluptate magni delectus veniam voluptas totam eos nobis
-                        impedit est. Earum, nisi quidem? Ab, libero.</p>
+                    {!!$news->noiDung!!}
                 </div>
             </div>
             <div class="clearfix"></div>
@@ -74,8 +46,8 @@
     }
     </style>
     <ul class="post_relate">
-        <li><a href="#">Bài viết 1</a></li>
-        <li><a href="#">Bài viết 2</a></li>
-        <li><a href="#">Bài viết 3</a></li>
+        @foreach($tinLienQuan as $key => $tin)
+            <li><a href="{{URL::to('/chi-tiet-bai-viet.html/'.$tin->slug)}}">{{$tin->tieuDe}}</a></li>
+        @endforeach
     </ul>
     @endsection

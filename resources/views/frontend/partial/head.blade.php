@@ -28,68 +28,84 @@
 <link rel="apple-touch-icon-precomposed"
     href="{{asset('public/frontend/images/ico/apple-touch-icon-57-precomposed.png')}}">
 <script src="https://unpkg.com/sweetalert2@7.18.0/dist/sweetalert2.all.js"></script>
+
 <style>
-.thank-you-pop {
-    width: 100%;
-    padding: 20px;
-    text-align: center;
+
+.leftcate {
+    float: left;
+    overflow: hidden;
+    width: 65.834%;
 }
 
-.thank-you-pop img {
-    width: 76px;
-    height: auto;
-    margin: 0 auto;
+.rightcate {
+    float: right;
+    overflow: visible;
+    width: 31.667%;
+}
+.latest {
     display: block;
-    margin-bottom: 25px;
+    overflow: hidden;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+    margin-top: -10px;
 }
 
-.thank-you-pop h1 {
-    font-size: 42px;
-    margin-bottom: 25px;
-    color: #5C5C5C;
+.newslist {
+    display: block;
+    overflow: hidden;
+}
+ul, ol {
+    list-style: none;
+}
+.newslist {
+    display: block;
+    overflow: hidden;
+}
+.latest li:first-child {
+    overflow: hidden;
+    width: 65.19%;
+    margin-right: 15px;
+    border-bottom: 0;
 }
 
-.thank-you-pop p {
-    font-size: 20px;
-    margin-bottom: 27px;
-    color: #5C5C5C;
+
+.latest li {
+    overflow: hidden;
+    float: left;
+    width: 32%;
+    padding: 0;
 }
 
-.thank-you-pop h3.cupon-pop {
-    font-size: 25px;
-    margin-bottom: 40px;
-    color: #222;
+.newslist li {
+    display: block;
+    overflow: hidden;
+    border-bottom: 1px solid #eee;
+    position: relative;
+}
+.latest li:last-child {
+    border-bottom: 0;
+}
+.newslist li h3.titlecom {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.latest li h3 {
+    font-size: 15px;
+    line-height: 1.3em;
+    font-weight: 300;
+    margin-bottom: 0;
+}
+.userdetail span:before {
+    content: '•';
     display: inline-block;
-    text-align: center;
-    padding: 10px 20px;
-    border: 2px dashed #222;
-    clear: both;
-    font-weight: normal;
+    vertical-align: middle;
+    margin-right: 8px;
+    font-size: 18px;
+    color: #ccc;
 }
 
-.thank-you-pop h3.cupon-pop span {
-    color: #03A9F4;
-}
-
-.thank-you-pop a {
-    display: inline-block;
-    margin: 0 auto;
-    padding: 9px 20px;
-    color: #fff;
-    text-transform: uppercase;
-    font-size: 14px;
-    background-color: #8BC34A;
-    border-radius: 17px;
-}
-
-.thank-you-pop a i {
-    margin-right: 5px;
-    color: #fff;
-}
-
-#ignismyModal .modal-header {
-    border: 0px;
-}
-
-/*--thank you pop ends here--*/
 </style>

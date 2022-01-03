@@ -41,7 +41,7 @@
                 <div class="col-sm-8">
                     <div class="shop-menu pull-right">
                         <ul class="nav navbar-nav">
-                            <li><a href="{{URL::to('/checkout.html')}}"><i class="fa fa-crosshairs"></i>Thanh toán</a>
+                            <li><a href="{{URL::to('/checkout.html')}}"><i class="fa fa-crosshairs"></i>Tra cứu đơn hàng</a>
                             </li>
                             <li>
                                 <a href="{{URL::to('/cart.html')}}"><i class="fa fa-shopping-cart"></i>
@@ -118,7 +118,7 @@
                                     @endforeach
                                 </ul>
                             </li>
-                            <li><a href="{{URL::to('/danh-muc-bai-viet.html')}}">Trang tin tức</a></li>
+                            <li><a href="{{URL::to('/danh-muc-bai-viet.html/tin-moi-nhat')}}">Trang tin tức</a></li>
                             <li><a href="{{URL::to('/contact.html')}}">Liên hệ</a></li>
                         </ul>
                     </div>

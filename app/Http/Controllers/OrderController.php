@@ -7,6 +7,7 @@ use Session;
 use Redirect;
 use DB;
 use Alert;
+use Mail;
 session_start();
 
 class OrderController extends Controller

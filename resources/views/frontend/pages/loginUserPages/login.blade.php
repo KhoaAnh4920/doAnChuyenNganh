@@ -21,10 +21,8 @@
                         <!--Chống injection-->
                         <input type="email" name="user_email" placeholder="Email đăng nhập" />
                         <input type="password" name="user_password" placeholder="Mật khẩu" />
-                        <span>
-                            <input type="checkbox" class="checkbox">
-                            Remember me
-                        </span>
+                        <a href="{{URL::to('/forgot-password.html')}}">Quên mật khẩu?</a>
+   
                         <button type="submit" class="btn btn-default">Đăng nhập</button>
                     </form>
                 </div>
@@ -37,7 +35,7 @@
                 <div class="signup-form">
                     <!--sign up form-->
                     <h2>Đăng ký tài khoản!</h2>
-                    <form action="{{URL::to('/create-users.html')}}" method="post">
+                    <form action="{{URL::to('/signin-users.html')}}" method="post">
                         {{ csrf_field() }}
                         <!--Chống injection-->
                         <input type="email" name="users_email" placeholder="Email đăng nhập*" require />
