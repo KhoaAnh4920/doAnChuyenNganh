@@ -37,6 +37,7 @@ class MailController extends Controller
                 return redirect()->back();
             }else{
                	$token_random = Str::random();
+                $data['id'] = $customer->users_id;
                 $data2['email'] = $data['users_email'];
                 $data2['token'] = $token_random;
                 $data2['created_at']=$now;
