@@ -19,21 +19,23 @@ $(function() {
 
 @endif
 
-
+<!-- Sự kiện load more tin tuc -->
 <script type="text/javascript">
-
+    // Lấy url hiện tại - tách slug trong url //
     var currentLocation = window.location.pathname ;
     var slug ='';
     var pot= 0;
+    // Lấy vị trí của dấu / trong currentLocation //
     for(i = currentLocation.length - 1; i >= 0; i--){
         if(currentLocation[i] == '/'){
             pot = i;
             break;
         }
     }
+    // Cắt chuỗi từ vị trí dấu / +1 đến hết chuỗi => slug //
     slug = currentLocation.substr(pot+1);
 
-    load_more_news(0,slug);
+    load_more_news(0,slug); // Mặc hình mới vào trang //
     function load_more_news(id = '', slug = ''){
         var _token = $('meta[name="csrf-token"]').attr('content');
         $.ajax({
@@ -49,8 +51,9 @@ $(function() {
 
         }); 
     }
+    // Sự kiện khi người dùng click vào nút load more //
     $(document).on('click','#load_more_button' ,function () {
-        var id = $(this).data('id');
+        var id = $(this).data('id'); // Gán id = data-id
         load_more_news(id, slug);
     });
 </script>
@@ -92,6 +95,8 @@ $(function() {
     });
     
 </script> -->
+
+<!-- slider của danh mục hình trong trang chi tiết sản phẩm  -->
 <script type="text/javascript"> 
 $(document).ready(function() {
     $('#imageGallery').lightSlider({

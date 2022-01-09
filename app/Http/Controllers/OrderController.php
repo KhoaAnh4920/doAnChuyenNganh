@@ -12,22 +12,28 @@ session_start();
 
 class OrderController extends Controller
 {
+    // Kiểm tra đã đăng nhập hay chưa //
     public function checkLogin(){
+        // Lấy id admin từ trong session //
         $user_id = Session::get('admin_id');
+        // Nếu id admin = null - chưa đăng nhập, return về trang đăng nhập //
         if($user_id == null)
             return Redirect::to('/admin-login.html')->send();
     }
 
+    // Hiển thị các đơn hàng //
     public function lietKeDonHang(){
         $this->checkLogin();
 
         $all_order = DB::table('donhang')->orderby('maDonHang', 'DESC')->get();
         return view('backend.pages.donHang.lietKeDonHang')->with('all_order', $all_order);
     }
+    // Hiển thị chi tiết đơn hàng //
     public function chiTietDonHang($order_id){
         $this->checkLogin();
         $order_by_id = DB::table('donhang')->where('maDonHang', $order_id)->first();
-        //var_dump($order_by_id); exit;
+        
+        // Lấy chi tiết sản phẩm, tên sản phẩm dựa vào mã đơn hàng //
         $order_detail = DB::table("chitietdonhang")
         ->join("dbsanpham", function($join){
             $join->on("chitietdonhang.masanpham", "=", "dbsanpham.masanpham");
@@ -36,44 +42,43 @@ class OrderController extends Controller
         ->where("chitietdonhang.madonhang", "=", $order_id)
         ->get();
 
-
-        
         return view('backend.pages.donHang.lietKeChiTietDonHang')->with('order_by_id', $order_by_id)->with('order_detail', $order_detail);
     }
-    public function suaKhachHang(){
-        $this->checkLogin();
-        return view('backend.pages.donHang.suaKhachHang');
-    }
-    public function suaChiTietDonHang(){
-        $this->checkLogin();
-        return view('backend.pages.donHang.suaChiTietDonHang');
-    }
-    public function themDonHang(){
-        return view('backend.pages.donHang.themDonHang');
-    }
-    public function update_qty(Request $request){
-		$data = $request->all();
-        $order_detail = DB::table("chitietdonhang")->where('maDonHang', $data['order_id'])->where('maSanPham', $data['order_product_id'])->get();
+    
+    // public function suaKhachHang(){
+    //     $this->checkLogin();
+    //     return view('backend.pages.donHang.suaKhachHang');
+    // }
+    // public function suaChiTietDonHang(){
+    //     $this->checkLogin();
+    //     return view('backend.pages.donHang.suaChiTietDonHang');
+    // }
+    // public function themDonHang(){
+    //     return view('backend.pages.donHang.themDonHang');
+    // }
+    // public function update_qty(Request $request){
+	// 	$data = $request->all();
+    //     $order_detail = DB::table("chitietdonhang")->where('maDonHang', $data['order_id'])->where('maSanPham', $data['order_product_id'])->get();
 
-        DB::table('chitietdonhang')->where('maDonHang', $data['order_id'])->where('maSanPham', $data['order_product_id'])->update(['soLuong' => $data['order_qty']]);
+    //     DB::table('chitietdonhang')->where('maDonHang', $data['order_id'])->where('maSanPham', $data['order_product_id'])->update(['soLuong' => $data['order_qty']]);
         
-        $sum = 0;
-        $order_total = DB::table("chitietdonhang")->where('maDonHang', $data['order_id'])->get();
-        //var_dump($order_total); exit;
-        foreach($order_total as $key => $order){
-            $sum += $order->giaSanPham * $order->soLuong;
-        }
-        DB::table('donhang')->where('maDonHang', $data['order_id'])->update(['tongTien' => $sum]);
+    //     $sum = 0;
+    //     $order_total = DB::table("chitietdonhang")->where('maDonHang', $data['order_id'])->get();
+    //     //var_dump($order_total); exit;
+    //     foreach($order_total as $key => $order){
+    //         $sum += $order->giaSanPham * $order->soLuong;
+    //     }
+    //     DB::table('donhang')->where('maDonHang', $data['order_id'])->update(['tongTien' => $sum]);
 
+	// }
 
-		// $order_details = OrderDetails::where('product_id',$data['order_product_id'])->where('order_code',$data['order_code'])->first();
-		// $order_details->product_sales_quantity = $data['order_qty'];
-		// $order_details->save();
-	}
+    // Cập nhật trạng thái đơn hàng //
     public function update_status_order(Request $request){
         $this->checkLogin();
+        // Lấy value trạng thái đơn hàng //
         $choosen = $request->state_order;
         $id_order = $request->id_order;
+        // update trạng thái đơn hàng trong db // 
         DB::table('donhang')->where('maDonHang', $id_order)->update(['trangThaiDonHang' => $choosen]);
         Alert::success('Cập nhật thành công');
 

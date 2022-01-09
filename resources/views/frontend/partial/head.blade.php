@@ -80,6 +80,7 @@ ul, ol {
     display: block;
     overflow: hidden;
     border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
     position: relative;
 }
 .latest li:last-child {

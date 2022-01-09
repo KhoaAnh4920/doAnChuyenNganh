@@ -10,13 +10,7 @@
                     <!--login form-->
                     <h2>Đăng nhập</h2>
                     <form action="{{URL::to('/login-users')}}" method="post">
-                        <?php
-                        $message = Session::get('message_login');
-                        if($message){
-                            echo "<span> $message</span>";
-                            Session::put('message_login', null);
-                        }
-                    ?>
+                       
                         {{ csrf_field() }}
                         <!--Chống injection-->
                         <input type="email" name="user_email" placeholder="Email đăng nhập" />

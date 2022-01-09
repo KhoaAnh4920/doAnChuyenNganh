@@ -66,14 +66,12 @@ hr {
                             <!-- <td><a href="{{URL::to('/liet-ke-danh-muc-hinh.html/'.$pro->maSanPham)}}" style="font-size: 12px;">Thêm danh mục hình</a></td> -->
                             <td>{{$pro->tendanhmuc}}</td>
                             <td>{{$pro->tenthuonghieu}}</td>
-                            <td><span class="badge badge-success">
-
-                                    @if($pro->trangThai)
-                                    @php echo "Hiển thị"; @endphp
-                                    @else
-                                    @php echo "Ẩn"; @endphp
-                                    @endif
-                                </span>
+                            <td>
+                                @if($pro->trangThai)
+                                    <span class="badge badge-success">Hiển thị</span>
+                                @else
+                                    <span class="badge badge-danger">Ẩn</span>
+                                @endif
                             </td>
                             <td>
                                 <div class="buttonAction" style="display: inline-flex;">

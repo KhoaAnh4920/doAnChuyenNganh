@@ -33,10 +33,11 @@
                 <td><span>{{$order->soLuong}}</span></td>
                 <td><span class="status_pending">{{$order->giaSanPham}}</span></td>
                 <td><span class="total money">
-                        @php
+                    @php
                         $sum = $order->giaSanPham * $order->soLuong;
                         echo number_format($sum);
-                        @endphp đ
+                    @endphp 
+                    đ
                     </span></td>
             </tr>
 

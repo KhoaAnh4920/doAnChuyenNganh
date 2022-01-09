@@ -13,28 +13,36 @@ session_start();
 
 class CategoryNewsController extends Controller
 {
+    // Kiểm tra đã đăng nhập hay chưa //
     public function checkLogin(){
+        // Lấy id user từ trong session //
         $user_id = Session::get('admin_id');
+        // Nếu id user = null - chưa đăng nhập, return về trang đăng nhập //
         if($user_id == null)
             return Redirect::to('/admin-login.html')->send();
     }
+    // Trang liệt kê danh mục bài viết //
     public function lietKeDanhMucBaiViet(){
         $this->checkLogin();
         $cate_news = CateNews::orderBy('maDanhMuc')->get();
         return view('backend.pages.danhMucBaiViet.lietKeDanhMucBaiViet')->with('cate_news', $cate_news);
     }
+    // Trang thêm danh mục bài viết //
     public function themDanhMucBaiViet(){
         $this->checkLogin();
         return view('backend.pages.danhMucBaiViet.themDanhMucBaiViet');
     }
+    // Trang sửa danh mục bài viết //
     public function suaDanhMucBaiViet($cate_id){
         $this->checkLogin();
         $edit_cate_news = CateNews::find($cate_id);
         return view('backend.pages.danhMucBaiViet.suaDanhMucBaiViet')->with('edit_cate_news', $edit_cate_news);
     }
+    // xử lý thêm danh mục bài viết //
     public function createCategory(Request $request){
         $this->checkLogin();
         $data = array();
+        // Tạo đối tượng cate news //
         $cateNews = new CateNews();
         $cateNews->tenDanhMuc = $request->tenDanhMucBaiViet;
         $cateNews->slug = $request->slug_danhMucBaiViet;
@@ -46,8 +54,10 @@ class CategoryNewsController extends Controller
             Alert::error('Thêm thất bại');
         return Redirect::to('/liet-ke-danh-muc-bai-viet.html');
     }
+    // Xử lý cập nhật danh mục bài viết //
     public function updateCategory(Request $request, $cate_id){
         $this->checkLogin();
+        // Lấy thông tin bài viết cần cập nhật dựa vào $cate_id //
         $cateNews = CateNews::find($cate_id);
         $cateNews->tenDanhMuc = $request->tenDanhMucBaiViet;
         $cateNews->slug = $request->slug_danhMucBaiViet;
@@ -59,10 +69,11 @@ class CategoryNewsController extends Controller
             Alert::error('Cập nhật thất bại');
         return Redirect::to('/liet-ke-danh-muc-bai-viet.html');
     }
+    // Xử lý xóa danh mục bài viết //
     public function xoaDanhMucBaiViet($cate_id){
         $this->checkLogin();
 
-        // Ràng buộc //
+        // Ràng buộc nếu danh mục đã có bài viết thì không được xóa //
         $sl_baiViet= CateNews::leftJoin("baiviet", function($join){
             $join->on("danhmucbaiviet.madanhmuc", "=", "baiviet.madanhmuc");})
             ->select("danhmucbaiviet.tendanhmuc", DB::raw("count(baiviet.maBaiViet) as sl"))

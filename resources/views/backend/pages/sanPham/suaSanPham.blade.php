@@ -67,7 +67,7 @@
                                     accept="image/*" multiple>
                                 <label class="custom-file-label" for="customFile">Choose file</label>
                                 <div class="cate_image" id="preview" style="overflow-y: hidden;">
-
+                                    <!-- load danh mục hình -->
                                     @foreach($cate_image as $key => $cate_img)
                                     <span class="pip">
                                         <img src="../public/upload/gallery/{{$cate_img->hinh}}">
@@ -86,18 +86,20 @@
                             <label for="exampleInputDanhMuc">Thuộc danh mục</label>
                             <select class="form-control" name="danhMucSanPham">
                                 @foreach($all_category_products as $key => $cate)
-                                @if($cate->danhMucCha == 0)
-                                <option value="{{$cate->maDanhMuc}}"
-                                    {{($cate->maDanhMuc == $pro->maDanhMuc) ? 'selected' :''}} style="color:red">
-                                    {{$cate->tenDanhMuc}}</option>
-                                @foreach($all_category_products as $key => $cate_sub)
-                                @if($cate_sub->danhMucCha == $cate->maDanhMuc)
-                                <option value="{{$cate_sub->maDanhMuc}}"
-                                    {{($cate_sub->maDanhMuc == $pro->maDanhMuc) ? 'selected' :''}}>
-                                    ---{{$cate_sub->tenDanhMuc}}</option>
-                                @endif
-                                @endforeach
-                                @endif
+                                    <!-- Danh mục cha -->
+                                    @if($cate->danhMucCha == 0)
+                                        <option value="{{$cate->maDanhMuc}}"
+                                            {{($cate->maDanhMuc == $pro->maDanhMuc) ? 'selected' :''}} style="color:red">
+                                            {{$cate->tenDanhMuc}}</option>
+                                        <!-- Load từng danh mục con thuộc danh mục sản phẩm ở trên  -->
+                                        @foreach($all_category_products as $key => $cate_sub)
+                                            @if($cate_sub->danhMucCha == $cate->maDanhMuc)
+                                                <option value="{{$cate_sub->maDanhMuc}}"
+                                                    {{($cate_sub->maDanhMuc == $pro->maDanhMuc) ? 'selected' :''}}>
+                                                    ---{{$cate_sub->tenDanhMuc}}</option>
+                                            @endif
+                                        @endforeach
+                                    @endif
                                 @endforeach
                             </select>
                         </div>
@@ -105,11 +107,11 @@
                             <label for="exampleInputBrands">Thương hiệu</label>
                             <select class="form-control" name="thuongHieu">
                                 @foreach($all_brands as $key => $brands)
-                                @if($brands->maThuongHieu == $pro->maThuongHieu)
-                                <option selected value="{{$brands->maThuongHieu}}">{{$brands->tenThuongHieu}}</option>
-                                @else
-                                <option value="{{$brands->maThuongHieu}}">{{$brands->tenThuongHieu}}</option>
-                                @endif
+                                    @if($brands->maThuongHieu == $pro->maThuongHieu)
+                                        <option selected value="{{$brands->maThuongHieu}}">{{$brands->tenThuongHieu}}</option>
+                                    @else
+                                        <option value="{{$brands->maThuongHieu}}">{{$brands->tenThuongHieu}}</option>
+                                    @endif
                                 @endforeach
                             </select>
                         </div>

@@ -88,39 +88,33 @@
 
         <div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner">
-                <?php $dem = 0 ?>
+                @php $dem = 0 @endphp
                 @foreach($recommmendedProducts as $key => $pre_pro)
-                <?php 
-                if($dem == 0)
-                {
-                    echo " <div class='item active'>";
-                }
-                else if($dem == 3)
-                {
-                    echo " <div class='item'>";
-                }
-                ?>
-                <div class="col-sm-4">
-                    <div class="product-image-wrapper">
-                        <div class="single-products">
-                            <div class="productinfo text-center">
-                                <a href="{{URL::to('/product-details.html/'.$pre_pro->slug)}}"><img
-                                        style="width:200px"
-                                        src="{{asset('public/upload/products/')}}/{{$pre_pro->hinhAnh}}"
-                                        alt="{{$pre_pro->tenSanPham}}" /></a>
-                                <h2>{{number_format($pre_pro->giaSanPham)}} VNĐ</h2>
-                                <a href="{{URL::to('/product-details.html/'.$pre_pro->slug)}}"><p>{{$pre_pro->tenSanPham}}</p></a>
-                                <a href="{{URL::to('/product-details.html/'.$pre_pro->slug)}}" class="btn btn-default add-to-cart">Chi tiết <i class="fa fa-arrow-right"></i></a>
+                    @php
+                        if($dem == 0)
+                            echo " <div class='item active'>";
+                        else if($dem == 3)
+                            echo " <div class='item'>";
+                    @endphp
+                    <div class="col-sm-4">
+                        <div class="product-image-wrapper">
+                            <div class="single-products">
+                                <div class="productinfo text-center">
+                                    <a href="{{URL::to('/product-details.html/'.$pre_pro->slug)}}"><img
+                                            style="width:200px"
+                                            src="{{asset('public/upload/products/')}}/{{$pre_pro->hinhAnh}}"
+                                            alt="{{$pre_pro->tenSanPham}}" /></a>
+                                    <h2>{{number_format($pre_pro->giaSanPham)}} VNĐ</h2>
+                                    <a href="{{URL::to('/product-details.html/'.$pre_pro->slug)}}"><p>{{$pre_pro->tenSanPham}}</p></a>
+                                    <a href="{{URL::to('/product-details.html/'.$pre_pro->slug)}}" class="btn btn-default add-to-cart">Chi tiết <i class="fa fa-arrow-right"></i></a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <?php if($dem == 2 || $dem == (count($recommmendedProducts) -1)) 
-                {
+                @php if($dem == 2 || $dem == (count($recommmendedProducts) -1)) 
                     echo "</div>";
-                }
-                ?>
-                <?php $dem++ ?>
+                @endphp
+                @php $dem++  @endphp
                 @endforeach
             </div>
             <a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">

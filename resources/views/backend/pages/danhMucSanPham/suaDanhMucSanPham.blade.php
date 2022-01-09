@@ -49,11 +49,13 @@
                             <label for="exampleInputPassword1">Thuộc danh mục</label>
                             <select class="form-control" name="thuocDanhMuc">
                                 <option value="0">---Danh mục cha---</option>
+                                <!-- Hiển thị danh mục con  -->
                                 @foreach($cate_parent as $key => $cate)
+                                <!-- Nếu mã danh mục cha của sản phầm trùng với mã danh mục đang duyệt thì selected -->
                                 @if($cate->maDanhMuc == $cate_product->danhMucCha)
-                                <option value="{{$cate->maDanhMuc}}" selected>{{$cate->tenDanhMuc}}</option>
+                                    <option value="{{$cate->maDanhMuc}}" selected>{{$cate->tenDanhMuc}}</option>
                                 @else
-                                <option value="{{$cate->maDanhMuc}}">{{$cate->tenDanhMuc}}</option>
+                                    <option value="{{$cate->maDanhMuc}}">{{$cate->tenDanhMuc}}</option>
                                 @endif
                                 @endforeach
                             </select>
@@ -61,8 +63,8 @@
                         <div class="form-group">
                             <label for="exampleInputPassword1">Trạng thái</label>
                             <select class="form-control" name="trangThai">
-                                <option value="0" <?php if($cate_product->trangThai == 0) echo"selected" ?>>Ẩn</option>
-                                <option value="1" <?php if($cate_product->trangThai == 1) echo"selected" ?>>Hiện
+                                <option value="0" {{($cate_product->trangThai == 0) ? "selected": "" }}>Ẩn</option>
+                                <option value="1"  {{($cate_product->trangThai == 1) ? "selected": "" }}>Hiện
                                 </option>
                             </select>
                         </div>

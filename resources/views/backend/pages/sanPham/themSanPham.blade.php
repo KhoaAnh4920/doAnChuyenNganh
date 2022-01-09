@@ -61,8 +61,10 @@
                             <label for="exampleInputDanhMuc">Thuộc danh mục</label>
                             <select class="form-control" name="danhMucSanPham">
                                         @foreach($all_category_products as $key => $cate)
+                                            <!-- Danh mục cha -->
                                             @if($cate->danhMucCha == 0)
                                                 <option value="{{$cate->maDanhMuc}}" style="color:red">{{$cate->tenDanhMuc}}</option>
+                                                <!-- Load từng danh mục con thuộc danh mục sản phẩm ở trên  -->
                                                 @foreach($all_category_products as $key => $cate_sub)
                                                     @if($cate_sub->danhMucCha == $cate->maDanhMuc)
                                                         <option value="{{$cate_sub->maDanhMuc}}">---{{$cate_sub->tenDanhMuc}}</option>

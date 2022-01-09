@@ -15,6 +15,8 @@ session_start();
 class CategoryProductController extends Controller
 {
     // frontend //
+
+    // Hiển thị sản phẩm thuộc danh mục // 
     public function Categoryproduct($cate_slug){
 
         // Sidebar //
@@ -39,7 +41,7 @@ class CategoryProductController extends Controller
 
         // end header
         
-
+        // Lấy mã của danh mục dựa vào slug //
         $cate_id = CategoryProduct::select('maDanhMuc', 'danhMucCha')->where("slug", $cate_slug)->get();
         foreach($cate_id as $key =>$id){
             $cate_by_id = $id->maDanhMuc;
@@ -84,26 +86,33 @@ class CategoryProductController extends Controller
             return Redirect::to('/admin-login.html')->send();
     }
 
+    // Trang liệt kê danh mục sản phẩm // 
     public function lietKeDanhMucSanPham(){
         $this->checkLogin();
         $all_category_products = CategoryProduct::orderby('maDanhMuc')->get();
         return view('backend.pages.danhMucSanPham.lietKeDanhMucSanPham')->with('all_category_products' ,$all_category_products);
     }
+    // Trang thêm danh mục sản phẩm // 
     public function themDanhMucSanPham(){
         $this->checkLogin();
         $cate_parent = CategoryProduct::where('danhMucCha', 0)->get();
         return view('backend.pages.danhMucSanPham.themDanhMucSanPham')->with('cate_parent', $cate_parent);
     }
+    // Trang sửa danh mục sản phẩm //
     public function suaDanhMucSanPham($cate_product_id){
         $this->checkLogin();
+        // Lấy danh mục cần sửa //
         $edit_cate_product = CategoryProduct::where('maDanhMuc', $cate_product_id)->get();
+        // Lấy danh mục cha //
         $cate_parent = CategoryProduct::where('danhMucCha', 0)->get();
         return view('backend.pages.danhMucSanPham.suaDanhMucSanPham')->with('edit_cate_procuct', $edit_cate_product)
         ->with('cate_parent', $cate_parent);
     }
+    // Thêm danh mục sản phẩm vào db //
     public function createCategoryProduct(Request $request){
         $this->checkLogin();
         $data = array();
+        // Tạo đối tượng danh mục từ model //
         $category = new CategoryProduct();
         $category->tenDanhMuc = $request->tenDanhMuc;
         $category->slug = $request->slug_danhmucsanpham;
@@ -111,6 +120,7 @@ class CategoryProductController extends Controller
         $category->danhMucCha = $request->thuocDanhMuc;
         $category->trangThai = $request->trangThai;
 
+        // Lưu danh mục vào db //
         $n = $category->save();
         if($n)
             Alert::success('Thêm thành công');
@@ -127,6 +137,7 @@ class CategoryProductController extends Controller
         //Session::put('message', 'Thêm thành công');
         return Redirect::to('/liet-ke-danh-muc-san-pham.html');
     }
+    // Cập nhật thông tin danh mục sản phẩm // 
     public function updateCategoryProduct(Request $request, $cate_product_id){
         $this->checkLogin();
 
@@ -155,9 +166,11 @@ class CategoryProductController extends Controller
         //Session::put('message', 'Cập nhật thành công');
         return Redirect::to('/liet-ke-danh-muc-san-pham.html');
     }
+    // Xóa danh mục sản phẩm trong db //
     public function xoaDanhMucSanPham($cate_product_id){
         $this->checkLogin();
 
+        // Kiểm tra danh mục đã có sản phẩm chưa //
         $sl_sanPham= CategoryProduct::leftJoin("dbsanpham", function($join){
 	    $join->on("danhmucsanpham.madanhmuc", "=", "dbsanpham.madanhmuc");})
         ->select("danhmucsanpham.tendanhmuc", DB::raw("count(dbsanpham.masanpham) as sl"))
@@ -169,7 +182,7 @@ class CategoryProductController extends Controller
         ->where("danhmucsanpham.danhmuccha", "=", $cate_product_id)
         ->get();
 
-
+        // Kiểm tra danh mục định xóa có phải danh mục cha hoặc đã có sản phẩm //
         if($maDanhMucCha[0]->sl > 0 || $sl_sanPham[0]->sl > 0){
             if(($sl_sanPham[0]->sl) > 0)
                 Alert::error('Danh mục đã có sản phẩm');

@@ -47,6 +47,10 @@
                             <input type="text" class="form-control" name="users_phone" value="{{$user->users_phone}}">
                         </div>
                         <div class="form-group">
+                            <label for="exampleInputPhone">Địa chỉ</label>
+                            <input type="text" class="form-control" name="users_address" value="{{$user->users_address}}">
+                        </div>
+                        <div class="form-group">
                             <label for="role">Role:</label>
                             <select name="role">
                                 <option value="1" <?php if($user->users_role == 1) echo "selected"; ?>>User</option>

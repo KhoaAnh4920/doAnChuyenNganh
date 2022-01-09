@@ -16,6 +16,7 @@ session_start();
 class NewsController extends Controller
 {
     // frontend // 
+    // Hiển thị trang tin tức dựa vào slug là tenDanhMuc //
     public function danhMucBaiViet($tenDanhMuc){
         $all_brands = DB::table("thuonghieu")
         ->leftJoin("dbsanpham", function($join){
@@ -45,8 +46,9 @@ class NewsController extends Controller
         ->where('danhmucsanpham.danhMucCha', 0)
         ->get();
 
-        // Danh mục bài viết //
+        // Lấy ra danh mục bài viết //
         $cate_news = CateNews::orderBy('maDanhMuc')->take(3)->get();
+        // Lấy bài viết dựa vào tenDanhMuc - mặc định khi click vào trang tin tức thì slug là tin-moi-nhat //
         if($tenDanhMuc == 'tin-moi-nhat'){
             $tintuc = News::orderBy('maBaiViet', 'DESC')->get();
         }else{
@@ -68,6 +70,7 @@ class NewsController extends Controller
         ->with('slug', $tenDanhMuc)
         ->with('khuyenMai', $tinKhuyenMai);
     }
+    // Trang hiển thị chi tiết bài viết //
     public function hienThiBaiViet($news_slug){
         // Header //
         $cate_of_Apple = DB::table("danhmucsanpham")
@@ -98,6 +101,7 @@ class NewsController extends Controller
         View::share('cate_of_Apple', $cate_of_Apple);
         View::share('cate_of_Gear', $cate_of_Gear);
 
+        // Lấy chi tiết bài viết dựa vào news_slug //
         $news = News::join("users", function($join){
             $join->on("users.users_id", "=", "baiviet.users_id");
         })
@@ -117,11 +121,15 @@ class NewsController extends Controller
     }
 
     // backend//
+    // Kiểm tra đã đăng nhập hay chưa //
     public function checkLogin(){
+        // Lấy id user từ trong session //
         $user_id = Session::get('admin_id');
+        // Nếu id user = null - chưa đăng nhập, return về trang đăng nhập //
         if($user_id == null)
             return Redirect::to('/admin-login.html')->send();
     }
+    // Trang liệt kê tất cả bài viết //
     public function tatCaBaiViet(){
         $this->checkLogin();
         $all_news = News::join("danhmucbaiviet", function($join){
@@ -134,29 +142,31 @@ class NewsController extends Controller
         ->paginate(10);
         return view('backend.pages.baiViet.lietKeBaiViet')->with('all_news', $all_news);
     }
+    // Trang thêm bài viết //
     public function themBaiViet(){
         $this->checkLogin();
         $all_category_news = CateNews::orderBy('maDanhMuc')->get();
         return view('backend.pages.baiViet.themBaiViet')->with('all_category_news', $all_category_news);
     }
+    // Trang sửa bài viết //
     public function suaBaiViet($news_id){
         $this->checkLogin();
         $edit_news = News::find($news_id);
         $all_category_news = CateNews::orderBy('maDanhMuc')->get();
         return view('backend.pages.baiViet.suaBaiViet')->with('edit_news', $edit_news)->with('all_category_news', $all_category_news);
     }
-
+    // Kiểm tra hình có hợp lệ //
     public function checkimg($h){
         $allowed_types = array('jpg', 'png', 'jpeg', 'gif');
-        // Define maxsize for files i.e 2MB
+        // Dung lượng hình tối đa là 2MB
         $maxsize = 2 * 1024 * 1024;
-        $file_name = $h->getClientOriginalName();
-        $file_size = $h->getSize();
-        $file_ext = pathinfo($file_name, PATHINFO_EXTENSION);
+        $file_name = $h->getClientOriginalName(); // Lấy tên hình //
+        $file_size = $h->getSize(); // Lấy dung lượng hình //
+        $file_ext = pathinfo($file_name, PATHINFO_EXTENSION);  // Lấy đuôi hình //
 
-        // Check file type is allowed or not
+        // Check đuôi mở rộng hình có hợp lệ hay không //
         if(in_array(strtolower($file_ext), $allowed_types)) {
-            // Verify file size - 2MB max
+            // Check dung lượng hình - 2MB max
             if ($file_size > $maxsize) {
                 Alert::error('Dung lượng ảnh quá lớn');
                 return false;
@@ -168,9 +178,10 @@ class NewsController extends Controller
         }
         return true;
     }
-
+    // Xử lý thêm bài viết //
     public function createNews(Request $request){
         $this->checkLogin();
+        // Lấy id của tác giả //
         $user_id = Session::get('admin_id');
         $news = new News();
         $news->tieuDe = $request->tieuDeBaiViet;
@@ -180,27 +191,31 @@ class NewsController extends Controller
         $news->maDanhMuc = $request->danhMucBaiViet;
         $news->trangThai = $request->trangThai;
         $news->users_id = $user_id;
-        $dt = Carbon::now('Asia/Ho_Chi_Minh');
+        $dt = Carbon::now('Asia/Ho_Chi_Minh'); // Lấy thời gian hiện tại //
 
         $news->created_at = $dt->toDateTimeString();
-
+        // Lấy hình ảnh //
         $get_image = $request->file('hinhAnh');
-        if($get_image && $this->checkimg($get_image)){
+        // Nếu người dùng có chọn hình và hình ảnh hợp lệ //
+        if($get_image && $this->checkimg($get_image)){ 
             $get_name_image = $get_image->getClientOriginalName(); // Lấy tên file
-            $get_image->move('public/upload/news', $get_name_image);
+            $get_image->move('public/upload/news', $get_name_image); // Di chuyển hình vào public 
             $news->hinhAnh = $get_name_image;
 
         }
-        $n = $news->save();
+        $n = $news->save(); // insert vào db //
         if($n)
             Alert::success('Thêm thành công');
         else
             Alert::error('Thêm thất bại');
         return Redirect::to('/liet-ke-bai-viet.html');
     }
+    // Xử lý cập nhật bài viết //
     public function updateNews(Request $request, $new_id){
         $this->checkLogin();
+        // Lấy id của tác giả //
         $user_id = Session::get('admin_id');
+        // Lấy thông tin bài viết cần cập nhật //
         $news = News::find($new_id);
         $news->tieuDe = $request->tieuDeBaiViet;
         $news->slug = $request->slug_BaiViet;
@@ -209,7 +224,7 @@ class NewsController extends Controller
         $news->maDanhMuc = $request->danhMucBaiViet;
         $news->trangThai = $request->trangThai;
         $news->users_id = $user_id;
-        $dt = Carbon::now('Asia/Ho_Chi_Minh');
+        $dt = Carbon::now('Asia/Ho_Chi_Minh'); 
         $news->updated_at = $dt->toDateTimeString();
 
         $get_image = $request->file('hinhAnh');
@@ -226,11 +241,13 @@ class NewsController extends Controller
             Alert::error('Cập nhật thất bại');
         return Redirect::to('/liet-ke-bai-viet.html');
     }
+    // Xóa bài viết //
     public function xoaBaiViet($news_id){
-       // $news = News::find($new_id);
-       // $hinhAnh = $news['hinhAnh'];
-       // unlink('public/upload/news/'.$hinhAnh);
-        $n = News::where('maBaiViet', $news_id)->delete();
+        // Lấy hình ảnh bài viết cần xóa //
+        $news = News::find($new_id);
+        $hinhAnh = $news['hinhAnh'];
+        unlink('public/upload/news/'.$hinhAnh); // Xóa hình ảnh trong thư mục public //
+        $n = News::where('maBaiViet', $news_id)->delete(); // Xóa bài viết trong db //
         if($n)
             Alert::success('Xóa thành công');
         else
@@ -238,40 +255,47 @@ class NewsController extends Controller
         return Redirect::to('/liet-ke-bai-viet.html');
     }
 
+    // Xử lý load more bài viết //
     public function load_more_news(Request $request){
 
         $data = $request->all();
         
-
         // Click vào load more //
         if($data['id'] > 0){
             if($data['slug'] == 'tin-moi-nhat'){
+                // Lấy bài viết theo thứ tự mã giảm dần, từ tên xuống, mặc định lấy 6 bài viết 1 lần click //
                 $tintucMoi = News::where('trangThai', '1')->where('maBaiViet', '<', $data['id'])->orderby('maBaiViet', 'DESC')->take(6)->get();
             }else{
+                // Lấy id của danh mục bài viết //
                 $cate_id = CateNews::where('slug', $data['slug'])->first();
                 $id = $cate_id->maDanhMuc;
+                // Lấy bài viết theo thứ tự mã giảm dần, từ tên xuống, mặc định lấy 6 bài viết 1 lần click //
                 $tintucMoi = News::where('trangThai', '1')->where('maDanhMuc', $id)->where('maBaiViet', '<', $data['id'])->orderby('maBaiViet', 'DESC')->take(6)->get();
             }
             
         }else{ // Mặc định mới vào trang // 
             if($data['slug'] == 'tin-moi-nhat'){
+                // Lấy bài viết mới nhất dựa theo mã, bỏ qua 4 bài viết đầu tiên //
                 $tintucMoi = News::where('trangThai', '1')->orderBy('maBaiViet', 'DESC')->skip(4)->take(3)->get();
             }else{
+                // Lấy id của danh mục bài viết //
                 $cate_id = CateNews::where('slug', $data['slug'])->first();
                 $id = $cate_id->maDanhMuc;
+                // Lấy bài viết mới nhất dựa theo mã, bỏ qua 4 bài viết đầu tiên //
                 $tintucMoi = News::where('trangThai', '1')->where('maDanhMuc', $id)->orderBy('maBaiViet', 'DESC')->skip(4)->take(3)->get();
             }
         }
 
         Carbon::setLocale('vi');
-        $now = Carbon::now('Asia/Ho_Chi_Minh')->toDateTimeString();
+        $now = Carbon::now('Asia/Ho_Chi_Minh')->toDateTimeString(); // Lấy thời gian hiện tại //
         
         $output = '';
+        // Nếu biến tintucMoi khác rỗng //
         if(!$tintucMoi->isEmpty()){
             foreach($tintucMoi as $key => $tin){
                 $last_id = $tin->maBaiViet;
                 $dt = Carbon::parse($tin->created_at);
-                
+                // Gán giao diện hiển thị bài viết vào output // 
                 $output.="
                 
                 <li data-id='".$tin->maBaiViet."'  style='padding-bottom: 10px;'>
@@ -285,6 +309,7 @@ class NewsController extends Controller
                         </div>
                     </li>";
             }
+            // Gán nút load more //
             $output .="
                     <div id='load_more'>
                         <button name='load_more_button' class='btn btn-primary form-control' data-id='".$last_id."'
@@ -292,7 +317,7 @@ class NewsController extends Controller
                     </div>
                 
                 ";
-        }else{
+        }else{ // biến tintucMoi rỗng - hết bài viết trong db //
             $output .="
                     <div id='load_more'>
                         <button type='button' name='load_more_button' class='btn btn-default form-control'

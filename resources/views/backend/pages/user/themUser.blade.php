@@ -38,7 +38,11 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPhone">Số điện thoại</label>
-                            <input type="text" class="form-control" name="users_phone" placeholder="Phone">
+                            <input type="text" class="form-control" name="users_phone" placeholder="Số điện thoại">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPhone">Địa chỉ</label>
+                            <input type="text" class="form-control" name="users_address" placeholder="Địa chỉ">
                         </div>
                         <div class="form-group">
                             <label for="role">Role:</label>
@@ -49,6 +53,7 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="exampleInputImage">Avatar</label>
                             <div class="custom-file">
                                 <input type="file" onchange="readURL(this);" class="custom-file-input" id="customFile" name="user_avatar">
                                 <label class="custom-file-label" for="customFile">Choose file</label>

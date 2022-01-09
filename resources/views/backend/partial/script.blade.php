@@ -19,14 +19,15 @@ CKEDITOR.replace('ckeditor_addDescNews');
 <!-- @php session()->forget('error_code'); @endphp -->
 
 
-@if(!empty(Session::get('error_code')) && Session::get('error_code') == 5)
+<!-- @if(!empty(Session::get('error_code')) && Session::get('error_code') == 5)
 <script>
 $(function() {
     $('#ignismyModal').modal('show');
 });
 </script>
-@endif
+@endif -->
 
+<!-- Convert chuỗi tên, tiêu đề thành slug  -->
 <script language="javascript">
 function ChangeToSlug() {
     var title, slug;
@@ -109,37 +110,37 @@ $('#file').change(function() {
 });
 
 // Sự kiện sửa lại ảnh // 
-$(document).on('change', '.file_image', function() {
+// $(document).on('change', '.file_image', function() {
 
-    var gal_id = $(this).data('gal_id');
-    var image = document.getElementById("file-" + gal_id).files[0];
+//     var gal_id = $(this).data('gal_id');
+//     var image = document.getElementById("file-" + gal_id).files[0];
 
-    var form_data = new FormData();
+//     var form_data = new FormData();
 
-    form_data.append("file", document.getElementById("file-" + gal_id).files[0]);
-    form_data.append("gal_id", gal_id);
+//     form_data.append("file", document.getElementById("file-" + gal_id).files[0]);
+//     form_data.append("gal_id", gal_id);
 
 
 
-    $.ajax({
-        url: "{{url('/update-gallery')}}",
-        method: "POST",
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        data: form_data,
+//     $.ajax({
+//         url: "{{url('/update-gallery')}}",
+//         method: "POST",
+//         headers: {
+//             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//         },
+//         data: form_data,
 
-        contentType: false,
-        cache: false,
-        processData: false,
-        success: function(data) {
-            load_gallery();
-            $('#error_gallery').html(
-                '<span class="text-danger">Sửa hình ảnh thành công</span>');
-        }
-    });
+//         contentType: false,
+//         cache: false,
+//         processData: false,
+//         success: function(data) {
+//             load_gallery();
+//             $('#error_gallery').html(
+//                 '<span class="text-danger">Sửa hình ảnh thành công</span>');
+//         }
+//     });
 
-});
+// });
 </script>
 
 <script type="text/javascript">
@@ -265,17 +266,19 @@ $(document).ready(function() {
 });
 </script>
 
+<!-- Sự kiện khi người dùng click nút xóa hình ảnh trong danh mục hình của sản phẩm -->
 <script>
 $(document).ready(function() {
-    var gal_del = [];
+    var gal_del = []; // Khai báo mảng gal_del chứa id của hình ảnh mà người dùng click xóa //
     $(".removeDefault").click(function() {
         //alert('bbb');
+        // Gán id hình vào biến gal_id
         var gal_id = $(this).data('gal_id');
-        gal_del.push(gal_id);
-        //alert(gal_del.toString());
+        gal_del.push(gal_id); // Gán biến gal_id vào mảng gal_del
+        // Xóa preview của hình ảnh //
         $(this).parent(".pip").remove();
 
-        //ajax call 
+        //ajax call truyenf vào id của các hình ảnh và token để gán vào session //
         var _token = $('meta[name="csrf-token"]').attr('content');
 
 

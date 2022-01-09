@@ -15,10 +15,15 @@ session_start();
 
 class ProductController extends Controller
 {
+
+    // Đổi tên data2, chưa checkimg hình, 
+
     // Frontend //
-    public function product(){
-        return view('frontend.pages.productsPages.product');
-    }
+    // public function product(){
+    //     return view('frontend.pages.productsPages.product');
+    // }
+
+    // Trang hiển thị chi tiết sản phẩm //
     public function productDetails($pro_slug){
         // Header //
         $cate_of_Apple = CategoryProduct::whereRaw('danhmucsanpham.maDanhMuc IN (select dbsanpham.maDanhMuc FROM dbsanpham JOIN thuonghieu on thuonghieu.maThuongHieu = dbsanpham.maThuongHieu WHERE thuonghieu.maThuongHieu = 1)')
@@ -31,12 +36,13 @@ class ProductController extends Controller
         // end header
 
         
-
+        // Lấy mã sản phẩm dựa vào slug //
         $pro_id = Product::select('maSanPham')->where('slug', $pro_slug)->get();
 
         foreach($pro_id as $key => $id){
             $pro_by_id = $id->maSanPham;
         }
+        // Lấy thông tin sản phẩm //
         $detail_pro = Product::join("danhmucsanpham", function($join){
             $join->on("danhmucsanpham.maDanhMuc", "=", "dbsanpham.maDanhMuc");
         })
@@ -46,7 +52,7 @@ class ProductController extends Controller
         ->select("dbsanpham.*", "danhmucsanpham.tendanhmuc", "thuonghieu.tenthuonghieu")
         ->where("dbsanpham.masanpham", $pro_by_id)
         ->get();
-
+        // Lấy danh mục hình ảnh của sản phẩm //
         $gallery_pro = DB::table("danhmuchinh")->where('maSanPham', $pro_by_id)->get();
 
         foreach($detail_pro as $key => $val){
@@ -55,6 +61,7 @@ class ProductController extends Controller
         View::share('cate_of_Apple', $cate_of_Apple);
         View::share('cate_of_Gear', $cate_of_Gear);
 
+        // Lấy sản phẩm liên quan có cùng danh mục //
         $recommmendedProducts = Product::where('maDanhMuc', $cate)->limit(6)->get();
         return view('frontend.pages.productsPages.productDetails')->with('detail_pro', $detail_pro)
         ->with('recommmendedProducts', $recommmendedProducts)
@@ -65,11 +72,13 @@ class ProductController extends Controller
 
     
     // Backend //
+
     public function checkLogin(){
         $user_id = Session::get('admin_id');
         if($user_id == null)
             return Redirect::to('/admin-login.html')->send();
     }
+    // Trang liệt kê sản phẩm //
     public function lietKeSanPham(){
         $this->checkLogin();
 
@@ -81,14 +90,17 @@ class ProductController extends Controller
     
         return view('backend.pages.sanPham.lietKeSanPham')->with('all_products', $all_products);
     }
+    // Trang thêm sản phẩm //
     public function themSanPham(){
         $this->checkLogin();
-
+        // Lấy thương hiệu //
         $all_brands = Brand::orderby('maThuongHieu')->get();
+        // Lấy danh mục sản phẩm //
         $all_category_products = CategoryProduct::orderby('maDanhMuc')->get();
 
         return view('backend.pages.sanPham.themSanPham')->with('all_brands', $all_brands)->with('all_category_products', $all_category_products);
     }
+    // Trang cập nhật sản phẩm //
     public function suaSanPham($pro_id){
         $this->checkLogin();
 
@@ -96,17 +108,19 @@ class ProductController extends Controller
         $all_category_products = DB::table('danhmucsanpham')->orderby('maDanhMuc')->get();
         $edit_pro = Product::where('maSanPham', $pro_id)->get();
 
+        // Lấy danh mục hình của sản phẩm //
         $cate_image = DB::table('danhmuchinh')->where('maSanPham', $pro_id)->get();
 
         //var_dump($cate_image); exit;
         return view('backend.pages.sanPham.suaSanPham')->with('edit_pro', $edit_pro)->with('all_category_products', $all_category_products)
         ->with('all_brands', $all_brands)->with('cate_image', $cate_image);
     }
+    // Xử lý thêm sản phẩm //
     public function createProduct(Request $request){
         $this->checkLogin();
         $data = array();
         $data2 = array();
-        
+        // Lấy các trường value sản phẩm //
         $data['tenSanPham'] = $request->tenSanPham;
         $data['slug'] = $request->slug_sanpham;
         $data['giaSanPham'] = $request->giaSanPham;
@@ -131,59 +145,59 @@ class ProductController extends Controller
             // Session::put('message', 'Thêm thành công');
             // return Redirect::to('/liet-ke-san-pham.html')->with('error_code', 5);
         }
-        //var_dump($data); exit;
+        // insert sản phẩm vào db //
         $n = DB::table('dbsanpham')->insert($data);
         if($n <=0){
             Alert::error('Lỗi thêm sản phẩm');
             return;
         }
-
+        // Lấy mã sản phẩm vừa mới thêm vào db //
         $pro_id = DB::table('dbsanpham')->select('maSanPham')->orderBy('maSanPham', 'DESC')->first();
-        $data2['maSanPham'] = $pro_id->maSanPham;
-
+        $data2['maSanPham'] = $pro_id->maSanPham; // gán mã sản phẩm vào data2
+        // Nếu người dùng có thêm danh mục hình // 
         if($gallery_image){
-            foreach($gallery_image as $image){
+            foreach($gallery_image as $image){ // Duyệt từng hình ảnh trong danh mục hình //
                 $get_name_image = $image->getClientOriginalName(); // Lấy tên file
-            $image->move('public/upload/gallery', $get_name_image);
-            $data2['hinh'] = $get_name_image;
+                $image->move('public/upload/gallery', $get_name_image); // Di chuyển vào public //
+                $data2['hinh'] = $get_name_image; // Gán tên hình vào mảng data2
 
-            $n = DB::table('danhmuchinh')->insert($data2);
-            if($n <=0){
-                Alert::error('Lỗi thêm danh mục hình');
-                return;
-            }
-            //Session::put('message', 'Thêm thành công');
-            //return Redirect::to('/liet-ke-user.html')
+                $n = DB::table('danhmuchinh')->insert($data2); // insert hình vào db //
+                if($n <=0){
+                    Alert::error('Lỗi thêm danh mục hình');
+                    return;
+                }
             }
         }
 
         Alert::success('Thêm sản phẩm thành công');
         return Redirect::to('/liet-ke-san-pham.html');
     }
-
+    // Xử lý xóa hình ảnh trong danh mục hình //
     public function deleteGallery($gal_id){
-        foreach($gal_id as $key => $img){
-        $image = DB::table('danhmuchinh')->select('hinh')->where('maHinhSanPham', $img)->get();
-        
+        // Duyệt từng id hình ảnh trong $gal_id //
+        foreach($gal_id as $key => $img){  
+        $image = DB::table('danhmuchinh')->select('hinh')->where('maHinhSanPham', $img)->get(); // Lấy hình ảnh //
         foreach($image as $key =>$hinh){
             $h = $hinh->hinh;
         }
-        
+        // unlink hình trong thư mục public //
         unlink('public/upload/gallery/'.$h);
+        // Xóa hình ảnh trong db //
         DB::table('danhmuchinh')->where('maHinhSanPham', $img)->delete();
         }
     }
 
-    
+    // Xử lý cập nhật sản phẩm //
     public function updateProduct(Request $request,$pro_id){
         $this->checkLogin();
         //Session::flush();
         //Session::pull('gal_del');
-
+        
+        // Lấy ra các id của hình ảnh trong danh mục hình mà người dùng đã click xóa //
         $test = Session::get('gal_del');
-        //var_dump($test);
+        // Có id hình ảnh //
         if($test != null){
-            $this->deleteGallery($test);
+            $this->deleteGallery($test); // Gọi hàm deleteGallery để xóa hình ảnh trong danh mục hình
         }
         //Session::push('gal_del', null); exit;
 
@@ -209,13 +223,15 @@ class ProductController extends Controller
         // $data3 = session()->all();
         //  var_dump($data3); exit;
 
+        // Lấy hình ảnh của sản phẩm cần cập nhật trong db //
         $hinhAnh = DB::table('dbsanpham')->where('maSanPham', $pro_id)->get();
 
+        // Gán $data['hinhAnh'] mặc định = hình ảnh của sản phẩm cần cập nhật trong db
         foreach($hinhAnh as $key => $pro){
             $data['hinhAnh'] = $pro->hinhAnh;
         }
         
-        
+        // Lấy các trường value sản phẩm //
         $data['tenSanPham'] = $request->tenSanPham;
         $data['slug'] = $request->slug_sanpham;
         $data['giaSanPham'] = $request->giaSanPham;
@@ -242,21 +258,21 @@ class ProductController extends Controller
             // Session::put('message', 'Cập nhật thành công');
             // return Redirect::to('/liet-ke-san-pham.html')->with('error_code', 5);
         }
-
+        // Duyệt từng hình ảnh trong danh mục hình //
         if($gallery_image){
             foreach($gallery_image as $image){
                 $get_name_image = $image->getClientOriginalName(); // Lấy tên file
-            $image->move('public/upload/gallery', $get_name_image);
-            $dataDanhMucHinh['hinh'] = $get_name_image;
+                $image->move('public/upload/gallery', $get_name_image); // Di chuyển vào public //
+                $dataDanhMucHinh['hinh'] = $get_name_image; // Gán tên hình vào mảng dataDanhMucHinh
 
-            DB::table('danhmuchinh')->insert($dataDanhMucHinh);
-            //Session::put('message', 'Thêm thành công');
-            
-            //return Redirect::to('/liet-ke-user.html')
+                DB::table('danhmuchinh')->insert($dataDanhMucHinh); // insert hình vào db //
+                //Session::put('message', 'Thêm thành công');
+                
+                //return Redirect::to('/liet-ke-user.html')
             }
         }
         
-
+        // update sản phẩm trong db //
         $n = DB::table('dbsanpham')->where('maSanPham', $pro_id)->update($data);
         if($n > 0)
             Alert::success('Cập nhật thành công');
@@ -264,13 +280,15 @@ class ProductController extends Controller
             Alert::error('Cập nhật thất bại');
         return Redirect::to('/liet-ke-san-pham.html');
     }
-
+    // Xử lý xóa sản phẩm //
     public function xoaSanPham($pro_id){
         $this->checkLogin();
+        // Lấy hình ảnh của sản phẩm cần xóa trong db //
         $hinhAnh = DB::table('dbsanpham')->where('maSanPham', $pro_id)->get();
         foreach($hinhAnh as $key => $pro){
             $data['hinhAnh'] = $pro->hinhAnh;
         }
+        // Xóa hình ảnh trong thư mục public //
         unlink('public/upload/products/'.$data['hinhAnh']);
         $n = Product::where('maSanPham', $pro_id)->delete();
         if($n)
@@ -284,8 +302,6 @@ class ProductController extends Controller
         //var_dump($request->gal_del); exit;
 
         Session::put('gal_del', $request->gal_del);
-
-
     }
 
     // Kết quả tìm kiếm //
@@ -313,6 +329,7 @@ class ProductController extends Controller
         // end header
 
 
+        // Lấy keyword qua biên get //
         $kw = $_GET['kw'];
 
         // $count_search = Product::join("danhmucsanpham", function($join){
@@ -330,6 +347,7 @@ class ProductController extends Controller
         // ->get();
         
 
+        // tìm kiếm sản phẩm dựa vào tên thương hiệu, tên danh mục, tên sản phẩm, giá sản phẩm, mô tả sản phẩm, mặc định phân trang lấy 6 sản phẩm //
         $result_search = Product::join("danhmucsanpham", function($join){
             $join->on("dbsanpham.maDanhMuc", "=", "danhmucsanpham.maDanhMuc");
         })

@@ -50,6 +50,7 @@ hr {
                                 <th>Email</th>
                                 <th>Username</th>
                                 <th>Role</th>
+                                <th>Active</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -70,6 +71,13 @@ hr {
                                     @php echo "user"; @endphp
                                     @endif
 
+                                </td>
+                                <td style="vertical-align: middle;">
+                                    @if($user->active)
+                                        <span class="badge badge-success">Active</span>
+                                    @else
+                                        <span class="badge badge-warning">Unactive</span>
+                                    @endif
                                 </td>
                                 <!-- <td style="vertical-align: middle;"><a href="#" class="btn btn-sm btn-primary">Detail</a></td> -->
                                 <td style="vertical-align: middle;">

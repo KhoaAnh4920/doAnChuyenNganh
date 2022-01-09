@@ -130,6 +130,7 @@ class HomeController extends Controller
             return redirect()->back();
     }
     
+    // Trang xem đơn hàng trên frontend của người dùng // 
     public function checkout(){
         // Check login //
         $this->checkLogin();
@@ -145,8 +146,9 @@ class HomeController extends Controller
             ->get();
         // end header
 
+        // Lấy id người dùng từ session //
         $users_id = Session::get('user_id');
-        
+        // Lấy thông tin đơn hàng của người dùng //
         $info_order = DB::table('donhang')->where('users_id', $users_id)->get();
 
         $cart_content = Cart::content();
@@ -158,6 +160,7 @@ class HomeController extends Controller
         ->with('cart_content',$cart_content)
         ->with('info_order', $info_order);
     }
+    // Trang xem những sản phẩm đã đặt trên trang frontend //
     public function checkoutDetail($order_id){
         // Check login //
         $this->checkLogin();
@@ -171,6 +174,7 @@ class HomeController extends Controller
             ->get();
         // end header
         
+        // Lấy dữ liệu chi tiết đơn hàng //
         $detail_order = DB::table("chitietdonhang")
         ->join("dbsanpham", function($join){
             $join->on("chitietdonhang.masanpham", "=", "dbsanpham.masanpham");
@@ -200,7 +204,7 @@ class HomeController extends Controller
     }
     
     
-    
+    // Trang đăng nhập user //
     public function login(){
         // Header //
         $cate_of_Apple = DB::table("danhmucsanpham")
@@ -217,6 +221,7 @@ class HomeController extends Controller
 
         return view('frontend.pages.loginUserPages.login');
     }
+    // Trang liên hệ //
     public function contact(){
         // Header //
         $cate_of_Apple = DB::table("danhmucsanpham")
@@ -233,7 +238,7 @@ class HomeController extends Controller
 
         return view('frontend.pages.contactPages.contact');
     }
-
+    // Liệt kê các hình slider //
     public function lietKeSlider(){
         $this->checkLogin();
         $all_slider = Slider::orderBy('maSlider', 'DESC')->get();
@@ -241,17 +246,18 @@ class HomeController extends Controller
         return view('backend.pages.slider.lietKeSlider')->with('all_slider', $all_slider);
     }
 
+    // Kiểm tra hình có hợp lệ //
     public function checkimg($h){
         $allowed_types = array('jpg', 'png', 'jpeg', 'gif');
-        // Define maxsize for files i.e 2MB
+        // Dung lượng hình tối đa là 2MB
         $maxsize = 2 * 1024 * 1024;
-        $file_name = $h->getClientOriginalName();
-        $file_size = $h->getSize();
-        $file_ext = pathinfo($file_name, PATHINFO_EXTENSION);
+        $file_name = $h->getClientOriginalName(); // Lấy tên hình //
+        $file_size = $h->getSize(); // Lấy dung lượng hình //
+        $file_ext = pathinfo($file_name, PATHINFO_EXTENSION); // Lấy đuôi hình //
 
-        // Check file type is allowed or not
+        // Check đuôi mở rộng hình có hợp lệ hay không //
         if(in_array(strtolower($file_ext), $allowed_types)) {
-            // Verify file size - 2MB max
+            // Check dung lượng hình - 2MB max
             if ($file_size > $maxsize) {
                 Alert::error('Dung lượng ảnh quá lớn');
                 return false;
@@ -263,24 +269,29 @@ class HomeController extends Controller
         }
         return true;
     }
+    // Trang thêm slider của admin //
     public function themSlider(){
         return view('backend.pages.slider.themSlider');
     }
+    // Thêm hình ảnh slider vào db // 
     public function createSlider(Request $request){
 
         $this->checkLogin();
+        // Tạo đối tượng slider từ model //
         $slider = new Slider();
         $slider->tenSlider = $request->slider_name;
         $slider->moTa = $request->slider_desc;
         $slider->trangThai = $request->slider_status;
 
+        // Lấy hình ảnh người dùng chọn //
         $get_image = $request->file('slider_img');
-
+        // Nếu người dùng có chọn hình và hình ảnh hợp lệ //
         if($get_image && $this->checkimg($get_image)){
             $get_name_image = $get_image->getClientOriginalName(); // Lấy tên file
-            $get_image->move('public/upload/slider', $get_name_image);
+            $get_image->move('public/upload/slider', $get_name_image); // Di chuyển hình vào public 
             $slider->hinhAnh = $get_name_image;
 
+            // Lưu hình ảnh vào db //
             $slider->save();
             Alert::success('Thêm thành công');
             return Redirect::to('/liet-ke-slider.html');
@@ -289,14 +300,18 @@ class HomeController extends Controller
         return Redirect::to('/liet-ke-slider.html');
 
     }
+    // Xóa slider trong db //
     public function deleteSlider($slide_id){
+        // Lấy hình ảnh trong db cần xóa, dựa vào mã //
         $slide = Slider::find($slide_id); 
+        // Xóa hình ảnh trong public //
         unlink('public/upload/slider/'.$slide->hinhAnh);
+        // Xóa hình ảnh trong db //
         Slider::where('maSlider', $slide_id)->delete();
         Alert::success('Xóa thành công');
         return redirect()->back();
     }
-
+    // Trang quên mật khẩu
     public function forgotPass(){
         // Header //
         $cate_of_Apple = DB::table("danhmucsanpham")

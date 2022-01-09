@@ -23,7 +23,7 @@ Route::post('/load_more_news', 'NewsController@load_more_news');
 Route::get('/contact.html', 'HomeController@contact');
 Route::get('/danh-muc-bai-viet.html/{tenDanhMuc}', 'NewsController@danhMucBaiViet');
 Route::get('/chi-tiet-bai-viet.html/{new_slug}', 'NewsController@hienThiBaiViet');
-Route::post('/login-users', 'AdminController@loginUser');
+Route::post('/login-users', 'Auth\LoginController@loginUser');
 Route::get('/logoutUser.html', 'AdminController@logoutUser');
 
 // Gio hang // 
@@ -130,5 +130,6 @@ Route::get('/update-new-pass', 'MailController@updateNewPass');
 Route::get('/actice-account', 'MailController@activeAccount');
 Route::post('/update-pass-handle', 'MailController@handleUpdatePass');
 Route::post('/signin-users.html', 'MailController@signInUser');
+Route::post('/lien-he', 'MailController@handleContact');
 
 

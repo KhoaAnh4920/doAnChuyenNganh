@@ -47,19 +47,19 @@ hr {
                     </thead>
                     <tbody>
                         @foreach($all_category_products as $key =>$category_products)
-                        @if($category_products->danhMucCha == 0)
+                        <!-- Danh mục cha -->
+                        @if($category_products->danhMucCha == 0) 
                         <tr>
                             <td>{{$category_products->maDanhMuc}}</td>
                             <td>{{$category_products->tenDanhMuc}}</td>
                             <td>{{$category_products->slug}}</td>
                             <td>{{$category_products->moTaDanhMuc}}</td>
                             <td><span class="badge badge-success">
-
-                                    @if($category_products->trangThai)
+                                @if($category_products->trangThai)
                                     @php echo "Hiển thị"; @endphp
-                                    @else
+                                @else
                                     @php echo "Ẩn"; @endphp
-                                    @endif
+                                @endif
                                 </span>
                             <td>
                                 <a href="{{URL::to('/sua-danh-muc-san-pham.html/'.$category_products->maDanhMuc)}}"
@@ -115,6 +115,7 @@ hr {
                                 </div>
                             </td>
                         </tr>
+                        <!-- Load từng danh mục con trong danh mục cha  -->
                         @foreach($all_category_products as $key => $cate_sub)
                         @if($cate_sub->danhMucCha == $category_products->maDanhMuc)
                         <tr>
@@ -187,8 +188,6 @@ hr {
                         @endforeach
                         @endif
                         @endforeach
-
-
                     </tbody>
                 </table>
             </div>

@@ -52,16 +52,14 @@ hr {
                             <td>{{$brand->tenThuongHieu}}</td>
                             <td>{{$brand->slug}}</td>
                             <td>{{$brand->moTaThuongHieu}}</td>
-                            <td><span class="badge badge-success">
-                                    @if($brand->trangThai)
-                                    @php echo "Hiển thị"; @endphp
-                                    @else
-                                    @php echo "Ẩn"; @endphp
-                                    @endif
-                                </span>
+                            <td>
+                                @if($brand->trangThai)
+                                    <span class="badge badge-success">Hiển thị</span>
+                                @else
+                                    <span class="badge badge-danger">Ẩn</span>
+                                @endif
+                                
                             </td>
-
-
                             <td>
                                 <a href="{{URL::to('/sua-thuong-hieu.html/'.$brand->maThuongHieu)}}"
                                     class="btn btn-info" role="button"><i class="fa fa-edit text-active"
@@ -86,7 +84,6 @@ hr {
                                                                     aria-label="Close"> <span
                                                                         aria-hidden="true">&times;</span> </button>
                                                             </div>
-
                                                             <hr>
                                                         </div>
                                                         <p class="font-weight-bold mb-2" style="margin-bottom:20px">

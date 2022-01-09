@@ -193,11 +193,11 @@ p.noItemCart a {
                                 <td class="col-sm-1 col-md-1 text-center price"><strong>@php echo
                                         number_format($cart_pro->price) @endphp đ</strong></td>
                                 <td class="col-sm-1 col-md-1 text-center total_price"><strong>
-                                        @php
+                                    @php
                                         $sum = $cart_pro->price * $cart_pro->qty;
                                         echo $sum;
-                                        @endphp
-                                        đ
+                                    @endphp
+                                    đ
                                     </strong></td>
                                 <td class="col-sm-1 col-md-1">
                                     <button type="button"
@@ -205,9 +205,6 @@ p.noItemCart a {
                                         class="btn btn-danger">
                                         <span class="fa fa-times"></span> Xóa
                                     </button>
-
-
-
                                 </td>
                             </tr>
                             @endforeach

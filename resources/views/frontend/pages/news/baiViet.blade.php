@@ -6,6 +6,23 @@
 </div>
 <br>
 @endsection
+@section('styles')
+<style type="text/css">
+    ul.post_relate li {
+        list-style-type: disc;
+        font-size: 16px;
+        padding: 6px;
+    }
+
+    ul.post_relate li a {
+        color: #000;
+    }
+
+    ul.post_relate li a:hover {
+        color: #FE980F;
+    }
+</style>
+
 @section('defaultContent')
 <div class="features_items">
     <h2 style="margin:0;position: inherit;font-size: 20px; color:#000; margin-bottom:10px" class="title">{{$news->tieuDe}}</h2>
@@ -30,24 +47,10 @@
 
     <!--features_items-->
     <h2 style="margin:0;font-size: 16px" class="title">Xem thêm</h2>
-    <style type="text/css">
-    ul.post_relate li {
-        list-style-type: disc;
-        font-size: 16px;
-        padding: 6px;
-    }
-
-    ul.post_relate li a {
-        color: #000;
-    }
-
-    ul.post_relate li a:hover {
-        color: #FE980F;
-    }
-    </style>
+    
     <ul class="post_relate">
         @foreach($tinLienQuan as $key => $tin)
             <li><a href="{{URL::to('/chi-tiet-bai-viet.html/'.$tin->slug)}}">{{$tin->tieuDe}}</a></li>
         @endforeach
     </ul>
-    @endsection
+@endsection
