@@ -35,7 +35,7 @@
                     <div class="logo pull-left">
                         <a href="{{URL::to('/')}}"><img src="{{asset('public/frontend/images/home/logoImg.png')}}"
                                 alt="" /></a>
-                    </div>
+                    </div> 
 
                 </div>
                 <div class="col-sm-8">
@@ -52,17 +52,17 @@
                                     @endif
                                 </a>
                             </li>
-                            <?php
-                            $users_name = Session::get('user_name');     
-                            $users_avatar = Session::get('user_avatar');    
-                            if($users_name){
-                            ?>
+                            @if(Auth::guard('user')->check())
+                                @php 
+                                    $users_avatar = Auth::guard('user')->user()->users_avatar; 
+                                    $users_name = Auth::guard('user')->user()->users_name; 
+                                @endphp
                             <li class="dropdown" style="padding-left: 0px">
                                 <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                                     <!-- <img style="width:25px; border-radius:50%;" src="public/upload/avatar/<?=$users_avatar?>"> -->
                                     <img style="width:30px; border-radius:50%;"
                                         src="{{asset('public/upload/avatar/')}}/{{$users_avatar}}">
-                                    <span class="username"><?=$users_name ?></span>
+                                    <span class="username">{{$users_name}}</span>
                                     <b class="caret"></b>
                                 </a>
                                 <ul class="dropdown-menu extended logout" style="padding:10px">
@@ -70,11 +70,11 @@
                                                 class="fa fa-key"></i>Đăng xuất</a></li>
                                 </ul>
                             </li>
-                            <?php 
-                             }else{
-                             ?>
+                            @else
+
                             <li><a href="{{URL::to('/login.html')}}"><i class="fa fa-lock"></i>Đăng nhập</a></li>
-                            <?php } ?>
+      
+                            @endif
                         </ul>
                     </div>
                 </div>

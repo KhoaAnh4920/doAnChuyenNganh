@@ -28,10 +28,12 @@
                                         <div class="form-group">
                                             <input type="email" class="form-control" name="adminEmail" id="exampleInputEmail"
                                                 aria-describedby="emailHelp" placeholder="Enter Email Address">
+                                            <p class="help is-danger" style="color:red">{{ $errors->first('adminEmail') }}</p>
                                         </div>
                                         <div class="form-group">
                                             <input type="password" name="adminPass" class="form-control" id="exampleInputPassword"
                                                 placeholder="Password">
+                                            <p class="help is-danger" style="color:red">{{ $errors->first('adminPass') }}</p>
                                         </div>
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox small"

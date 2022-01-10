@@ -10,6 +10,9 @@ use App\CategoryProduct;
 use App\Brand;
 use View;
 use Alert;
+use Auth;
+use App\User;
+use App\Admin;
 session_start();
 
 class CategoryProductController extends Controller
@@ -18,28 +21,6 @@ class CategoryProductController extends Controller
 
     // Hiển thị sản phẩm thuộc danh mục // 
     public function Categoryproduct($cate_slug){
-
-        // Sidebar //
-        $all_brands = Brand::leftJoin("dbsanpham", function($join){
-            $join->on("thuonghieu.mathuonghieu", "=", "dbsanpham.mathuonghieu");
-        })
-        ->select("thuonghieu.*", DB::raw('count(dbsanpham.masanpham) as sl'))
-        ->groupBy("thuonghieu.maThuongHieu")
-        ->get();
-        $all_category_products = CategoryProduct::orderby('maDanhMuc')->get();
-        $count_danhMucCon = CategoryProduct::select( "danhmucsanpham.maDanhMuc as maDanhMucCha","danhmucsanpham.tenDanhMuc","danhmucsanpham.slug",DB::raw('(select count(*) from danhmucsanpham where danhmucsanpham.danhMucCha = maDanhMucCha) as SL'))
-        ->where('danhmucsanpham.danhMucCha', 0)
-        ->get();
-        // End sidebar //
-
-        // Header //
-        $cate_of_Apple = CategoryProduct::whereRaw('danhmucsanpham.maDanhMuc IN (select dbsanpham.maDanhMuc FROM dbsanpham JOIN thuonghieu on thuonghieu.maThuongHieu = dbsanpham.maThuongHieu WHERE thuonghieu.maThuongHieu = 1)')
-            ->get();
-        $cate_of_Gear = CategoryProduct::select('tenDanhMuc', 'slug')
-            ->where('danhMucCha', 14)
-            ->get();
-
-        // end header
         
         // Lấy mã của danh mục dựa vào slug //
         $cate_id = CategoryProduct::select('maDanhMuc', 'danhMucCha')->where("slug", $cate_slug)->get();
@@ -53,27 +34,24 @@ class CategoryProductController extends Controller
         ->first();
 
         
-        
+        // Load sản phẩm thuộc danh mục sản phẩm //
+
         // Thuộc Danh mục cha và có danh mục con 
         if($id_danh_muc_cha == 0 && $sl_DanhMucCon->SL != 0){
             $product_of_cate = DB::table("dbsanpham")
                 ->whereRaw('dbsanpham.madanhmuc IN (select danhmucsanpham.maDanhMuc from danhmucsanpham WHERE danhmucsanpham.danhMucCha = '.$cate_by_id.')')
+                ->where("dbsanpham.trangThai", 1)
                 ->paginate(6);
         }else{
-            $product_of_cate = DB::table('dbsanpham')->where('maDanhMuc', $cate_by_id)->paginate(6);
+            $product_of_cate = DB::table('dbsanpham')->where("dbsanpham.trangThai", 1)->where('maDanhMuc', $cate_by_id)->paginate(6);
         }
-        
         
         
         $name_product = CategoryProduct::where('slug', $cate_slug)->select('tenDanhMuc')->get();
 
-        return view('frontend.pages.productsPages.categoryProduct')->with('all_brands', $all_brands)
-        ->with('all_category_products', $all_category_products)
+        return view('frontend.pages.productsPages.categoryProduct')
         ->with('product_of_cate', $product_of_cate)
-        ->with('name_product', $name_product)
-        ->with('count_danhMucCon', $count_danhMucCon)
-        ->with('cate_of_Apple', $cate_of_Apple)
-        ->with('cate_of_Gear', $cate_of_Gear);
+        ->with('name_product', $name_product);
     }
 
 
@@ -81,8 +59,10 @@ class CategoryProductController extends Controller
     // backend //
 
     public function checkLogin(){
-        $user_id = Session::get('admin_id');
-        if($user_id == null)
+        // Lấy id user từ trong session //
+        $isLogin = Auth::guard('admin')->check();
+        // Nếu id user = null - chưa đăng nhập, return về trang đăng nhập //
+        if(!$isLogin)
             return Redirect::to('/admin-login.html')->send();
     }
 
@@ -198,48 +178,4 @@ class CategoryProductController extends Controller
         
         return Redirect::to('/liet-ke-danh-muc-san-pham.html');
     }
-
-    // public function product_tabs(Request $request){
-    //     $data = $request->all();
-
-    //     $output = '';
-    //     $product = DB::table('dbsanpham')->where('maDanhMuc', $data['cate_id'])->limit(4)->get();
-    //     $product_count = $product->count();
-    //     if($product_count > 0){
-    //         $output.= "
-    //         <div class='tab-content'>
-    //             <div class='tab-pane fade active in' id='tshirt'>
-    //             ";
-    //             foreach($product as $key => $pro){
-    //             $output.= " <div class='col-sm-3'>
-    //                     <div class='product-image-wrapper'>
-    //                         <div class='single-products'>
-    //                             <div class='productinfo text-center'>
-    //                             <a href='".url('/product-details.html/'.$pro->slug)."'><img src='public/upload/products/$pro->hinhAnh' alt='$pro->tenSanPham' /></a>
-    //                                 <h2>".number_format($pro->giaSanPham)." VNĐ</h2>
-    //                                 <a href='".url('/product-details.html/'.$pro->slug)."'><p>$pro->tenSanPham</p></a>
-    //                                 <a href='".url('/product-details.html/'.$pro->slug)."' class='btn btn-default add-to-cart'>Xem ngay <i class='fa fa-arrow-right' aria-hidden='true'></i></a>
-    //                             </div>
-    //                         </div>
-    //                     </div>
-    //                 </div>";
-
-    //             }
-    //         $output.= " </div>
-    //         </div>
-    //         ";
-    //     }else{
-    //         $output.= "
-    //         <div class='tab-content'>
-    //             <div class='tab-pane fade active in' id='tshirt'>
-    //                 <div class='col-sm-12'>
-    //                     <h4 style='text-align: center; margin-bottom: 50px;'>Chưa có sản phẩm</h4>
-    //                 </div>
-    //             </div>
-    //         </div>
-            
-    //         ";
-    //     }
-    //     echo $output;
-    // }
 }

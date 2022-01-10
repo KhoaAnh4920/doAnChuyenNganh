@@ -11,6 +11,9 @@ use View;
 use App\CateNews;
 use App\News;
 use Carbon\Carbon;
+use Auth;
+use App\User;
+use App\Admin;
 session_start();
 
 class NewsController extends Controller
@@ -18,33 +21,6 @@ class NewsController extends Controller
     // frontend // 
     // Hiển thị trang tin tức dựa vào slug là tenDanhMuc //
     public function danhMucBaiViet($tenDanhMuc){
-        $all_brands = DB::table("thuonghieu")
-        ->leftJoin("dbsanpham", function($join){
-            $join->on("thuonghieu.mathuonghieu", "=", "dbsanpham.mathuonghieu");
-        })
-        ->select("thuonghieu.*", DB::raw('count(dbsanpham.masanpham) as sl'))
-        ->groupBy("thuonghieu.maThuongHieu")
-        ->get();
-
-        $all_category_products = DB::table('danhmucsanpham')->orderby('maDanhMuc')->get();
-
-        // Header //
-        $cate_of_Apple = DB::table("danhmucsanpham")
-            ->whereRaw('danhmucsanpham.maDanhMuc IN (select dbsanpham.maDanhMuc FROM dbsanpham JOIN thuonghieu on thuonghieu.maThuongHieu = dbsanpham.maThuongHieu WHERE thuonghieu.maThuongHieu = 1)')
-            ->get();
-        $cate_of_Gear = DB::table("danhmucsanpham")
-            ->select('tenDanhMuc', 'slug')
-            ->where('danhMucCha', 14)
-            ->get();
-
-        // end header
-        
-
-        // Đếm số lượng danh mục con của từng danh mục cha //
-        $count_danhMucCon = DB::table('danhmucsanpham')
-        ->select( "danhmucsanpham.maDanhMuc as maDanhMucCha","danhmucsanpham.tenDanhMuc","danhmucsanpham.slug",DB::raw('(select count(*) from danhmucsanpham where danhmucsanpham.danhMucCha = maDanhMucCha) as SL'))
-        ->where('danhmucsanpham.danhMucCha', 0)
-        ->get();
 
         // Lấy ra danh mục bài viết //
         $cate_news = CateNews::orderBy('maDanhMuc')->take(3)->get();
@@ -58,13 +34,8 @@ class NewsController extends Controller
         }
 
         $tinKhuyenMai = News::where('maDanhMuc', 4)->orderBy('maBaiViet', 'DESC')->get();
-
-        View::share('cate_of_Apple', $cate_of_Apple);
-        View::share('cate_of_Gear', $cate_of_Gear);
         
-        return view('frontend.pages.news.danhMucBaiViet')->with('all_brands', $all_brands)
-        ->with('all_category_products', $all_category_products)
-        ->with('count_danhMucCon', $count_danhMucCon)
+        return view('frontend.pages.news.danhMucBaiViet')
         ->with('cate_news', $cate_news)
         ->with('tintuc', $tintuc)
         ->with('slug', $tenDanhMuc)
@@ -72,34 +43,6 @@ class NewsController extends Controller
     }
     // Trang hiển thị chi tiết bài viết //
     public function hienThiBaiViet($news_slug){
-        // Header //
-        $cate_of_Apple = DB::table("danhmucsanpham")
-            ->whereRaw('danhmucsanpham.maDanhMuc IN (select dbsanpham.maDanhMuc FROM dbsanpham JOIN thuonghieu on thuonghieu.maThuongHieu = dbsanpham.maThuongHieu WHERE thuonghieu.maThuongHieu = 1)')
-            ->get();
-        $cate_of_Gear = DB::table("danhmucsanpham")
-            ->select('tenDanhMuc', 'slug')
-            ->where('danhMucCha', 14)
-            ->get();
-
-        // end header
-        // Đếm số lượng danh mục con của từng danh mục cha //
-        $count_danhMucCon = DB::table('danhmucsanpham')
-        ->select( "danhmucsanpham.maDanhMuc as maDanhMucCha","danhmucsanpham.tenDanhMuc","danhmucsanpham.slug",DB::raw('(select count(*) from danhmucsanpham where danhmucsanpham.danhMucCha = maDanhMucCha) as SL'))
-        ->where('danhmucsanpham.danhMucCha', 0)
-        ->get();
-
-        $all_category_products = DB::table('danhmucsanpham')->orderby('maDanhMuc')->get();
-        $all_brands = DB::table("thuonghieu")
-        ->leftJoin("dbsanpham", function($join){
-            $join->on("thuonghieu.mathuonghieu", "=", "dbsanpham.mathuonghieu");
-        })
-        ->select("thuonghieu.*", DB::raw('count(dbsanpham.masanpham) as sl'))
-        ->groupBy("thuonghieu.maThuongHieu")
-        ->get();
-
-
-        View::share('cate_of_Apple', $cate_of_Apple);
-        View::share('cate_of_Gear', $cate_of_Gear);
 
         // Lấy chi tiết bài viết dựa vào news_slug //
         $news = News::join("users", function($join){
@@ -113,9 +56,6 @@ class NewsController extends Controller
         $tinLienQuan = News::where('maDanhMuc', $maDanhMuc)->where('maBaiViet', '<>', $maBaiViet)->orderBy('maBaiViet', 'DESC')->take(3)->get();
 
         return view('frontend.pages.news.baiViet')
-        ->with('all_brands', $all_brands)
-        ->with('all_category_products', $all_category_products)
-        ->with('count_danhMucCon', $count_danhMucCon)
         ->with('news', $news)
         ->with('tinLienQuan', $tinLienQuan);
     }
@@ -123,10 +63,10 @@ class NewsController extends Controller
     // backend//
     // Kiểm tra đã đăng nhập hay chưa //
     public function checkLogin(){
-        // Lấy id user từ trong session //
-        $user_id = Session::get('admin_id');
-        // Nếu id user = null - chưa đăng nhập, return về trang đăng nhập //
-        if($user_id == null)
+        // Check người dùng đã đăng nhập chưa //
+        $isLogin = Auth::guard('admin')->check();
+        // Nếu isLogin khác true - chưa đăng nhập, return về trang đăng nhập //
+        if(!$isLogin)
             return Redirect::to('/admin-login.html')->send();
     }
     // Trang liệt kê tất cả bài viết //
@@ -182,7 +122,7 @@ class NewsController extends Controller
     public function createNews(Request $request){
         $this->checkLogin();
         // Lấy id của tác giả //
-        $user_id = Session::get('admin_id');
+        $user_id = Auth::guard('admin')->user()->users_id; 
         $news = new News();
         $news->tieuDe = $request->tieuDeBaiViet;
         $news->slug = $request->slug_BaiViet;
@@ -214,7 +154,7 @@ class NewsController extends Controller
     public function updateNews(Request $request, $new_id){
         $this->checkLogin();
         // Lấy id của tác giả //
-        $user_id = Session::get('admin_id');
+        $user_id = Auth::guard('admin')->user()->users_id;
         // Lấy thông tin bài viết cần cập nhật //
         $news = News::find($new_id);
         $news->tieuDe = $request->tieuDeBaiViet;

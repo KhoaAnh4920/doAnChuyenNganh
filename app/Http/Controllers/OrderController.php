@@ -8,16 +8,19 @@ use Redirect;
 use DB;
 use Alert;
 use Mail;
+use Auth;
+use App\User;
+use App\Admin;
 session_start();
 
 class OrderController extends Controller
 {
     // Kiểm tra đã đăng nhập hay chưa //
     public function checkLogin(){
-        // Lấy id admin từ trong session //
-        $user_id = Session::get('admin_id');
-        // Nếu id admin = null - chưa đăng nhập, return về trang đăng nhập //
-        if($user_id == null)
+        // Lấy id user từ trong session //
+        $isLogin = Auth::guard('admin')->check();
+        // Nếu id user = null - chưa đăng nhập, return về trang đăng nhập //
+        if(!$isLogin)
             return Redirect::to('/admin-login.html')->send();
     }
 

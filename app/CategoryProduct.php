@@ -12,4 +12,8 @@ class CategoryProduct extends Model
     ];
     protected $primaryKey = 'maDanhMuc';
  	protected $table = 'danhmucsanpham';
+
+    public function products(){
+        $this->hasMany('App\Product');
+    }
 }

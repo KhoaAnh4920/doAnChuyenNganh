@@ -31,7 +31,7 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Email address</label>
-                            <input type="email" class="form-control" name="users_email" value="{{$user->users_email}}">
+                            <input type="email" class="form-control" readonly name="users_email" value="{{$user->users_email}}">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputUsername">Username</label>
@@ -39,8 +39,8 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">Mật khẩu</label>
-                            <input type="text" class="form-control" name="users_password" readonly
-                                value="{{$user->users_password}}" placeholder="Password">
+                            <input type="text" class="form-control" name="users_password"
+                                value="{{$user->users_password}}" readonly placeholder="Password">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPhone">Số điện thoại</label>

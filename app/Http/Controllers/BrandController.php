@@ -9,40 +9,22 @@ use DB;
 use App\Brand;
 use View;
 use Alert;
+use Auth;
+use App\User;
+use App\Admin;
 session_start();
 
 class BrandController extends Controller
 {
     public function checkLogin(){
-        $user_id = Session::get('admin_id');
-        if($user_id == null)
+        // Lấy id user từ trong session //
+        $isLogin = Auth::guard('admin')->check();
+        // Nếu id user = null - chưa đăng nhập, return về trang đăng nhập //
+        if(!$isLogin)
             return Redirect::to('/admin-login.html')->send();
     }
     // Hiển thị danh sách sản phẩm thuộc hãng //
     public function Brandproduct($brand_slug){
-        // Header //
-        $cate_of_Apple = DB::table("danhmucsanpham")
-            ->whereRaw('danhmucsanpham.maDanhMuc IN (select dbsanpham.maDanhMuc FROM dbsanpham JOIN thuonghieu on thuonghieu.maThuongHieu = dbsanpham.maThuongHieu WHERE thuonghieu.maThuongHieu = 1)')
-            ->get();
-        $cate_of_Gear = DB::table("danhmucsanpham")
-            ->select('tenDanhMuc', 'slug')
-            ->where('danhMucCha', 14)
-            ->get();
-
-        // end header
-
-        $all_brands = Brand::leftJoin("dbsanpham", function($join){
-            $join->on("thuonghieu.mathuonghieu", "=", "dbsanpham.mathuonghieu");
-        })
-        ->select("thuonghieu.*", DB::raw('count(dbsanpham.masanpham) as sl'))
-        ->groupBy("thuonghieu.maThuongHieu")
-        ->get();
-        $all_category_products = DB::table('danhmucsanpham')->orderby('maDanhMuc')->get();
-        $count_danhMucCon = DB::table('danhmucsanpham')
-        ->select( "danhmucsanpham.maDanhMuc as maDanhMucCha","danhmucsanpham.tenDanhMuc","danhmucsanpham.slug",DB::raw('(select count(*) from danhmucsanpham where danhmucsanpham.danhMucCha = maDanhMucCha) as SL'))
-        ->where('danhmucsanpham.danhMucCha', 0)
-        ->get();
-
         // Lấy mã của thương hiệu dựa vào slug //
         $brand_id = Brand::where("slug", $brand_slug)->pluck('maThuongHieu');
         //var_dump($brand_id); exit;
@@ -50,18 +32,13 @@ class BrandController extends Controller
             $brand_by_id = $id;
         }
         // Lấy sản phẩm thuộc thương hiệu - mặc định phân trang, một lần lấy 6 sản phẩm //
-        $product_of_brand = DB::table('dbsanpham')->where("maThuongHieu", $brand_by_id)->paginate(6);
+        $product_of_brand = DB::table('dbsanpham')->where("maThuongHieu", $brand_by_id)->where('dbsanpham.trangThai', 1)->paginate(6);
         // Lấy tên thương hiệu //
         $name_brand = DB::table('thuonghieu')->where('maThuongHieu', $brand_by_id)->select('tenThuongHieu')->get();
-
-        View::share('cate_of_Apple', $cate_of_Apple);
-        View::share('cate_of_Gear', $cate_of_Gear);
         
-        return view('frontend.pages.productsPages.brandProduct')->with('all_brands', $all_brands)
-        ->with('all_category_products', $all_category_products)
+        return view('frontend.pages.productsPages.brandProduct')
         ->with('product_of_brand', $product_of_brand)
-        ->with('name_brand', $name_brand)
-        ->with('count_danhMucCon', $count_danhMucCon);
+        ->with('name_brand', $name_brand);
     }
     // Liệt kê thương hiệu //
     public function lietKeThuongHieu(){

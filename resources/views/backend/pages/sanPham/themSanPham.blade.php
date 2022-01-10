@@ -53,6 +53,7 @@
                                 <input type="file" class="custom-file-input file" id="files" name="file[]"
                                     accept="image/*" multiple>
                                 <label class="custom-file-label" for="customFile">Choose file</label>
+                                <div id="error_gallery"></div>
                                 <div class="cate_image" id="preview" style="overflow-y: hidden;">
                                 </div>
                             </div>

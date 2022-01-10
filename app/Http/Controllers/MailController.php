@@ -24,44 +24,37 @@ class MailController extends Controller
 		$dt= Carbon::now('Asia/Ho_Chi_Minh');
         $now = $dt->toDateTimeString();
 		$title_mail = "Reset password ";
-		$customer = DB::table('users')->where('users_email','=',$data['users_email'])->get();
+		$customer = DB::table('users')->where('users_email','=',$data['users_email'])->first();
 		// foreach($customer as $key => $value){
 		// 	$customer_id = $value->users_id;
 		// }
-		
         // Kiểm tra user có tồn tại trong hệ thống //
 		if($customer){
-            $count_customer = $customer->count();
-            if($count_customer==0){
-                Alert::error('Email chưa được đăng ký');
-                return redirect()->back();
-            }else{
-               	$token_random = Str::random();
-                $data['id'] = $customer->users_id;
-                $data2['email'] = $data['users_email'];
-                $data2['token'] = $token_random;
-                $data2['created_at']=$now;
-                DB::table('password_reset')->insert($data2); // insert vào bảng password_reset //
-
-                // $customer = DB::table('users')->where('users_id',$customer_id)->first();
-
-                // $customer->customer_token = $token_random;
-                // $customer->save();
-                //send mail
-              
-                $to_email = $data['users_email'];//send to this email
-                $link_reset_pass = url('/update-new-pass?email='.$to_email.'&token='.$token_random);
-             
-                $data = array("name"=>$title_mail,"body"=>$link_reset_pass,'email'=>$data['users_email']); //body of mail.blade.php
+            $data2['id'] = $customer->users_id;
                 
-                Mail::send('frontend.pages.loginUserPages.notify_recoverPass', ['data'=>$data] , function($message) use ($title_mail,$data){
-		            $message->to($data['email'])->subject($title_mail);//send this mail with subject
-		            $message->from($data['email'],$title_mail);//send from this mail
-	    		});
-                //--send mail
-                Alert::success('Gửi mail thành công. Vui lòng kiểm tra email để tiến hành đặt lại mật khẩu');
-                return redirect()->back();
-            }
+            $token_random = Str::random();
+            $data2['email'] = $data['users_email'];
+            $data2['token'] = $token_random;
+            $data2['created_at']=$now;
+            DB::table('password_reset')->insert($data2); // insert vào bảng password_reset //
+                
+            //send mail
+              
+            $to_email = $data['users_email'];//send to this email
+            $link_reset_pass = url('/update-new-pass?email='.$to_email.'&token='.$token_random);
+             
+            $data = array("name"=>$title_mail,"body"=>$link_reset_pass,'email'=>$data['users_email']); //body of mail.blade.php
+                
+            Mail::send('frontend.pages.loginUserPages.notify_recoverPass', ['data'=>$data] , function($message) use ($title_mail,$data){
+		        $message->to($data['email'])->subject($title_mail);//send this mail with subject
+		        $message->from($data['email'], 'HKShop');//send from this mail
+	    	});
+            //--send mail
+            Alert::success('Gửi mail thành công. Vui lòng kiểm tra email để tiến hành đặt lại mật khẩu');
+            return Redirect::to('/trang-chu.html');
+        }else{
+            Alert::error('Email chưa được đăng ký');
+            return redirect()->back();
         }
     }
     // Trang cho người dùng cập nhật lại mật khẩu mới //
@@ -89,18 +82,6 @@ class MailController extends Controller
                     Alert::error('Link quá hạn');
                     return Redirect::to('/login.html')->send();
                 }else{
-                    // Header //
-                    $cate_of_Apple = DB::table("danhmucsanpham")
-                    ->whereRaw('danhmucsanpham.maDanhMuc IN (select dbsanpham.maDanhMuc FROM dbsanpham JOIN thuonghieu on thuonghieu.maThuongHieu = dbsanpham.maThuongHieu WHERE thuonghieu.maThuongHieu = 1)')
-                    ->get();
-                    $cate_of_Gear = DB::table("danhmucsanpham")
-                    ->select('tenDanhMuc', 'slug')
-                    ->where('danhMucCha', 14)
-                    ->get();
-                    // end header
-
-                    View::share('cate_of_Apple', $cate_of_Apple);
-                    View::share('cate_of_Gear', $cate_of_Gear);
                     return view('frontend.pages.loginUserPages.newPassword')->with('email', $email)->with('token', $token);
                 }
             }
@@ -108,6 +89,19 @@ class MailController extends Controller
     }
     // Xử lý cập nhật mật khẩu mới //
     public function handleUpdatePass(Request $request){
+        $this->validate($request, [
+            'users_password'   => 'required|min:6|max:255', 
+            'users_RePassword' => 'required|min:6|max:255'
+        ],
+        [
+            'users_password.required' => 'Mật khẩu không được để trống',
+            'users_RePassword.required' => 'Mật khẩu không được để trống',
+            'users_password.min' => 'Mật khẩu tối thiểu 6 kí tự',
+            'users_RePassword.min' => 'Mật khẩu tối thiểu 6 kí tự',
+            'users_password.max' => 'Mật khẩu quá 255 ký tự',
+            'users_RePassword.max' => 'Mật khẩu quá 255 ký tự',
+        ]);
+
         $data = $request->all();
         // Kiểm tra nhập lại mật khẩu có trùng với mật khẩu trước đó không //
         if($data['users_password'] == $data['users_RePassword']){
@@ -138,7 +132,7 @@ class MailController extends Controller
                 
         Mail::send('frontend.pages.loginUserPages.notify_activeAccount', ['data'=>$data] , function($message) use ($title_mail,$data){
 		    $message->to($data['email'])->subject($title_mail);//send this mail with subject
-		    $message->from($data['email'],$title_mail);//send from this mail
+		    $message->from($data['email'],'HKShop');//send from this mail
 	    });
         //--send mail
         return true;
@@ -146,6 +140,24 @@ class MailController extends Controller
     
     // Đăng ký user - frontend //
     public function signInUser(Request $request){
+        $this->validate($request, [
+            'users_name' => 'bail|required|max:255', 
+            'users_email'   => 'bail|required|email|max:255', 
+            'users_password' => 'bail|required|min:6|max:255',
+            'users_address' => 'bail|max:255',
+            'users_phone' => 'bail|alpha_num|max:255',
+        ],
+        [
+            'users_name.required' => 'Tên người dùng không được để trống',
+            'users_email.required' => 'Email không được để trống',
+            'users_password.required' => 'Email không được để trống',
+            'users_email.email' => 'Email không đúng định dạng',
+            'users_password.min' => 'Mật khẩu tối thiểu 6 kí tự',
+            'users_email.max' => 'Email quá 255 ký tự',
+            'users_password.max' => 'Mật khẩu quá 255 ký tự',
+        ]);
+
+
         $data = array();
         // Lấy value tên người dùng //
         $data['users_name'] = $request->users_name;
@@ -173,30 +185,6 @@ class MailController extends Controller
         $data['active'] = 0;
         // Tạo chuỗi ngẫu nhiên // 
         $data['token'] = Str::random();
-        // Lấy hình ảnh //
-        $get_image = $request->file('user_avatar');
-
-        //Kiểm tra nếu người dùng có chọn ảnh //
-        if($get_image){
-            $get_name_image = $get_image->getClientOriginalName(); // Lấy tên file
-            $get_image->move('public/upload/avatar', $get_name_image); // Di chuyển hình ảnh vào thư mục public //
-            $data['users_avatar'] = $get_name_image;
-
-            // Insert data vào db //
-            $n = DB::table('users')->insert($data);
-            if($n > 0){
-                // Lấy id user vừa mới thêm vào db //
-                $users = DB::table('users')->orderBy('users_id', 'DESC')->first();
-                $id = $users->users_id;
-                // Gửi mail yêu cầu kích hoạt tài khoản //
-                if($this->guiMailActive($data['users_email'], $id, $data['token'])){
-                    Alert::success('Gửi mail thành công. Vui lòng kiểm tra email để tiến hành kích hoạt tài khoản');
-                    return redirect()->back();    
-                }
-            }else
-                Alert::error('Đăng ký thất bại thất bại');
-            return redirect()->back();
-        }
         // Nếu người dùng không chọn ảnh, gán mặc định bằng unknown.png //
         $data['users_avatar'] = "unknown.png";
     
@@ -211,7 +199,6 @@ class MailController extends Controller
                 Alert::success('Gửi mail thành công. Vui lòng kiểm tra email để tiến hành kích hoạt tài khoản');
                 return redirect()->back();  
             }
-                 
         }
         else
             Alert::error('Đăng ký thất bại');

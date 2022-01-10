@@ -31,7 +31,7 @@
                         <div class="form-group">
                             <label for="exampleInputPhone">Hình ảnh</label>
                             <div class="custom-file"> 
-                                <input type="file" onchange="readURL(this);" class="custom-file-input" id="customFile" name="slider_img">
+                                <input type="file" onchange="readURL(this);" class="custom-file-input" required id="customFile" name="slider_img">
                                 <label class="custom-file-label" for="customFile">Choose file</label>
                                 <img id="blah" style="width:200px; height:80px ;margin-top:5px; margin-bottom:60px" src="https://longvanidc.vn/hinhanh/no_image_available.jpeg">
                             </div>

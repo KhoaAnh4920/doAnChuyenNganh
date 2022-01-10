@@ -27,11 +27,11 @@
 
 
 
-        <?php
-            $users_name = Session::get('admin_name');     
-            $users_avatar = Session::get('admin_avatar');  
-
-                ?>
+        @if(Auth::guard('admin')->check())
+            @php 
+                $users_avatar = Auth::guard('admin')->user()->users_avatar; 
+                $users_name = Auth::guard('admin')->user()->users_name; 
+            @endphp
         <div class="topbar-divider d-none d-sm-block"></div>
         <li class="nav-item dropdown no-arrow">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
@@ -60,5 +60,6 @@
                 </a>
             </div>
         </li>
+        @endif
     </ul>
 </nav>

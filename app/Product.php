@@ -12,4 +12,11 @@ class Product extends Model
     ];
     protected $primaryKey = 'maSanPham';
  	protected $table = 'dbsanpham';
+    
+    public function Gallimage(){
+        $this->hasMany('App\GalleryImage');
+    }
+    public function cate_product(){
+        return $this->belongsTo('App\CategoryProduct', 'maDanhMuc');
+    }
 }

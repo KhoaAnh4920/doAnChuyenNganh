@@ -16,7 +16,9 @@
                         <input type="hidden" value="{{$email}}" name="email">
                         <input type="hidden" value="{{$token}}" name="token">
                         <input type="password" name="users_password" placeholder="Nhập mật khẩu mới" />
+                        <p class="help is-danger" style="color:red">{{ $errors->first('users_password') }}</p>
                         <input type="password" name="users_RePassword" placeholder="Nhập lại mật khẩu" />
+                        <p class="help is-danger" style="color:red">{{ $errors->first('users_RePassword') }}</p>
    
                         <button type="submit" class="btn btn-default">Đổi mật khẩu</button>
                     </form>

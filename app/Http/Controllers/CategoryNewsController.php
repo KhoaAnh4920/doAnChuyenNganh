@@ -9,6 +9,9 @@ use DB;
 use Alert;
 use App\CateNews;
 use View;
+use Auth;
+use App\User;
+use App\Admin;
 session_start();
 
 class CategoryNewsController extends Controller
@@ -16,9 +19,9 @@ class CategoryNewsController extends Controller
     // Kiểm tra đã đăng nhập hay chưa //
     public function checkLogin(){
         // Lấy id user từ trong session //
-        $user_id = Session::get('admin_id');
+        $isLogin = Auth::guard('admin')->check();
         // Nếu id user = null - chưa đăng nhập, return về trang đăng nhập //
-        if($user_id == null)
+        if(!$isLogin)
             return Redirect::to('/admin-login.html')->send();
     }
     // Trang liệt kê danh mục bài viết //

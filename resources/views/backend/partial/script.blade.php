@@ -230,11 +230,16 @@ $(document).ready(function() {
     //kiem tra trinh duyet co ho tro File API
     if (window.File && window.FileList && window.FileReader) {
         $("#files").on("change", function(e) {
-            alert(files.length);
             // lấy thông tin của file đã tải lên bằng property event.target.files
             var files = e.target.files,
                 filesLength = files.length; // Lấy số lượng file//
             
+            if(filesLength > 5){
+                var error = '<p>Chỉ được chọn tối đa 5 ảnh</p>';
+                $('#error_gallery').html('<span class="text-danger">' + error + '</span>');
+                return false;   
+            }
+                
             for (var i = 0; i < filesLength; i++) {
                 var f = files[i]
                 var fileReader = new FileReader();

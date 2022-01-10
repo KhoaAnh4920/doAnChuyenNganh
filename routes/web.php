@@ -23,8 +23,8 @@ Route::post('/load_more_news', 'NewsController@load_more_news');
 Route::get('/contact.html', 'HomeController@contact');
 Route::get('/danh-muc-bai-viet.html/{tenDanhMuc}', 'NewsController@danhMucBaiViet');
 Route::get('/chi-tiet-bai-viet.html/{new_slug}', 'NewsController@hienThiBaiViet');
-Route::post('/login-users', 'Auth\LoginController@loginUser');
-Route::get('/logoutUser.html', 'AdminController@logoutUser');
+Route::post('/login-users', 'AuthController@loginUser');
+Route::get('/logoutUser.html', 'AuthController@logoutUser');
 
 // Gio hang // 
 Route::get('/cart.html', 'CartController@cart');
@@ -38,12 +38,12 @@ Route::get('/order.html', 'CartController@order');
 Route::post('/handle-order', 'CartController@handleOrder');
 
 // Backend //
-Route::post('/login-admin', 'AdminController@loginAdmin');
+Route::post('/login-admin', 'AuthController@loginAdmin');
 Route::post('/admin-dashboard.html', 'AdminController@adminPage');
 Route::get('/admin', 'AdminController@adminPage');
 Route::get('/admin.html', 'AdminController@adminPage');
 Route::get('/admin-login.html', 'AdminController@adminLogin');
-Route::get('/logoutAdmin.html', 'AdminController@logoutAdmin');
+Route::get('/logoutAdmin.html', 'AuthController@logoutAdmin');
 Route::get('/liet-ke-user.html', 'AdminController@lietKeUser');
 Route::get('/sua-user.html/{users_id}', 'AdminController@suaUser');
 Route::get('/them-user.html', 'AdminController@themUser');
@@ -118,10 +118,10 @@ Route::post('/create-news', 'NewsController@createNews');
 // Route::post('/update-gallery', 'galleryController@updateGallery');
 
 //Slider //
-Route::get('/liet-ke-slider.html', 'HomeController@lietKeSlider');
-Route::get('/them-slider.html', 'HomeController@themSlider');
-Route::get('/delete-slider/{slide_id}', 'HomeController@deleteSlider');
-Route::post('/create-slider', 'HomeController@createSlider');
+Route::get('/liet-ke-slider.html', 'AdminController@lietKeSlider');
+Route::get('/them-slider.html', 'AdminController@themSlider');
+Route::get('/delete-slider/{slide_id}', 'AdminController@deleteSlider');
+Route::post('/create-slider', 'AdminController@createSlider');
 
 //
 Route::get('/forgot-password.html', 'HomeController@forgotPass');

@@ -12,27 +12,16 @@ use View;
 use Alert;
 use Mail;
 use Carbon\Carbon;
+use Auth;
+use App\User;
 
 class CartController extends Controller
 {
     // Trang hiển thị giỏ hàng //
     public function cart(){
-        // Header //
-        $cate_of_Apple = DB::table("danhmucsanpham")
-            ->whereRaw('danhmucsanpham.maDanhMuc IN (select dbsanpham.maDanhMuc FROM dbsanpham JOIN thuonghieu on thuonghieu.maThuongHieu = dbsanpham.maThuongHieu WHERE thuonghieu.maThuongHieu = 1)')
-            ->get();
-        $cate_of_Gear = DB::table("danhmucsanpham")
-            ->select('tenDanhMuc', 'slug')
-            ->where('danhMucCha', 14)
-            ->get();
 
         // Lấy sản phẩm trong giỏ hàng //
         $contentCart = Cart::content();
-      
-        //Cart::destroy();
-
-        View::share('cate_of_Apple', $cate_of_Apple);
-        View::share('cate_of_Gear', $cate_of_Gear);
         
         return view('frontend.pages.orderPages.cart')
         ->with('contentCart', $contentCart);
@@ -117,12 +106,13 @@ class CartController extends Controller
     // Kiểm tra đã đăng nhập hay chưa //
     public function checkLogin(){
         // Lấy id user từ trong session //
-        $user_id = Session::get('user_id');
+        $isLogin = Auth::guard('user')->check(); 
         // Nếu id user = null - chưa đăng nhập, return -1 //
-        if($user_id == null){
+        if($isLogin == null){
             return -1;
         }
         // Lấy thông tin user đã được active hay chưa //
+        $user_id = Auth::guard('user')->user()->users_id;
         $userActive = DB::table('users')->where('users_id', $user_id)->first();
         // Nếu chưa active, return về 0 //
         if($userActive->active != 1){
@@ -157,7 +147,7 @@ class CartController extends Controller
         // end header
 
         // Lấy id user //
-        $users_id = Session::get('user_id');
+        $users_id = Auth::guard('user')->user()->users_id;
         // Lấy thông tin user dựa vào id //
         $info_user = DB::table('users')->where('users_id', $users_id)->get();
         
@@ -173,13 +163,10 @@ class CartController extends Controller
         $title_mail = "Xác nhận đặt hàng ";
         //$to_email = $email;
         $data['email'] = $email; //send to this email
-       // $link_reset_pass = url('/actice-account?id='.$users_id.'&token='.$token);
-             
-       // $data = array("name"=>$title_mail,"body"=>$link_reset_pass,'email'=>$to_email); //body of mail.blade.php
-                
+    
         Mail::send('frontend.pages.orderPages.notify_orderMail', ['data'=>$data, 'oderDetail' =>$cart_content] , function($message) use ($title_mail,$data){
 		    $message->to($data['email'])->subject($title_mail);//send this mail with subject
-		    $message->from($data['email'],$title_mail);//send from this mail
+		    $message->from($data['email'], 'HKShop');//send from this mail
 	    });
         //--send mail
         return true;

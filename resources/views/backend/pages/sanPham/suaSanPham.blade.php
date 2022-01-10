@@ -51,6 +51,7 @@
                                 <input type="file" onchange="readURL(this);" class="custom-file-input" id="customFile"
                                     name="hinhAnh">
                                 <label class="custom-file-label" for="customFile">Choose file</label>
+                                <div id="error_gallery"></div>
                                 <img id="blah" style="width:100px; margin-top:5px; margin-bottom:80px"
                                     src="../public/upload/products/{{$pro->hinhAnh}}">
                             </div>
