@@ -59,7 +59,7 @@ hr {
                             <td>{{$pro->maSanPham}}</td>
                             <td>{{$pro->tenSanPham}}</td>
                             <td>{{$pro->slug}}</td>
-                            <td>{{$pro->giaSanPham}}</td>
+                            <td>{{number_format($pro->giaSanPham) }}đ</td>
                             <td>
                                 <img style="width:50px;" src="public/upload/products/{{$pro->hinhAnh}}" alt="">
                             </td>

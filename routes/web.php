@@ -121,7 +121,9 @@ Route::post('/create-news', 'NewsController@createNews');
 Route::get('/liet-ke-slider.html', 'AdminController@lietKeSlider');
 Route::get('/them-slider.html', 'AdminController@themSlider');
 Route::get('/delete-slider/{slide_id}', 'AdminController@deleteSlider');
+Route::get('/sua-slider.html/{slide_id}', 'AdminController@suaSlider');
 Route::post('/create-slider', 'AdminController@createSlider');
+Route::post('/update-slider/{slide_id}', 'AdminController@updateSlider');
 
 //
 Route::get('/forgot-password.html', 'HomeController@forgotPass');

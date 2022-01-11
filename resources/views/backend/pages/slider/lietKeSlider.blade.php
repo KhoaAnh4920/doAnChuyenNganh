@@ -73,10 +73,11 @@ hr {
                                 </td>
                                 <!-- <td style="vertical-align: middle;"><a href="#" class="btn btn-sm btn-primary">Detail</a></td> -->
                                 <td style="vertical-align: middle;">
-    
+                                    <a href="{{URL::to('/sua-slider.html/'.$slide->maSlider)}}" class="btn btn-info"
+                                        role="button"><i class="fa fa-edit text-active" style="color:#ffffff"></i></a>
                                     <a href="#my-modal_{{$slide->maSlider}}" data-toggle="modal" class="btn btn-danger"
                                         role="button"><i class="fa fa-trash  text" style="color:#ffffff"></i>
-                                        Delete</a>
+                                        </a>
 
                                     <div id="my-modal_{{$slide->maSlider}}" class="modal fade" tabindex="-1"
                                         role="dialog" aria-hidden="true">

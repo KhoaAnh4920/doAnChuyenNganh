@@ -27,7 +27,7 @@
                         <div class="form-group">
                             <label for="exampleInputNameBrand">Tên thương hiệu</label>
                             <input type="text" class="form-control" name="tenThuongHieu"
-                                value="{{$brand->tenThuongHieu}}">
+                                value="{{$brand->tenThuongHieu}}" id="title_slug" onkeyup="ChangeToSlug();">
                         </div>
                         <div class="form-group">
                             <label for="exampleInputCatagoryBrandSlug">Slug</label>
@@ -46,7 +46,7 @@
                                 <option value="1" {{($brand->trangThai == 1) ? 'selected': ''}}>Hiển thị</option>
                             </select>
                         </div>
-                        <button type="submit" class="btn btn-primary">Thêm</button>
+                        <button type="submit" class="btn btn-primary">Cập nhật</button>
                     </form>
                 @endforeach
                 </div>

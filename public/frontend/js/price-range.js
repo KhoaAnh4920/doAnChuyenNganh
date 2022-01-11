@@ -144,6 +144,8 @@
 		} else {
 			this.tooltip.addClass('hide');
 		}
+		$("#minamount_hide").val(this.value[0]);
+		$("#maxamount_hide").val(this.value[1]);
 	};
 
 	Slider.prototype = {
@@ -266,6 +268,9 @@
 				})
 				.data('value', val)
 				.prop('value', val);
+
+			$("#minamount_hide").val(val[0]);
+			$("#maxamount_hide").val(val[1]);
 			return false;
 		},
 
@@ -296,7 +301,9 @@
 				})
 				.data('value', val)
 				.prop('value', val);
-			return false;
+
+			
+			return false;		
 		},
 
 		calculateValue: function() {

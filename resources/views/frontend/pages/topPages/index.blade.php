@@ -1,4 +1,4 @@
-@extends('frontend.layouts.master')
+@extends('frontend.layouts.master',['nopriceRange' => true])
 @section('title','Trang chủ')
 @section('styles')
 <style>

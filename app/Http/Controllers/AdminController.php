@@ -243,6 +243,11 @@ class AdminController extends Controller
     public function themSlider(){
         return view('backend.pages.slider.themSlider');
     }
+    // Trang sửa slider //
+    public function suaSlider($slider_id){
+        $edit_slider = Slider::find($slider_id); 
+        return view('backend.pages.slider.suaSlider')->with('edit_slider', $edit_slider);
+    }
     // Thêm hình ảnh slider vào db // 
     public function createSlider(Request $request){
 
@@ -256,7 +261,7 @@ class AdminController extends Controller
         // Lấy hình ảnh người dùng chọn //
         $get_image = $request->file('slider_img');
         // Nếu người dùng có chọn hình và hình ảnh hợp lệ //
-        var_dump($get_image); exit;
+
         if($get_image){
             $result = $this->checkimg($get_image); // Kiểm tra ảnh có hợp lệ không //
             if($result == -1)
@@ -289,6 +294,42 @@ class AdminController extends Controller
         Alert::success('Xóa thành công');
         return redirect()->back();
     }
+    // update slider //
+    public function updateSlider(Request $request, $slide_id){
+        $this->checkLogin();
+        // Tạo đối tượng slider từ model //
+        $slider = Slider::find($slide_id);
 
+        $slider->tenSlider = $request->slider_name;
+        $slider->moTa = $request->slider_desc;
+        $slider->trangThai = $request->slider_status;
+
+        // Lấy hình ảnh người dùng chọn //
+        $get_image = $request->file('slider_img');
+        // Nếu người dùng có chọn hình và hình ảnh hợp lệ //
+        if($get_image){
+            $result = $this->checkimg($get_image); // Kiểm tra ảnh có hợp lệ không //
+            if($result == -1)
+                Alert::error('Dung lượng ảnh quá lớn');
+            else if($result == 0)
+                Alert::error('Ảnh không hợp lệ');
+            else{
+                $get_name_image = $get_image->getClientOriginalName(); // Lấy tên file
+                $file_name = pathinfo($get_name_image, PATHINFO_FILENAME); // tách tên file bỏ đuôi mở rộng //
+                $get_name_image = $file_name . '_'.time(). '.'. $get_image->getClientOriginalExtension(); // Gán tên file + thời gian hiện tại //
+                $get_image->move('public/upload/slider', $get_name_image); // Di chuyển hình vào public
+                unlink('public/upload/slider/'.$slider->hinhAnh);
+                $slider->hinhAnh = $get_name_image;
+
+                // Lưu hình ảnh vào db //
+                $slider->save();
+                Alert::success('Cập nhật thành công');
+            }
+            return Redirect::to('/liet-ke-slider.html');
+        }
+        $slider->save();
+        Alert::success('Cập nhật thành công');
+        return Redirect::to('/liet-ke-slider.html');
+    }
 
 }

@@ -26,7 +26,7 @@ class HomeController extends Controller
             ->where("danhmucsanpham.danhmuccha", "=", 8);
         })
         ->where("dbsanpham.trangThai", 1)
-        ->get();
+        ->limit(6)->get();
         
 
         // Đếm số lượng sản phẩm thuộc danh mục điện thoại // 
@@ -95,9 +95,12 @@ class HomeController extends Controller
     }
 
     public function checkLogin(){
-        $user_id = Session::get('user_id');
-        if($user_id == null)
-            return redirect()->back();
+        $isLogin = Auth::guard('user')->check();
+        if(!$isLogin){
+            Alert::error("Vui lòng đăng nhập để tiếp tục");
+            return redirect()->back()->send();
+        }
+            
     }
     
     // Trang xem đơn hàng trên frontend của người dùng // 

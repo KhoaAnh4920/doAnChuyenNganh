@@ -36,16 +36,31 @@ class CategoryProductController extends Controller
         
         // Load sản phẩm thuộc danh mục sản phẩm //
 
-        // Thuộc Danh mục cha và có danh mục con 
-        if($id_danh_muc_cha == 0 && $sl_DanhMucCon->SL != 0){
-            $product_of_cate = DB::table("dbsanpham")
-                ->whereRaw('dbsanpham.madanhmuc IN (select danhmucsanpham.maDanhMuc from danhmucsanpham WHERE danhmucsanpham.danhMucCha = '.$cate_by_id.')')
-                ->where("dbsanpham.trangThai", 1)
-                ->paginate(6);
+        // Người dùng có chọn lọc giá //
+        if(isset($_GET['minamount_hide']) && isset($_GET['maxamount_hide'])){
+            $min_price = $_GET['minamount_hide'];
+            $max_price = $_GET['maxamount_hide'];
+
+            // Thuộc Danh mục cha và có danh mục con VD: Điện thoai, Laptop,... //
+            if($id_danh_muc_cha == 0 && $sl_DanhMucCon->SL != 0){
+                $product_of_cate = DB::table("dbsanpham")
+                    ->whereRaw('dbsanpham.madanhmuc IN (select danhmucsanpham.maDanhMuc from danhmucsanpham WHERE danhmucsanpham.danhMucCha = '.$cate_by_id.')')
+                    ->where("dbsanpham.trangThai", 1)
+                    ->whereBetween('dbsanpham.giaSanPham',[$min_price,$max_price])
+                    ->paginate(6);
+            }else
+                $product_of_cate = DB::table('dbsanpham')->where("dbsanpham.trangThai", 1)->where('maDanhMuc', $cate_by_id)->whereBetween('dbsanpham.giaSanPham',[$min_price,$max_price])->paginate(6);
         }else{
-            $product_of_cate = DB::table('dbsanpham')->where("dbsanpham.trangThai", 1)->where('maDanhMuc', $cate_by_id)->paginate(6);
+            // Thuộc Danh mục cha và có danh mục con 
+            if($id_danh_muc_cha == 0 && $sl_DanhMucCon->SL != 0){
+                $product_of_cate = DB::table("dbsanpham")
+                    ->whereRaw('dbsanpham.madanhmuc IN (select danhmucsanpham.maDanhMuc from danhmucsanpham WHERE danhmucsanpham.danhMucCha = '.$cate_by_id.')')
+                    ->where("dbsanpham.trangThai", 1)
+                    ->paginate(6);
+            }else
+                $product_of_cate = DB::table('dbsanpham')->where("dbsanpham.trangThai", 1)->where('maDanhMuc', $cate_by_id)->paginate(6);
         }
-        
+            
         
         $name_product = CategoryProduct::where('slug', $cate_slug)->select('tenDanhMuc')->get();
 
