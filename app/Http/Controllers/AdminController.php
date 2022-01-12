@@ -257,6 +257,8 @@ class AdminController extends Controller
         $slider->tenSlider = $request->slider_name;
         $slider->moTa = $request->slider_desc;
         $slider->trangThai = $request->slider_status;
+        $slider->viTri = $request->slider_pos;
+
 
         // Lấy hình ảnh người dùng chọn //
         $get_image = $request->file('slider_img');
@@ -303,6 +305,7 @@ class AdminController extends Controller
         $slider->tenSlider = $request->slider_name;
         $slider->moTa = $request->slider_desc;
         $slider->trangThai = $request->slider_status;
+        $slider->viTri = $request->slider_pos;
 
         // Lấy hình ảnh người dùng chọn //
         $get_image = $request->file('slider_img');

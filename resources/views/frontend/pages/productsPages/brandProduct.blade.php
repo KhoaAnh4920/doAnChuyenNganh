@@ -2,7 +2,28 @@
 @section('title','Thương hiệu')
 @section('advertisement')
 <div class="container mb-4">
-    <img src="{{asset('public/frontend/images/shop/advertisement.jpg')}}" alt="" />
+    <div id="slider-carousel" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner row">
+            @php $i= 1 @endphp
+            @foreach($all_slider as $key => $slide)
+
+            <div class="item {{($i == 1) ? 'active' : ''}} col-sm-12">
+                <img src="{{asset('public/upload/slider/')}}/{{$slide->hinhAnh}}" style="width:100%" class="img-fluid"
+                    alt="" />
+            </div>
+            @php $i++ @endphp
+            @endforeach
+
+        </div>
+    @if(count($all_slider) > 1)
+        <a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
+            <i class="fa fa-angle-left"></i>
+        </a>
+        <a href="#slider-carousel" class="right control-carousel hidden-xs" data-slide="next">
+            <i class="fa fa-angle-right"></i>
+        </a>
+    @endif
+    </div>
 </div>
 <br>
 @endsection

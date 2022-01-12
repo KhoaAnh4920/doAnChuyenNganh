@@ -11,13 +11,16 @@ use View;
 use Alert;
 use Auth;
 use App\User;
+use App\Slider;
 session_start();
 
 class HomeController extends Controller
 {
     // front end // 
     public function index(){
-        
+        // Lấy slider trang chủ //
+        $all_slider = Slider::where('trangThai', 1)->where('viTri', 0)->orderBy('maSlider', 'DESC')->get();
+
         // Danh sách điện thoại nổi bật // 
         $danhSachDienThoai = DB::table("dbsanpham")
         ->whereIn("dbsanpham.madanhmuc", function($query){
@@ -45,6 +48,7 @@ class HomeController extends Controller
         ->select("danhmucsanpham.tenDanhMuc", "danhmucsanpham.slug")
         ->where("danhmucsanpham.danhmuccha", 8)
         ->where("danhmucsanpham.trangThai", 1)
+        ->limit(3)
         ->get();
         
 
@@ -75,6 +79,7 @@ class HomeController extends Controller
         ->select("danhmucsanpham.tenDanhMuc", "danhmucsanpham.slug")
         ->where("danhmucsanpham.danhmuccha", "=", 7)
         ->where("danhmucsanpham.trangThai", 1)
+        ->limit(3)
         ->get();
         
 
@@ -91,7 +96,8 @@ class HomeController extends Controller
         ->with('countdanhSachDienThoai', $countdanhSachDienThoai)
         ->with('danhSachLaptop', $danhSachLaptop)
         ->with('countdanhSachLaptop', $countdanhSachLaptop)
-        ->with('danhMucConLaptop', $danhMucConLaptop);
+        ->with('danhMucConLaptop', $danhMucConLaptop)
+        ->with('all_slider', $all_slider);
     }
 
     public function checkLogin(){

@@ -1,9 +1,6 @@
 @extends('backend.layouts.master')
 @section('title','Liệt kê chi tiết đơn hàng')
-@section('content')
-
-<!DOCTYPE html>
-<html>
+@section('styles')
 <style>
 table,
 th,
@@ -11,6 +8,8 @@ td {
     border: 0;
 }
 </style>
+
+@section('content')
 <div class="container-fluid" id="container-wrapper">
 
     <div class="cus_order" style="padding-left: 15px">

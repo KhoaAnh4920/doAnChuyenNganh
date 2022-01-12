@@ -42,7 +42,15 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">Mô tả</label>
-                            <input type="text" class="form-control" name="slider_desc" placeholder="Mô tả" value="{{$edit_slider->moTa}}">
+                            <textarea class="form-control" id="ckeditor_addSliderDesc" name="slider_desc" rows="4">{{$edit_slider->moTa}}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Vị trí slider: </label>
+                            <select name="slider_pos">
+                                <option value="0" {{($edit_slider->viTri == 0) ? "selected" : ''}}>Trang chủ</option>
+                                <option value="1" {{($edit_slider->viTri == 1) ? "selected" : ''}}>Danh mục sản phẩm</option>
+                                <option value="2" {{($edit_slider->viTri == 2) ? "selected" : ''}}>Danh mục thương hiệu</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="slider_status">Trạng thái: </label>

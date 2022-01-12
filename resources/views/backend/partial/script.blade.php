@@ -12,6 +12,7 @@ CKEDITOR.replace('ckeditor_addProduct');
 CKEDITOR.replace('ckeditor_editProduct');
 CKEDITOR.replace('ckeditor_addContentNews');
 CKEDITOR.replace('ckeditor_addDescNews');
+CKEDITOR.replace('ckeditor_addSliderDesc');
 </script>
 
 <!-- Hiện modal form thành công  -->

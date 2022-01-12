@@ -18,11 +18,9 @@
                     <div class="panel-body">
                         <ul>
                             @foreach($all_category_products as $key => $cate_sub)
-                            @if($cate->maDanhMucCha == $cate_sub->danhMucCha)
-                            <li><a
-                                    href="{{URL::to('/category-product.html/'.$cate_sub->slug)}}">{{$cate_sub->tenDanhMuc}}</a>
-                            </li>
-                            @endif
+                                @if($cate->maDanhMucCha == $cate_sub->danhMucCha)
+                                    <li><a href="{{URL::to('/category-product.html/'.$cate_sub->slug)}}">{{$cate_sub->tenDanhMuc}}</a></li>
+                                @endif
                             @endforeach
                         </ul>
                     </div>
@@ -57,16 +55,16 @@
         @unless(isset($nopriceRange))
         <form action="">
             <div class="price-range">
-                <!--price-range-->
-                <h2>Price Range</h2>
+                <!--Lọc giá-->
+                <h2>Phạm vi giá</h2>
                 <div class="well text-center">
-                    <input type="text" class="span2" value="" data-slider-min="0" data-slider-max="50000000"
+                    <input type="text" class="span2" value="" data-slider-min="1000000" data-slider-max="50000000"
                         data-slider-step="5" data-slider-value="[10000000,30000000]" id="sl2"><br />
-                    <b class="pull-left">0đ</b> <b class="pull-right">50tr</b>
+                    <b class="pull-left">1tr</b> <b class="pull-right">50tr</b>
                     <input type="hidden" id="minamount_hide" name="minamount_hide">
                     <input type="hidden" id="maxamount_hide" name="maxamount_hide">
 
-                    <input type="submit" class="btn btn-primary" style=" color: #fff;max-width: 100%; font-weight: 500;"
+                    <input type="submit" class="btn btn-primary" style=" color: #fff;max-width: 100%; font-weight: 500;margin-top: 30px;"
                         name="filter-price" value="Lọc giá">
                 </div>
             </div>

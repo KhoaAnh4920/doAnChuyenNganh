@@ -12,6 +12,7 @@ use Alert;
 use Auth;
 use App\User;
 use App\Admin;
+use App\Slider;
 session_start();
 
 class BrandController extends Controller
@@ -25,6 +26,9 @@ class BrandController extends Controller
     }
     // Hiển thị danh sách sản phẩm thuộc hãng //
     public function Brandproduct($brand_slug){
+        // Lấy slider //
+        $all_slider = Slider::where('trangThai', 1)->where('viTri',2)->orderBy('maSlider', 'DESC')->get();
+
         // Lấy mã của thương hiệu dựa vào slug //
         $brand_id = Brand::where("slug", $brand_slug)->pluck('maThuongHieu');
         //var_dump($brand_id); exit;
@@ -38,7 +42,8 @@ class BrandController extends Controller
         
         return view('frontend.pages.productsPages.brandProduct')
         ->with('product_of_brand', $product_of_brand)
-        ->with('name_brand', $name_brand);
+        ->with('name_brand', $name_brand)
+        ->with('all_slider', $all_slider);
     }
     // Liệt kê thương hiệu //
     public function lietKeThuongHieu(){

@@ -15,6 +15,7 @@ use Alert;
 use Auth;
 use App\User;
 use App\Admin;
+use App\Slider;
 session_start();
 
 class ProductController extends Controller
@@ -364,28 +365,9 @@ class ProductController extends Controller
 
     // Kết quả tìm kiếm //
     public function searchProduct(){
-        // Sidebar //
-        $all_brands = Brand::leftJoin("dbsanpham", function($join){
-            $join->on("thuonghieu.mathuonghieu", "=", "dbsanpham.mathuonghieu");
-        })
-        ->select("thuonghieu.*", DB::raw('count(dbsanpham.masanpham) as sl'))
-        ->groupBy("thuonghieu.maThuongHieu")
-        ->get();
-        $all_category_products = CategoryProduct::orderby('maDanhMuc')->get();
-        $count_danhMucCon = CategoryProduct::select( "danhmucsanpham.maDanhMuc as maDanhMucCha","danhmucsanpham.tenDanhMuc","danhmucsanpham.slug",DB::raw('(select count(*) from danhmucsanpham where danhmucsanpham.danhMucCha = maDanhMucCha) as SL'))
-        ->where('danhmucsanpham.danhMucCha', 0)
-        ->get();
-        // End sidebar //
 
-        // Header //
-        $cate_of_Apple = CategoryProduct::whereRaw('danhmucsanpham.maDanhMuc IN (select dbsanpham.maDanhMuc FROM dbsanpham JOIN thuonghieu on thuonghieu.maThuongHieu = dbsanpham.maThuongHieu WHERE thuonghieu.maThuongHieu = 1)')
-            ->get();
-        $cate_of_Gear = CategoryProduct::select('tenDanhMuc', 'slug')
-            ->where('danhMucCha', 14)
-            ->get();
-
-        // end header
-
+        // Lấy slider //
+        $all_slider = Slider::where('trangThai', 1)->where('viTri',1)->orderBy('maSlider', 'DESC')->get();
 
         // Lấy keyword qua biến get //
         $kw = $_GET['kw'];        
@@ -405,11 +387,8 @@ class ProductController extends Controller
         ->orwhere("dbsanpham.moTaSanPham", "like", "%".$kw."%")
         ->paginate(6);
 
-        return view('frontend.pages.productsPages.searchPage')->with('all_brands', $all_brands)
-        ->with('all_category_products', $all_category_products)
-        ->with('count_danhMucCon', $count_danhMucCon)
-        ->with('cate_of_Apple', $cate_of_Apple)
-        ->with('cate_of_Gear', $cate_of_Gear)
+        return view('frontend.pages.productsPages.searchPage')
+        ->with('all_slider', $all_slider)
         ->with('result_search', $result_search);
     }
 }

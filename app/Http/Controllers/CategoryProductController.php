@@ -13,6 +13,7 @@ use Alert;
 use Auth;
 use App\User;
 use App\Admin;
+use App\Slider;
 session_start();
 
 class CategoryProductController extends Controller
@@ -21,7 +22,9 @@ class CategoryProductController extends Controller
 
     // Hiển thị sản phẩm thuộc danh mục // 
     public function Categoryproduct($cate_slug){
-        
+        // Lấy slider //
+        $all_slider = Slider::where('trangThai', 1)->where('viTri',1)->orderBy('maSlider', 'DESC')->get();
+
         // Lấy mã của danh mục dựa vào slug //
         $cate_id = CategoryProduct::select('maDanhMuc', 'danhMucCha')->where("slug", $cate_slug)->get();
         foreach($cate_id as $key =>$id){
@@ -66,7 +69,8 @@ class CategoryProductController extends Controller
 
         return view('frontend.pages.productsPages.categoryProduct')
         ->with('product_of_cate', $product_of_cate)
-        ->with('name_product', $name_product);
+        ->with('name_product', $name_product)
+        ->with('all_slider', $all_slider);
     }
 
 

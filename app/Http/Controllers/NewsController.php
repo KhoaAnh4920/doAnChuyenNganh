@@ -251,8 +251,8 @@ class NewsController extends Controller
             }
             // Gán nút load more //
             $output .="
-                    <div id='load_more'>
-                        <button name='load_more_button' class='btn btn-primary form-control' data-id='".$last_id."'
+                    <div id='load_more' style='text-align:center'>
+                        <button name='load_more_button' style='width:30%' class='btn btn-primary form-control' data-id='".$last_id."'
                         id ='load_more_button'>Xem thêm <i class='fa fa-angle-double-down' aria-hidden='true'></i></button>
                     </div>
                 

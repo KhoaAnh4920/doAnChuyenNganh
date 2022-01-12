@@ -5,8 +5,6 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use DB;
 use View;
-use App\Slider;
-
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -45,15 +43,13 @@ class AppServiceProvider extends ServiceProvider
             ->get();
         // end header //
 
-        // Lấy slider //
-        $all_slider = Slider::where('trangThai', 1)->orderBy('maSlider', 'ASC')->get();
+        
 
         // Share data cho tất cả các view //
         View::share('cate_of_Apple', $cate_of_Apple);
         View::share('cate_of_Gear', $cate_of_Gear);
         View::share('all_category_products', $all_category_products);
         View::share('all_brands', $all_brands);
-        View::share('all_slider', $all_slider);
         View::share('count_danhMucCon', $count_danhMucCon);
     }
 
