@@ -79,7 +79,7 @@
                 <form class="needs-validation" action="{{URL::to('/handle-order')}}" method="post">
                     {!! csrf_field() !!}
                     <input type="hidden" name="total_price" value="{{Cart::subtotal()}}">
-                    <input type="hidden" name="users_id" value="@php echo Session::get('user_id'); @endphp">
+                    <input type="hidden" name="users_id" value="@php echo Auth::guard('user')->user()->users_id; @endphp">
                     @foreach($info_user as $key =>$user)
                     <div class="row order">
                         <div class="col-md-12 mb-6">

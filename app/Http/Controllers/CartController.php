@@ -148,6 +148,7 @@ class CartController extends Controller
 
         // Lấy id user //
         $users_id = Auth::guard('user')->user()->users_id;
+        
         // Lấy thông tin user dựa vào id //
         $info_user = DB::table('users')->where('users_id', $users_id)->get();
         
@@ -185,7 +186,7 @@ class CartController extends Controller
         $data['trangThaiDonHang'] = 0;
         $data['users_id'] = $request->users_id;
         $data['ngayDatHang'] = Carbon::now('Asia/Ho_Chi_Minh');
-
+    
         DB::table('donhang')->insert($data);
 
         // Thêm vào data chi tiết đơn hàng //

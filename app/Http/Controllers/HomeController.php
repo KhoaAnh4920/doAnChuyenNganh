@@ -119,6 +119,7 @@ class HomeController extends Controller
         // Lấy thông tin đơn hàng của người dùng //
         $info_order = DB::table('donhang')->where('users_id', $users_id)->get();
 
+
         $cart_content = Cart::content();
 
         return view('frontend.pages.orderPages.checkout')

@@ -1,20 +1,20 @@
 <footer class="sticky-footer bg-white">
     <div class="container my-auto">
         <div class="copyright text-center my-auto">
-            <span>copyright &copy; <script>
+            <span>Công Nghệ Sài Gòn   &copy; <script>
                 document.write(new Date().getFullYear());
                 </script> - developed by
-                <b><a href="https://indrijunanda.gitlab.io/" target="_blank">indrijunanda</a></b>
+                <b><a href="https://www.facebook.com/profile.php?id=100024423430753" target="_blank">Nguyễn Anh Khoa</a></b>
             </span>
         </div>
     </div>
 
     <div class="container my-auto py-2">
         <div class="copyright text-center my-auto">
-            <span>copyright &copy; <script>
+            <span>Đồ án Chuyên Ngành &copy; <script>
                 document.write(new Date().getFullYear());
-                </script> - distributed by
-                <b><a href="https://themewagon.com/" target="_blank">themewagon</a></b>
+                </script> - Giáo Viên Hướng Dẫn
+                <b><a href="https://www.facebook.com/lamnhungocis" target="_blank">Nguyễn Ngọc Lâm</a></b>
             </span>
         </div>
     </div>
