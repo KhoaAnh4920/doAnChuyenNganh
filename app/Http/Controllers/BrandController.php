@@ -26,7 +26,7 @@ class BrandController extends Controller
     }
     
 
-                                                             //===Thương hiệu === //
+                                                //===Thương hiệu === //
 
     // Hiển thị danh sách sản phẩm thuộc hãng //
     public function Brandproduct($brand_slug){
