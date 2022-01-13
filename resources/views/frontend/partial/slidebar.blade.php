@@ -15,7 +15,7 @@
                     </h4>
                 </div>
                 <div id="{{$cate->maDanhMucCha}}" class="panel-collapse collapse">
-                    <div class="panel-body">
+                    <div class="panel-body">  
                         <ul>
                             @foreach($all_category_products as $key => $cate_sub)
                                 @if($cate->maDanhMucCha == $cate_sub->danhMucCha)

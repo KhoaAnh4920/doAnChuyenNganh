@@ -67,7 +67,7 @@
 
     <div class="clearfix"></div>
 
-
+    <!-- Gọi hàm phân trang -->
     <ul class="pagination pagination-sm m-t-none m-b-none">
         {{ $product_of_cate->render()}}
     </ul>

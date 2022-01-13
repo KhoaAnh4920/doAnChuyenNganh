@@ -13,7 +13,7 @@
 
 // Frontend // 
 Route::get('/', 'HomeController@index');
-Route::get('/trang-chu.html', 'HomeController@index');
+Route::get('/trang-chu.html', 'HomeController@index'); //tiếp nhận url , chuyển hướng đến home gọi hàm index
 
 Route::get('/product.html', 'ProductController@product');
 
@@ -59,6 +59,7 @@ Route::post('/create-category-product.html', 'CategoryProductController@createCa
 Route::post('/update-category-product.html/{cate_product_id}', 'CategoryProductController@updateCategoryProduct');
 Route::get('/xoa-danh-muc-san-pham.html/{cate_product_id}', 'CategoryProductController@xoaDanhMucSanPham');
 Route::post('/product-tabs', 'CategoryProductController@product_tabs');
+//Đếm số lượng danh mục nếu có tham số.
 Route::get('/category-product.html/{cate_slug}', 'CategoryProductController@Categoryproduct');
 
 
@@ -81,6 +82,7 @@ Route::post('/update-product.html/{pro_id}', 'ProductController@updateProduct');
 Route::get('/product-details.html/{pro_slug}', 'ProductController@productDetails');
 Route::get('/xoa-san-pham.html/{pro_id}', 'ProductController@xoaSanPham');
 Route::post('/set-gallerySession', 'ProductController@setSession');
+//tìm kiếm sản phẩm
 Route::get('/search-result', 'ProductController@searchProduct');
 
 //  Đơn hàng //

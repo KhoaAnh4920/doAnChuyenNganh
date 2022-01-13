@@ -40,20 +40,6 @@
                         </button>
                     </div>
                     <hr>
-
-                    <!-- <ul style="border-top: 1px solid #ebebeb; padding-top: 40px; margin-top: 50px;">
-                            <li><b>Tình trạng</b> <span>Còn hàng</span></li>
-                            <li><b>Vận chuyển</b> <span>01 ngày. <samp>Miễn phí vận chuyển</samp></span></li>
-                            <li><b>Trọng lượng</b> <span>0.5 kg</span></li>
-                            <li><b>Chia sẻ</b>
-                                <div class="share">
-                                    <a href="#"><i class="fa fa-facebook"></i></a>
-                                    <a href="#"><i class="fa fa-twitter"></i></a>
-                                    <a href="#"><i class="fa fa-instagram"></i></a>
-                                    <a href="#"><i class="fa fa-pinterest"></i></a>
-                                </div>
-                            </li>
-                        </ul> -->
                     
                     <p><b>Trạng thái: </b> {{$pro->trangThai == 1 ? 'Còn hàng' : 'Hết hàng'}}</p>
                     <p><b>Danh mục: </b>{{$pro->tendanhmuc}}</p>

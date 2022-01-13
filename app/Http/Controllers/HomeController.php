@@ -23,14 +23,15 @@ class HomeController extends Controller
         $all_slider = Slider::where('trangThai', 1)->where('viTri', 0)->orderBy('maSlider', 'DESC')->get();
 
         // Danh sách điện thoại nổi bật // 
+        //Lấy sản phẩm trong danh mục điện thoại
         $danhSachDienThoai = DB::table("dbsanpham")
-        ->whereIn("dbsanpham.madanhmuc", function($query){
+        ->whereIn("dbsanpham.madanhmuc", function($query){ //truy vấn con
             $query->from("danhmucsanpham")
-            ->select("danhmucsanpham.madanhmuc")
-            ->where("danhmucsanpham.danhmuccha", "=", 8);
+            ->select("danhmucsanpham.madanhmuc") 
+            ->where("danhmucsanpham.danhmuccha", "=", 8); //lấy tất cả sản phẩm có mã danh mục = 8;
         })
-        ->where("dbsanpham.trangThai", 1)
-        ->limit(6)->get();
+        ->where("dbsanpham.trangThai", 1) 
+        ->limit(6)->get();// Lấy 6 sản phẩm
         
 
         // Đếm số lượng sản phẩm thuộc danh mục điện thoại // 
@@ -90,6 +91,8 @@ class HomeController extends Controller
         ->limit(6)
         ->get();
 
+
+        //Trả về view với những hàm được tạo ở trên.
         return view('frontend.pages.topPages.index')
         ->with('recommmendedProducts', $recommmendedProducts)
         ->with('danhSachDienThoai', $danhSachDienThoai)
