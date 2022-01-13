@@ -87,14 +87,7 @@ class AdminController extends Controller
     }
 
     
-    
-    // Đăng xuất cho admin
-    public function logoutAdmin(){
 
-        Session::put('admin_name', null);
-        Session::put('admin_id', null);
-        return Redirect::to('/admin-login.html');
-    }
     // Chức năng thêm người dùng vào db // 
     public function createUsers(Request $request){
         $data = array();
@@ -171,7 +164,7 @@ class AdminController extends Controller
         // Lấy email người dùng //
         $data['users_email'] = $request->users_email;
         // Lấy mật khẩu, mã hóa bằng md5 //
-        $data['users_password'] = md5($request->users_password);
+        $data['users_password'] = $request->users_password;
         // Lấy sđt người dùng //
         $data['users_phone'] = $request->users_phone;
         // Lấy địa chỉ người dùng //
@@ -179,6 +172,7 @@ class AdminController extends Controller
         // Lấy role của người dùng //
         $data['users_role'] = $request->role;
 
+        var_dump($data); exit;
         // Lấy hình ảnh //
         $get_image = $request->file('user_avatar');
 

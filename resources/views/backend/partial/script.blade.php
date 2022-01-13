@@ -15,18 +15,6 @@ CKEDITOR.replace('ckeditor_addDescNews');
 CKEDITOR.replace('ckeditor_addSliderDesc');
 </script>
 
-<!-- Hiện modal form thành công  -->
-
-<!-- @php session()->forget('error_code'); @endphp -->
-
-
-<!-- @if(!empty(Session::get('error_code')) && Session::get('error_code') == 5)
-<script>
-$(function() {
-    $('#ignismyModal').modal('show');
-});
-</script>
-@endif -->
 
 <!-- Convert chuỗi tên, tiêu đề thành slug  -->
 <script language="javascript">
@@ -65,113 +53,7 @@ function ChangeToSlug() {
 }
 </script>
 
- <!-- Load danh mục hình sản phẩm  -->
-<script type="text/javascript">
-// load_gallery();
 
-
-// function load_gallery() {
-//     var pro_id = $('.pro_id').val();
-//     var _token = $('meta[name="csrf-token"]').attr('content');
-//     $.ajax({
-//         url: "{{url('/hien-thi-danh-muc-hinh')}}",
-//         method: "POST",
-//         data: {
-//             pro_id: pro_id,
-//             _token: _token
-//         },
-//         success: function(data) {
-//             $('#gallery_load').html(data);
-//         }
-//     });
-// }
-
-$('#file').change(function() {
-    var error = '';
-    var files = $('#file')[0].files;
-    console.log(files);
-    exit;
-
-    if (files.length > 5) {
-        error += '<p>Bạn chọn tối đa chỉ được 5 ảnh</p>';
-    } else if (files.length == '') {
-        error += '<p>Bạn không được bỏ trống ảnh</p>';
-    } else if (files.size > 2000000) {
-        error += '<p>File ảnh không được lớn hơn 2MB</p>';
-    }
-
-    if (error == '') {
-
-    } else {
-        $('#file').val('');
-        $('#error_gallery').html('<span class="text-danger">' + error + '</span>');
-        return false;
-    }
-
-});
-
-// Sự kiện sửa lại ảnh // 
-// $(document).on('change', '.file_image', function() {
-
-//     var gal_id = $(this).data('gal_id');
-//     var image = document.getElementById("file-" + gal_id).files[0];
-
-//     var form_data = new FormData();
-
-//     form_data.append("file", document.getElementById("file-" + gal_id).files[0]);
-//     form_data.append("gal_id", gal_id);
-
-
-
-//     $.ajax({
-//         url: "{{url('/update-gallery')}}",
-//         method: "POST",
-//         headers: {
-//             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-//         },
-//         data: form_data,
-
-//         contentType: false,
-//         cache: false,
-//         processData: false,
-//         success: function(data) {
-//             load_gallery();
-//             $('#error_gallery').html(
-//                 '<span class="text-danger">Sửa hình ảnh thành công</span>');
-//         }
-//     });
-
-// });
-</script>
-
-<script type="text/javascript">
-$('.update_quantity_order').click(function() {
-    var order_product_id = $(this).data('product_id'); // Mã sản phẩm của đơn hàng
-    var order_id = $('.order_code').val(); // Mã đơn hàng // 
-    var order_qty = $('.order_qty_' + order_product_id).val(); // Số lượng sản phẩm của đơn hàng //
-
-    var _token = $('meta[name="csrf-token"]').attr('content');
-
-    $.ajax({
-        url: '{{url(' / update - qty - product ')}}',
-
-        method: 'POST',
-
-        data: {
-            _token: _token,
-            order_product_id: order_product_id,
-            order_qty: order_qty,
-            order_id: order_id
-        },
-        // dataType:"JSON",
-        success: function(data) {
-            $('#ignismyModal').modal('show');
-        }
-    });
-
-
-});
-</script>
 <script>
 function readURL(input) {
 
@@ -189,40 +71,7 @@ function readURL(input) {
         // Tiến hành đọc file bằng phương thức readAsDataURL, fileReader.result sẽ là một URL đại diện cho dữ liệu đọc được.
         reader.readAsDataURL(input.files[0]);
     }
-    console.log(input.files.length);
 }
-
-// function previewImages() {
-
-//     var preview = document.querySelector('#preview');
-
-//     if (this.files) {
-//         [].forEach.call(this.files, readAndPreview);
-//     }
-
-//     function readAndPreview(file) {
-
-//         // Make sure `file.name` matches our extensions criteria
-//         if (!/\.(jpe?g|png|gif)$/i.test(file.name)) {
-//             return alert(file.name + " is not an image");
-//         } // else...
-
-//         var reader = new FileReader();
-
-//         reader.addEventListener("load", function() {
-//             var image = new Image();
-//             image.width = 100;
-//             image.src = this.result;
-//             preview.appendChild(image);
-//         });
-
-//         reader.readAsDataURL(file);
-
-//     }
-
-// }
-
-//document.querySelector('#file-input').addEventListener("change", previewImages);
 </script>
 
 <script>
@@ -234,7 +83,7 @@ $(document).ready(function() {
             // lấy thông tin của file đã tải lên bằng property event.target.files
             var files = e.target.files,
                 filesLength = files.length; // Lấy số lượng file//
-            
+            // Kiểm tra số lượng hình ảnh //
             if(filesLength > 5){
                 var error = '<p>Chỉ được chọn tối đa 5 ảnh</p>';
                 $('#error_gallery').html('<span class="text-danger">' + error + '</span>');
@@ -247,12 +96,6 @@ $(document).ready(function() {
                 //onload được kích hoạt khi quá trình đọc kết thúc thành công
                 fileReader.onload = (function(e) {
                     // e là event của kết quả fileReader.readAsDataURL(f);
-                    
-                    //var file = e.target;
-                    //   $("<span class=\"pip\">" +
-                    //     "<img class=\"imageThumb\" src=\"" + e.target.result + "\" title=\"" + file.name + "\"/>" +
-                    //     "<br/><span class=\"remove\">Remove image</span>" +
-                    //     "</span>").insertAfter("#preview");
 
                     $("#preview").append("<span class=\"pip\">" +
                         "<img class=\"imageThumb\" src=\"" + e.target.result + "\"/>" +
@@ -262,7 +105,7 @@ $(document).ready(function() {
                         $(this).parent(".pip").remove();
                     });
                 });
-                // Tiến hành đọc file bằng phương thức readAsDataURL
+                // Tiến hành đọc file bằng phương thức readAsDataURL, fileReader.result sẽ là một URL đại diện cho dữ liệu đọc được.
                 fileReader.readAsDataURL(f);
             }
         });

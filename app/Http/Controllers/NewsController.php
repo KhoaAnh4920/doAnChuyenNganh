@@ -268,7 +268,7 @@ class NewsController extends Controller
         }
         
         
-        echo $output;
+        return $output;
         
     }
 }

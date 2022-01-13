@@ -18,6 +18,7 @@ class HomeController extends Controller
 {
     // front end // 
     public function index(){
+        
         // Lấy slider trang chủ //
         $all_slider = Slider::where('trangThai', 1)->where('viTri', 0)->orderBy('maSlider', 'DESC')->get();
 

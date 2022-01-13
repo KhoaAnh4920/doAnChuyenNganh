@@ -40,7 +40,6 @@
                     @include("frontend.partial.slidebar")
                 @endunless
                 @yield('defaultContent')
-
             </div>
         </div>
     </section>

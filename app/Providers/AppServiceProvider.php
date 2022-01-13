@@ -34,7 +34,7 @@ class AppServiceProvider extends ServiceProvider
         // end sidebar//
 
         // Header //
-        $cate_of_Apple = DB::table("danhmucsanpham")
+        $cate_of_Apple = DB::table("danhmucsanpham") // Danh mục sản phẩm thuộc thương hiệu apple //
             ->whereRaw('danhmucsanpham.maDanhMuc IN (select dbsanpham.maDanhMuc FROM dbsanpham JOIN thuonghieu on thuonghieu.maThuongHieu = dbsanpham.maThuongHieu WHERE thuonghieu.maThuongHieu = 1)')
             ->get();
         $cate_of_Gear = DB::table("danhmucsanpham")

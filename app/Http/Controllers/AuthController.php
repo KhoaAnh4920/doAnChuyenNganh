@@ -59,7 +59,7 @@ class AuthController extends Controller
             'adminPass.max' => 'Mật khẩu quá 255 ký tự',
         ]);
 
-        if (Auth::guard('admin')->attempt(['users_email' => $request->adminEmail, 'users_password' => $request->adminPass])) {
+        if (Auth::guard('admin')->attempt(['users_email' => $request->adminEmail, 'users_password' => $request->adminPass, 'users_role' => 2])) {
             return Redirect::to('/admin');
         }else{
             Alert::error('Email hoặc mật khẩu sai');

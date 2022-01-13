@@ -25,9 +25,6 @@ class MailController extends Controller
         $now = $dt->toDateTimeString();
 		$title_mail = "Reset password ";
 		$customer = DB::table('users')->where('users_email','=',$data['users_email'])->first();
-		// foreach($customer as $key => $value){
-		// 	$customer_id = $value->users_id;
-		// }
         // Kiểm tra user có tồn tại trong hệ thống //
 		if($customer){
             $data2['id'] = $customer->users_id;
@@ -47,7 +44,6 @@ class MailController extends Controller
                 
             Mail::send('frontend.pages.loginUserPages.notify_recoverPass', ['data'=>$data] , function($message) use ($title_mail,$data){
 		        $message->to($data['email'])->subject($title_mail);//send this mail with subject
-		        $message->from($data['email'], 'HKShop');//send from this mail
 	    	});
             //--send mail
             Alert::success('Gửi mail thành công. Vui lòng kiểm tra email để tiến hành đặt lại mật khẩu');
@@ -132,7 +128,6 @@ class MailController extends Controller
                 
         Mail::send('frontend.pages.loginUserPages.notify_activeAccount', ['data'=>$data] , function($message) use ($title_mail,$data){
 		    $message->to($data['email'])->subject($title_mail);//send this mail with subject
-		    $message->from($data['email'],'HKShop');//send from this mail
 	    });
         //--send mail
         return true;
@@ -241,7 +236,7 @@ class MailController extends Controller
                 
         Mail::send('frontend.pages.contactPages.notify_contact', ['data'=>$data] , function($message) use ($title_mail,$data, $to_email){
 		    $message->to($to_email)->subject($title_mail);//send this mail with subject
-		    $message->from($to_email,$title_mail);//send from this mail
+		    //$message->from($to_email,$title_mail);//send from this mail
 	    });
         //--send mail
         return true;
