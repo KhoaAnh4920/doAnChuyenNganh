@@ -13,13 +13,14 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot() // khởi động web thì sẽ chạy boot
     {
         // Sidebar //
         $all_brands = DB::table("thuonghieu")
         ->leftJoin("dbsanpham", function($join){
             $join->on("thuonghieu.mathuonghieu", "=", "dbsanpham.mathuonghieu");
         })
+        //Dem So Luong Thuong Hieu
         ->select("thuonghieu.*", DB::raw('count(dbsanpham.masanpham) as sl'))
         ->where('thuonghieu.trangThai', 1)
         ->groupBy("thuonghieu.maThuongHieu")

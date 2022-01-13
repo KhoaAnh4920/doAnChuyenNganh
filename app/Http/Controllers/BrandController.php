@@ -24,6 +24,10 @@ class BrandController extends Controller
         if(!$isLogin)
             return Redirect::to('/admin-login.html')->send();
     }
+    
+
+                                                             //===Thương hiệu === //
+
     // Hiển thị danh sách sản phẩm thuộc hãng //
     public function Brandproduct($brand_slug){
         // Lấy slider //
@@ -45,6 +49,10 @@ class BrandController extends Controller
         ->with('name_brand', $name_brand)
         ->with('all_slider', $all_slider);
     }
+
+
+
+
     // Liệt kê thương hiệu //
     public function lietKeThuongHieu(){
         $this->checkLogin();

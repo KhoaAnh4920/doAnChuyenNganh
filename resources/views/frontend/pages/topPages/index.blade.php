@@ -1,4 +1,4 @@
-@extends('frontend.layouts.master',['nopriceRange' => true])
+@extends('frontend.layouts.master',['nopriceRange' => true]) <!-- Gọi lại trang master-->
 @section('title','Trang chủ')
 @section('styles')
 <style>
@@ -59,7 +59,7 @@
                 <h2 class="box-common__title">ĐIỆN THOẠI NỔI BẬT NHẤT</h2>
 
                 <div class="box-common__link" data-size="3">
-                    @foreach($danhMucConDienThoai as $key => $cate_child)
+                    @foreach($danhMucConDienThoai as $cate_child)
                     <a href="{{URL::to('/category-product.html/'.$cate_child->slug)}}" data-index="1">
                         {{$cate_child->tenDanhMuc}}
                     </a>
@@ -68,7 +68,7 @@
                     <a class="readmore-btn" href="{{URL::to('/category-product.html/'.'dien-thoai')}}">Xem tất cả <b>{{$countdanhSachDienThoai->sl}}</b> Điện thoại</a>
                 </div> 
             </div>
-                @foreach($danhSachDienThoai as $key => $ds)
+                @foreach($danhSachDienThoai as  $ds)
                 <div class="col-sm-4">
                         <div class="product-image-wrapper">
                             <div class="single-products">
@@ -95,7 +95,7 @@
                 <h2 class="box-common__title">LAPTOP NỔI BẬT NHẤT</h2>
 
                 <div class="box-common__link" data-size="3">
-                    @foreach($danhMucConLaptop as $key => $cate_child_lap)
+                    @foreach($danhMucConLaptop as  $cate_child_lap)
                     <a href="{{URL::to('/category-product.html/'.$cate_child_lap->slug)}}" data-index="1">
                         {{$cate_child_lap->tenDanhMuc}}
                     </a>
@@ -104,7 +104,7 @@
                     <a class="readmore-btn" href="{{URL::to('/category-product.html/'.'laptop')}}">Xem tất cả <b>{{$countdanhSachLaptop->sl}}</b> Laptop</a>
                 </div> 
             </div>
-                @foreach($danhSachLaptop as $key => $dsLap)
+                @foreach($danhSachLaptop as $dsLap)
                 <div class="col-sm-4">
                         <div class="product-image-wrapper">
                             <div class="single-products">

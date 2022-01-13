@@ -1,4 +1,4 @@
-@extends('backend.layouts.master')
+@extends('backend.layouts.master') 
 @section('title','Trang Admin')
 @section('content')
 <div class="container-fluid" id="container-wrapper">

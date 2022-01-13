@@ -21,7 +21,8 @@ class CategoryProductController extends Controller
     // frontend //
 
     // Hiển thị sản phẩm thuộc danh mục // 
-    public function Categoryproduct($cate_slug){
+    public function Categoryproduct($cate_slug){ //$cate_slug nhận tham số truyền vào từ trang index.
+        
         // Lấy slider //
         $all_slider = Slider::where('trangThai', 1)->where('viTri',1)->orderBy('maSlider', 'DESC')->get();
 
@@ -50,7 +51,7 @@ class CategoryProductController extends Controller
                     ->whereRaw('dbsanpham.madanhmuc IN (select danhmucsanpham.maDanhMuc from danhmucsanpham WHERE danhmucsanpham.danhMucCha = '.$cate_by_id.')')
                     ->where("dbsanpham.trangThai", 1)
                     ->whereBetween('dbsanpham.giaSanPham',[$min_price,$max_price])
-                    ->paginate(6);
+                    ->paginate(6);//Phân trang mỗi trang 6 sản phẩm 
             }else
                 $product_of_cate = DB::table('dbsanpham')->where("dbsanpham.trangThai", 1)->where('maDanhMuc', $cate_by_id)->whereBetween('dbsanpham.giaSanPham',[$min_price,$max_price])->paginate(6);
         }else{
@@ -126,14 +127,6 @@ class CategoryProductController extends Controller
         else
             Alert::error('Thêm thất bại');
 
-        // $data['tenDanhMuc'] = $request->tenDanhMuc;
-        // $data['slug'] = $request->slug_danhmucsanpham;
-        // $data['moTaDanhMuc'] = $request->moTaDanhMuc;
-        // $data['danhMucCha'] = $request->thuocDanhMuc;
-        // $data['trangThai'] = $request->trangThai;
-        
-        // DB::table('danhmucsanpham')->insert($data);
-        //Session::put('message', 'Thêm thành công');
         return Redirect::to('/liet-ke-danh-muc-san-pham.html');
     }
     // Cập nhật thông tin danh mục sản phẩm // 
@@ -153,16 +146,6 @@ class CategoryProductController extends Controller
             Alert::success('Thêm thành công');
         else
             Alert::error('Thêm thất bại');
-        // $data = array();
-        // $data['tenDanhMuc'] = $request->tenDanhMuc;
-        // $data['slug'] = $request->slug_danhmucsanpham;
-        // $data['moTaDanhMuc'] = $request->moTaDanhMuc;
-        // $data['trangThai'] = $request->trangThai;
-        // $data['danhMucCha'] = $request->thuocDanhMuc;
-
-        //var_dump($data); exit;
-        //DB::table('danhmucsanpham')->where('maDanhMuc', $cate_product_id)->update($data);
-        //Session::put('message', 'Cập nhật thành công');
         return Redirect::to('/liet-ke-danh-muc-san-pham.html');
     }
     // Xóa danh mục sản phẩm trong db //

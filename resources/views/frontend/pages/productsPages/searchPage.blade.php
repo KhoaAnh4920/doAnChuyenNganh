@@ -61,7 +61,7 @@
 
     <div class="clearfix"></div>
 
-
+    <!-- Gọi hàm phân trang khác vs danh mục sản phẩm vì nó mất biến get -->
     <ul class="pagination pagination-sm m-t-none m-b-none">
         {!! $result_search->appends(Request::except('page'))->render() !!}
     </ul>
